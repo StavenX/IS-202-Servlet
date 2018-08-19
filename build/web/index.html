@@ -5,33 +5,90 @@ To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
 <html>
-    <head>
-        
+    <head>        
         <style>
-            body {
-                background: white;
-                font-family: courier;      
+            * {box-sizing: border-box}
+
+            /* Add padding to containers */
+            .container {
+              padding: 16px;
+            }
+
+            /* Full-width input fields */
+            input[type=text], input[type=password] {
+              width: 100%;
+              padding: 15px;
+              margin: 5px 0 22px 0;
+              display: inline-block;
+              border: none;
+              background: #f1f1f1;
+            }
+
+            input[type=text]:focus, input[type=password]:focus {
+              background-color: #ddd;
+              outline: none;
+            }
+
+            /* Overwrite default styles of hr */
+            hr {
+              border: 1px solid #f1f1f1;
+              margin-bottom: 25px;
+            }
+
+            /* Set a style for the submit/register button */
+            .registerbtn {
+              background-color: #4CAF50;
+              color: white;
+              padding: 16px 20px;
+              margin: 8px 0;
+              border: none;
+              cursor: pointer;
+              width: 100%;
+              opacity: 0.9;
+            }
+
+            .registerbtn:hover {
+              opacity:1;
+            }
+
+            /* Add a blue text color to links */
+            a {
+              color: dodgerblue;
+            }
+
+            /* Set a grey background color and center the text of the "sign in" section */
+            .signin {
+              background-color: #f1f1f1;
+              text-align: center;
             }
         </style>
-        
-        <title>Register</title>
+        <title>Info</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-    <center>
-        <div>
-            This is a site that needs your contact-details.
-            Please enter them, down below.
-            <br>
-            <br>
-        </div>
-        <form action = "ProblemSolver">           
-            First name: <input type="text" name="fname"><br>
-            Last name: <input type="text" name="lname"><br>
-            e-mail <input type="text" name="email"><br>
-            <input type="submit" value="Submit" name="btn_submit">
+        <form action = "ProblemSolver">   
+            <div class="container">
+                <h1>Information</h1>
+                <p>Please fill in this form.</p>
+                <hr>
+                
+                <label for="fname"><b>First name</b></label>
+                <input type="text" placeholder="Enter first name" name="fname"><br>
+                
+                <label for="lname"><b>Last name</b></label>
+                <input type="text" placeholder="Enter last name" name="lname"><br>
+                
+                <label for="email"><b>Email</b></label>
+                <input type="text" placeholder="Enter Email" name="email">
+                
+                <hr>
+                
+                <button type ="submit" class ="registerbtn">Register</button>              
+            </div>           
+            <!--<div class="container signin">
+                <p>Already have an account? <a href="#">Sign in</a>.</p>
+            </div>-->
         </form>
-    </center>
     </body>
 </html>

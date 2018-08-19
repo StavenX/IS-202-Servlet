@@ -52,14 +52,17 @@ public class ProblemSolver extends HttpServlet {
             lname = request.getParameter("lname");
             email = request.getParameter("email");
             
-            out.println("<h1>Your Details</h1>");
-            out.println(fname + " is a your first name.");
-            out.println(lname + " is your last name.");
-            out.println(email + " is your e-mail address.");
-            
+            if (fname.isEmpty() || lname.isEmpty() || email.isEmpty()) {
+                out.println("Fill out all the fields!");
+            }
+            else {
+                out.println("<h1>Your Details</h1>");
+                out.println(fname + " is your first name.");
+                out.println(lname + " is your last name.");
+                out.println(email + " is your e-mail address.");
+            }
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
