@@ -46,13 +46,16 @@ public class ProblemSolver extends HttpServlet {
             
             String fname;
             String lname;
+            String email;
             
             fname = request.getParameter("fname");
             lname = request.getParameter("lname");
+            lname = request.getParameter("email");
             
-            out.println("<h1>very dumb </h1>");
-            out.println(fname + " is a terrible name.");
-            out.println(lname + " however, is not bad.");
+            out.println("<h1>Your Details</h1>");
+            out.println(fname + " is a your first name.");
+            out.println(lname + " is your last name.");
+            out.println(lname + " is your e-mail address.");
             
         }
     }
@@ -95,5 +98,4 @@ public class ProblemSolver extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
 }
