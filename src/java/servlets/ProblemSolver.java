@@ -50,12 +50,12 @@ public class ProblemSolver extends HttpServlet {
             
             fname = request.getParameter("fname");
             lname = request.getParameter("lname");
-            lname = request.getParameter("email");
+            email = request.getParameter("email");
             
             out.println("<h1>Your Details</h1>");
             out.println(fname + " is a your first name.");
             out.println(lname + " is your last name.");
-            out.println(lname + " is your e-mail address.");
+            out.println(email + " is your e-mail address.");
             
         }
     }
