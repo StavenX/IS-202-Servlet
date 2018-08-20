@@ -9,9 +9,23 @@ and open the template in the editor.
         <style>
             * {box-sizing: border-box}
 
+            body {
+                background-color: lightblue;
+                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+            }
+            
+            label {
+            }
+            
             /* Add padding to containers */
             .container {
               padding: 16px;
+              
+              width: 50%;
+              height: 500px;
+              vertical-align: middle;
+              align-content: center;
+              text-align: center;
             }
 
             /* Full-width input fields */
@@ -67,28 +81,28 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <form action = "ProblemSolver">   
-            <div class="container">
-                <h1>Information</h1>
-                <p>Please fill in this form.</p>
-                <hr>
-                
-                <label for="fname"><b>First name</b></label>
-                <input type="text" placeholder="Enter first name" name="fname"><br>
-                
-                <label for="lname"><b>Last name</b></label>
-                <input type="text" placeholder="Enter last name" name="lname"><br>
-                
-                <label for="email"><b>Email</b></label>
-                <input type="text" placeholder="Enter Email" name="email">
-                
-                <hr>
-                
-                <button type ="submit" class ="registerbtn">Register</button>              
-            </div>           
-            <!--<div class="container signin">
-                <p>Already have an account? <a href="#">Sign in</a>.</p>
-            </div>-->
-        </form>
+
+            <form action = "ProblemSolver">
+
+                <div class="container">
+                    <h1>INFORMATION</h1>
+                    <p>PLEASE FILL IN THIS FORM.</p>
+                    <hr>
+                    <label for="fname"><b>FIRST NAME</b></label>
+                    <input type="text" placeholder="ENTER FIRST-NAME" name="fname"><br>
+
+                    <label for="lname"><b>LAST NAME</b></label>
+                    <input type="text" placeholder="ENTER LAST-NAME" name="lname"><br>
+
+                    <label for="email"><b>E-MAIL</b></label>
+                    <input type="text" placeholder="ENTER E-MAIL" name="email">
+                    <hr>
+                    <button type ="submit" class ="registerbtn">REGISTER</button>              
+                </div>           
+                <!--<div class="container signin">
+                    <p>Already have an account? <a href="#">Sign in</a>.</p>
+                </div>-->
+            </form>
+
     </body>
 </html>
