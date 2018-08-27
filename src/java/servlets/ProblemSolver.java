@@ -37,10 +37,10 @@ public class ProblemSolver extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
             out.println("<title>Servlet ProblemSolver</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ProblemSolver at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
             

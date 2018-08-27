@@ -6,103 +6,28 @@ and open the template in the editor.
 -->
 <html>
     <head>        
-        <style>
-            * {box-sizing: border-box}
-
-            body {
-                background-color: lightblue;
-                font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-            }
-            
-            label {
-            }
-            
-            /* Add padding to containers */
-            .container {
-              padding: 16px;
-              
-              width: 50%;
-              height: 500px;
-              vertical-align: middle;
-              align-content: center;
-              text-align: center;
-            }
-
-            /* Full-width input fields */
-            input[type=text], input[type=password] {
-              width: 100%;
-              padding: 15px;
-              margin: 5px 0 22px 0;
-              display: inline-block;
-              border: none;
-              background: #f1f1f1;
-            }
-
-            input[type=text]:focus, input[type=password]:focus {
-              background-color: #ddd;
-              outline: none;
-            }
-
-            /* Overwrite default styles of hr */
-            hr {
-              border: 1px solid #f1f1f1;
-              margin-bottom: 25px;
-            }
-
-            /* Set a style for the submit/register button */
-            .registerbtn {
-              background-color: #4CAF50;
-              color: white;
-              padding: 16px 20px;
-              margin: 8px 0;
-              border: none;
-              cursor: pointer;
-              width: 100%;
-              opacity: 0.9;
-            }
-
-            .registerbtn:hover {
-              opacity:1;
-            }
-
-            /* Add a blue text color to links */
-            a {
-              color: dodgerblue;
-            }
-
-            /* Set a grey background color and center the text of the "sign in" section */
-            .signin {
-              background-color: #f1f1f1;
-              text-align: center;
-            }
-        </style>
+        <link rel="stylesheet" type="text/css" href="theme.css">
         <title>Info</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+        <form action = "ProblemSolver">
+            <div class="container">
+                <h1>INFORMATION</h1>
+                <p>PLEASE FILL IN THIS FORM.</p>
+                <hr>
+                <label for="fname"><b>FIRST NAME</b></label>
+                <input type="text" placeholder="ENTER FIRST-NAME" name="fname"><br>
 
-            <form action = "ProblemSolver">
+                <label for="lname"><b>LAST NAME</b></label>
+                <input type="text" placeholder="ENTER LAST-NAME" name="lname"><br>
 
-                <div class="container">
-                    <h1>INFORMATION</h1>
-                    <p>PLEASE FILL IN THIS FORM.</p>
-                    <hr>
-                    <label for="fname"><b>FIRST NAME</b></label>
-                    <input type="text" placeholder="ENTER FIRST-NAME" name="fname"><br>
-
-                    <label for="lname"><b>LAST NAME</b></label>
-                    <input type="text" placeholder="ENTER LAST-NAME" name="lname"><br>
-
-                    <label for="email"><b>E-MAIL</b></label>
-                    <input type="text" placeholder="ENTER E-MAIL" name="email">
-                    <hr>
-                    <button type ="submit" class ="registerbtn">REGISTER</button>              
-                </div>           
-                <!--<div class="container signin">
-                    <p>Already have an account? <a href="#">Sign in</a>.</p>
-                </div>-->
-            </form>
-
+                <label for="email"><b>E-MAIL</b></label>
+                <input type="text" placeholder="ENTER E-MAIL" name="email">
+                <hr>
+                <button type ="submit" class ="registerbtn">REGISTER</button>              
+            </div>           
+        </form>
     </body>
 </html>
