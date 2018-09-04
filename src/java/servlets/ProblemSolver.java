@@ -54,7 +54,7 @@ public class ProblemSolver extends HttpServlet {
             email = request.getParameter("email");
             
             if (fname.isEmpty() || lname.isEmpty() || email.isEmpty()) {
-                out.println("Fill out all the fields!");
+                //out.println("Fill out all the fields!");
                 
                 Login login = new Login();
                 login.loginToDatabase(out);
