@@ -55,16 +55,16 @@ public class ProblemSolver extends HttpServlet {
             
             if (fname.isEmpty() || lname.isEmpty() || email.isEmpty()) {
                 out.println("Fill out all the fields!");
+                
+                Login login = new Login();
+                login.loginToDatabase(out);
+                login.printModules(out);
             }
             else {
                 out.println("<h1>Your Details</h1>");
                 out.println(fname + " is your first name.");
                 out.println(lname + " is your last name.");
-                out.println(email + " is your e-mail address.");
-                
-                Login login = new Login();
-                login.loginToDatabase(out);
-                login.printModules(out);
+                out.println(email + " is your e-mail address.");        
             }
         }
     }
