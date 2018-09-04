@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
@@ -60,6 +61,10 @@ public class ProblemSolver extends HttpServlet {
                 out.println(fname + " is your first name.");
                 out.println(lname + " is your last name.");
                 out.println(email + " is your e-mail address.");
+                
+                Login login = new Login();
+                login.loginToDatabase(out);
+                login.printModules(out);
             }
         }
     }
