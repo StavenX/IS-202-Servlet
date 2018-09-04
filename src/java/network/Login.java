@@ -30,6 +30,23 @@ public class Login
         System.out.println();
         out.println();
         
+        try {
+            ResultSet rset = stmt.executeQuery(strSelect);
+            
+            out.println("the records selected are:" + "<br>");
+            int rowCount = 0; 
+            while (rset.next()) {
+                String moduleName = rset.getString("mod_name");
+                String moduleDescription = rset.getString("mod_desc");
+                out.println(rowCount + ": " + moduleName + ", " + moduleDescription + "<br>");
+                ++rowCount;
+            }
+            out.println("Total number of records = " + rowCount);
+        }
+        catch (SQLException ex) {
+            out.println("FAILED TO RETRIEVE " + ex);
+        }
+        
     }
     
     // @Resource DataSource LocalhostDS;
