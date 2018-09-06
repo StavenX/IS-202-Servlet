@@ -20,7 +20,12 @@ public class Login
 {   
     Connection conn; 
     Statement stmt;
-    
+    /**
+     * Prints a module from the module database to a 
+     * PrintWriter source
+     * 
+     * @param out The PrintWriter to use
+     */
     public void printModules(PrintWriter out) {
         String strSelect = "SELECT * FROM MODULES";
         
@@ -35,11 +40,15 @@ public class Login
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
+            
+            // While there exists more entries (rows?)
             while (rset.next()) {
+                
+                // The different columns
                 String moduleName = rset.getString("mod_name");
                 String moduleDescription = rset.getString("mod_desc");
-                out.println(rowCount + ": " + moduleName + ", " + moduleDescription + "<br>");
-                ++rowCount;
+                out.println("Row " + rowCount + ": " + moduleName + ", " + moduleDescription + "<br>");
+                rowCount++;
             }
             out.println("Total number of records = " + rowCount);
         }
