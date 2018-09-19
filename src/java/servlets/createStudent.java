@@ -9,10 +9,6 @@ import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +20,9 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class getStudent extends HttpServlet {
+@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
+public class createStudent extends HttpServlet {
 
-    Statement stmt;
     Login login = new Login();
     
     /**
@@ -48,15 +43,19 @@ public class getStudent extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet getStudent</title>");            
+            out.println("<title>Servlet createStudent</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
-
+            
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                StudentHelper.printStudents(out, conn);
+                StudentHelper.insertStudent(
+                        request.getParameter("student_name"),
+                        request.getParameter("student_edu"),
+                        conn, 
+                        out
+                );
                 
                 login.close();
                 
