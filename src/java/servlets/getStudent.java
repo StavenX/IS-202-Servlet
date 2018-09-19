@@ -57,11 +57,29 @@ public class getStudent extends HttpServlet {
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                printStudents(out, conn);
+                //printStudents(out, conn);
+                insertStudent("test", "test", conn, out);
                 login.close();
                 
             out.println("</body>");
             out.println("</html>");
+        }
+    }
+    
+    public void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
+        
+        try {
+            
+        Statement stmt = conn.createStatement();
+        String sqlInsert = "INSERT INTO student (student_name, student_education) "
+          + "values ('" + name + "', '" + edu + "')";
+        System.out.println("The SQL query is: " + sqlInsert); // debug
+        int countInserted = stmt.executeUpdate(sqlInsert);
+        System.out.println(countInserted + " records inserted.\n");  
+        out.println("INSERTED");
+        }
+        catch (SQLException ex) {
+            out.println("Error: " + ex);
         }
     }
     
