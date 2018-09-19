@@ -51,9 +51,7 @@ public class getStudent extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
-            
-                Login login = new Login();
-                
+
                 Connection conn;
                 conn = login.loginToDB(out);
                 
@@ -66,23 +64,45 @@ public class getStudent extends HttpServlet {
         }
     }
     
+    /**
+     * Inserts a student into the student table.
+     * 
+     * TODO: Currently prone to SQL injection, needs to use
+     * prepareStatement() instead
+     * 
+     * @param name The student name
+     * @param edu The student's education
+     * @param conn The connection object
+     * @param out The printwriter, for printing errors etc
+     */
     public void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
         
         try {
             
-        Statement stmt = conn.createStatement();
-        String sqlInsert = "INSERT INTO student (student_name, student_education) "
-          + "values ('" + name + "', '" + edu + "')";
-        System.out.println("The SQL query is: " + sqlInsert); // debug
-        int countInserted = stmt.executeUpdate(sqlInsert);
-        System.out.println(countInserted + " records inserted.\n");  
-        out.println("INSERTED");
+            stmt = conn.createStatement();
+            
+            String sqlInsert = "INSERT INTO student (student_name, student_education) "
+              + "values ('" + name + "', '" + edu + "')";
+            
+            System.out.println("The SQL query is: " + sqlInsert); // debug
+            int countInserted = stmt.executeUpdate(sqlInsert);         
+            System.out.println(countInserted + " records inserted.\n");  
+            out.println(countInserted + " records inserted.\n");  
+            
+            out.println("INSERTED"); // debug
         }
         catch (SQLException ex) {
-            out.println("Error: " + ex);
+            out.println("SQL error: " + ex);
         }
     }
     
+    /**
+     * Prints all the students located in the student
+     * table.
+     * 
+     * @param out The printwriter to write with
+     * @param conn The connection to use
+     */
     public void printStudents(PrintWriter out, Connection conn) {
 
         PreparedStatement getModules; 
