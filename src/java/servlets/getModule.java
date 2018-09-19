@@ -1,12 +1,19 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +25,12 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "ProblemSolver", urlPatterns = {"/ProblemSolver"})
-public class ProblemSolver extends HttpServlet {
+@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
+public class getModule extends HttpServlet {
 
+    Statement stmt;
+    Login login = new Login();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,35 +49,57 @@ public class ProblemSolver extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet ProblemSolver</title>");            
+            out.println("<title>Servlet getStudent</title>");            
             out.println("</head>");
             out.println("<body>");
+            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
+            
+                Login login = new Login();
+                
+                Connection conn;
+                conn = login.loginToDB(out);
+                
+                printModules(out, conn);
+                login.close();
+                
             out.println("</body>");
             out.println("</html>");
-            
-            String fname;
-            String lname;
-            String email;
-            
-            fname = request.getParameter("fname");
-            lname = request.getParameter("lname");
-            email = request.getParameter("email");
-            
-            if (fname.isEmpty() || lname.isEmpty() || email.isEmpty()) {
-                //out.println("Fill out all the fields!");
-                
-                Login login = new Login();
-                login.loginToDatabase(out);
-                login.printModules(out);
-            }
-            else {
-                out.println("<h1>Your Details</h1>");
-                out.println(fname + " is your first name.");
-                out.println(lname + " is your last name.");
-                out.println(email + " is your e-mail address.");        
-            }
         }
     }
+    
+    public void printModules(PrintWriter out, Connection conn) {
+
+        PreparedStatement getModules; 
+        
+        try {
+            getModules = conn.prepareStatement("SELECT * FROM module ORDER BY ?");
+            getModules.setString(1, "mod_id");
+                       
+            ResultSet rset = getModules.executeQuery();
+            
+            out.println("the records selected are:" + "<br>");
+            int rowCount = 0; 
+            
+            // While there exists more entries (rows?)
+            while (rset.next()) {               
+                // The different columns
+                String moduleID = rset.getString("mod_id");
+                String moduleName = rset.getString("mod_name");
+                String moduleDescription = rset.getString("mod_desc");
+                out.println("Row " + rowCount + ": " + moduleID + ": " + moduleName + ", " + moduleDescription + "<br>");
+                rowCount++;
+            }
+            out.println("Total number of records = " + rowCount);
+        }
+        catch (SQLException ex) {
+            out.println("FAILED TO RETRIEVE " + ex);
+        }
+        catch (Exception e) {
+            out.println("Something wrong happened.");
+        }
+        
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -106,4 +138,5 @@ public class ProblemSolver extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
 }
