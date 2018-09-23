@@ -14,10 +14,10 @@ import java.sql.SQLException;
  *
  * @author Staven
  */
-public class StudentHelper {
+public class ModuleHelper {
     
         /**
-     * Inserts a student into the student table.
+     * Inserts a module into the module table.
      * 
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
@@ -27,13 +27,13 @@ public class StudentHelper {
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
+    public static void insertModule(String name, String desc, Connection conn, PrintWriter out) {
         
         try {
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (mod_name, mod_desc) values (?, ?);");
             prepInsert.setString(1, name);
-            prepInsert.setString(2, edu);            
+            prepInsert.setString(2, desc);            
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -54,7 +54,7 @@ public class StudentHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      */
-    public static void printStudents(PrintWriter out, Connection conn) {
+    public static void printModules(PrintWriter out, Connection conn) {
 
         PreparedStatement getModules; 
         
@@ -70,10 +70,10 @@ public class StudentHelper {
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
-                String studentID = rset.getString("student_id");
-                String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
-                out.println("Row " + rowCount + ": " + studentID + ": " + studentName + ", " + studentEducation + "<br>");
+                String mod_id = rset.getString("mod_id");
+                String mod_name = rset.getString("mod_name");
+                String mod_desc = rset.getString("mod_desc");
+                out.println("Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "<br>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
@@ -85,4 +85,5 @@ public class StudentHelper {
             out.println("Something wrong happened: " + e);
         }       
     }
+    
 }

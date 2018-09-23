@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/WEB">
-    <!-- HN: Definerer DataSource for databasen, her mariadb x| 
-	-->
-	
 	<Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
             username="root" password="admin" driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://localhost:3306/malware">
 	</Resource>			  
 </Context>
+
+<!-- Datasource for remote Digitalocean server
+<Context path="/WEB">
+	<Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
+            username="master" password="admin" driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://206.189.99.1:3306/malware">
+	</Resource>			  
+</Context>
+-->
