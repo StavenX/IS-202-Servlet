@@ -7,6 +7,12 @@
             <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/web/index.html</file>
             <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/web/module.html</file>
             <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/web/student.html</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/src/java/servlets/getModule.java</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/web/createModule.html</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/src/java/servlets/createModule.java</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/src/java/helpers/ModuleHelper.java</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/Staven/Documents/IS-202-Servlet/src/java/servlets/createStudent.java</file>
         </group>
     </open-files>
 </project-private>

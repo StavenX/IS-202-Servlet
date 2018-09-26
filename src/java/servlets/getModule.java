@@ -54,8 +54,6 @@ public class getModule extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
             
-                Login login = new Login();
-                
                 Connection conn;
                 conn = login.loginToDB(out);
                 
