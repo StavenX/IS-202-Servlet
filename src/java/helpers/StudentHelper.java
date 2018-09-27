@@ -40,7 +40,11 @@ public class StudentHelper {
             System.out.println(countInserted + " records inserted.\n");  
             out.println(countInserted + " records inserted.\n");  
             
-            out.println("INSERTED"); // debug
+            // The button that prints all students
+            out.println(
+                "<form action=\"getStudent\" method=\"post\">\n" +
+"                   <input type=\"Submit\" name=\"get\" value=\"Get all Students from Database\">   \n" +
+"               </form>");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);

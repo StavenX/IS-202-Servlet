@@ -48,6 +48,7 @@ public class getModule extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
+            out.println("<meta charset=\"UTF-8\">");          
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
             out.println("<title>Servlet getStudent</title>");            
             out.println("</head>");
@@ -110,6 +111,10 @@ public class getModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -124,6 +129,9 @@ public class getModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

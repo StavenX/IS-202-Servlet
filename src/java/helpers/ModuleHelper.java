@@ -41,6 +41,11 @@ public class ModuleHelper {
             out.println(countInserted + " records inserted.\n");  
             
             out.println("INSERTED"); // debug
+            
+            out.println(
+                "<form action=\"getModule\" method=\"post\">\n" +
+"                   <input type=\"Submit\" name=\"get\" value=\"Get all Modules from Database\">   \n" +
+"               </form>");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);

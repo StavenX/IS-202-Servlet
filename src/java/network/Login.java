@@ -30,7 +30,7 @@ public class Login
             conn.close();
         }
         catch (SQLException ex) {
-            System.out.println("Cannot close connection: " +ex);
+            System.out.println("Cannot close connection: " + ex);
         }
     } 
 
