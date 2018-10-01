@@ -77,3 +77,27 @@ a {
   text-align: center;
 }
 
+.student-input {
+    max-width: 20%;
+    
+}
+
+.form1 {
+    text-align: center;
+}
+
+.form1 input {
+    display: list-item;
+}
+
+.invisible {
+    display:none;
+}
+
+.student-container {
+    margin: 30px 0;
+}
+
+.student-container div {
+    /*display: inline;*/
+}

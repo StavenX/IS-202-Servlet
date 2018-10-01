@@ -78,7 +78,7 @@ public class ModuleHelper {
                 String mod_id = rset.getString("mod_id");
                 String mod_name = rset.getString("mod_name");
                 String mod_desc = rset.getString("mod_desc");
-                out.println("Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "<br>");
+                out.println("<div>Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
