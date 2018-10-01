@@ -81,6 +81,7 @@ public class StudentHelper {
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
+            conn.close();
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
