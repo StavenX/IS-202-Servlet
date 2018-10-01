@@ -101,3 +101,34 @@ a {
 .student-container div {
     /*display: inline;*/
 }
+
+#nav {
+    display:block;
+}
+
+.home-nav {
+    max-width: 100%;
+    
+}
+
+.nav-container {
+    background: blue;
+    max-width: 10%;
+    padding: 5px;
+}
+
+.nav-item {
+    background: red;
+    margin: 20px 0;
+    width: 100%;
+    text-align: center;
+}
+
+.body {
+    display: flex;
+}
+
+.nav-img {
+    display: block;
+}
+
