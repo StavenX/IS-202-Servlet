@@ -64,8 +64,8 @@ public class ModuleHelper {
         PreparedStatement getModules; 
         
         try {
-            getModules = conn.prepareStatement("SELECT * FROM student ORDER BY ?");
-            getModules.setString(1, "student_id");
+            getModules = conn.prepareStatement("SELECT * FROM module ORDER BY ?");
+            getModules.setString(1, "mod_id");
                        
             ResultSet rset = getModules.executeQuery();
             
@@ -78,7 +78,17 @@ public class ModuleHelper {
                 String mod_id = rset.getString("mod_id");
                 String mod_name = rset.getString("mod_name");
                 String mod_desc = rset.getString("mod_desc");
-                out.println("<div>Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "</div>");
+                //out.println("<div>Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "</div>");
+                
+                
+                out.println("<form class=\"module-container\" action=\"oneModule\">");
+                out.println("<input class=\"invisible\" name=\"modid\" value=\"" + mod_id + "\">");
+                out.println("<div>Row " + rowCount + "</div>");
+                out.println("<div name=\"modid\">Module Id:" + mod_id + "</div>");
+                out.println("<div>Name:" + mod_name + "</div>");
+                out.println("<div>Description:" + mod_desc + "</div>");
+                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("</form>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
@@ -90,6 +100,35 @@ public class ModuleHelper {
         catch (Exception e) {
             out.println("Something wrong happened: " + e);
         }       
+    }
+    
+    public static void printOneModule(PrintWriter out, Connection conn, String modid) {
+        PreparedStatement getOneModule;
+        
+        try {
+            getOneModule = conn.prepareStatement("SELECT * FROM module WHERE mod_id = ?");
+            getOneModule.setString(1, modid);
+            
+            ResultSet rset = getOneModule.executeQuery();
+            
+            while (rset.next()) {
+                String mod_id = rset.getString("mod_id");
+                String mod_name = rset.getString("mod_name");
+                String mod_desc = rset.getString("mod_desc");
+                out.println("<div>");
+                out.println("<div>" + mod_id + "</div>");
+                out.println("<div>" + mod_name + "</div>");
+                out.println("<div>" + mod_desc + "</div>");
+                out.println("<form action=\"createDeliverables\"><input type=\"submit\" value=\"Create Deliverables\"></form>");
+                out.println("</div>");
+                
+            }
+                
+        }
+        
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
     }
     
 }

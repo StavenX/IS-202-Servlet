@@ -7,6 +7,7 @@ package servlets;
  */
 
 
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -50,55 +51,21 @@ public class getModule extends HttpServlet {
             out.println("<head>");
             out.println("<meta charset=\"UTF-8\">");          
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet getStudent</title>");            
+            out.println("<title>Servlet getModule</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
             
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                printModules(out, conn);
+                ModuleHelper.printModules(out, conn);
                 login.close();
                 
             out.println("</body>");
             out.println("</html>");
         }
     }
-    
-    public void printModules(PrintWriter out, Connection conn) {
-
-        PreparedStatement getModules; 
-        
-        try {
-            getModules = conn.prepareStatement("SELECT * FROM module ORDER BY ?");
-            getModules.setString(1, "mod_id");
-                       
-            ResultSet rset = getModules.executeQuery();
-            
-            out.println("the records selected are:" + "<br>");
-            int rowCount = 0; 
-            
-            // While there exists more entries (rows?)
-            while (rset.next()) {               
-                // The different columns
-                String moduleID = rset.getString("mod_id");
-                String moduleName = rset.getString("mod_name");
-                String moduleDescription = rset.getString("mod_desc");
-                out.println("Row " + rowCount + ": " + moduleID + ": " + moduleName + ", " + moduleDescription + "<br>");
-                rowCount++;
-            }
-            out.println("Total number of records = " + rowCount);
-        }
-        catch (SQLException ex) {
-            out.println("FAILED TO RETRIEVE " + ex);
-        }
-        catch (Exception e) {
-            out.println("Something wrong happened.");
-        }
-        
-    }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

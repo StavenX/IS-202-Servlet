@@ -7,14 +7,66 @@ and open the template in the editor.
 <html>
     <head>        
         <link rel="stylesheet" type="text/css" href="theme.css">
+        <link rel="icon" href="Placeholder.PNG" type="image/png">
         <title>Dashboard</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
-    <body>        
-        <div> 
+    <body class="body">
+        <div class="nav-container" id="nav-container">
+            <div class="">
+                <input onclick="hide()" type="button" value="<<" id="nav-button">
+            </div>
+            <div class="home-nav" id="nav">
+                <div class="nav-item">
+                    <div class="nav-img">
+                        <img src="http://via.placeholder.com/50x50" alt="placeholder">
+                    </div>
+                    <div class="nav-text">
+                        My profile
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-img">
+                        <img src="http://via.placeholder.com/50x50" alt="placeholder">
+                    </div>
+                    <div class="nav-text">
+                        Courses
+                    </div>
+                </div>
+                <div class="nav-item">
+                    <div class="nav-img">
+                        <img src="http://via.placeholder.com/50x50" alt="placeholder">
+                    </div>
+                    <div class="nav-text">
+                        Students
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="home-page"> 
             <h1> <a href ="student.html"> Students </a> </h1>
             <h1> <a href ="module.html"> Modules </a> </h1>
         </div>
+        <script>
+            function hide() {
+                cont = document.getElementById('nav-container').style;
+                nav = document.getElementById('nav').style;
+                button = document.getElementById('nav-button');
+                temp = '';
+                    
+                if (nav.display === 'none') {
+                    nav.display = 'block';
+                    button.setAttribute('value', '<<');
+                    cont.background = temp;
+                } else {
+                   nav.display = 'none';
+                   button.setAttribute('value', '>>');
+                   temp = cont.background;
+                   cont.background = 'rgba(0,0,0,0)';
+                }
+                
+            }
+        </script>
     </body>
 </html>

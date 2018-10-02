@@ -50,6 +50,18 @@ public class oneModule extends HttpServlet {
             conn = login.loginToDB(out);
 
             ModuleHelper.printOneModule(out, conn, modid);
+            
+            out.println("<div class=\"module-student-list\"");
+            
+            out.println("<div class=\"module-student-list-item\">");
+            out.println("<div>TODO: Table of students</div>");
+            out.println("</div>");
+            
+            out.println("</div>");
+            
+            
+            
+            
 
             login.close();
             

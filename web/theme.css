@@ -98,10 +98,32 @@ a {
     margin: 30px 0;
 }
 
+.module-container {
+    margin: 30px 0;
+    padding: 5px;
+    border: solid 1px cadetblue;
+    background: powderblue;
+}
+
+.module-student-list {
+    margin: 20px;
+    min-width: 90%;
+    border: 2px solid black;
+    min-height: 200px;
+}
+
 .student-container div {
     /*display: inline;*/
 }
 
+.body {
+    margin: 0;
+    display: flex;
+}
+
+/**
+* NAV BAR 
+**/
 #nav {
     display:block;
 }
@@ -112,23 +134,23 @@ a {
 }
 
 .nav-container {
-    background: blue;
+    margin: 0 10px 0 0;
+    background: #9b1833;
     max-width: 10%;
     padding: 5px;
 }
 
 .nav-item {
-    background: red;
+    border: 1px solid black;
     margin: 20px 0;
     width: 100%;
     text-align: center;
-}
-
-.body {
-    display: flex;
 }
 
 .nav-img {
     display: block;
 }
 
+.nav-text {
+    color: white;
+}
