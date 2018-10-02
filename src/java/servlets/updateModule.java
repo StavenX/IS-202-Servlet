@@ -5,26 +5,23 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-import helpers.ModuleHelper;
+
 /**
  *
- * @author Tobias
+ * @author tobia
  */
-@WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
-public class oneModule extends HttpServlet {
-    Statement stmt;
+@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
+public class updateModule extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -41,43 +38,25 @@ public class oneModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single module", "one-module-container");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet updateModule</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
             
-            String singleMod_id = request.getParameter("singleMod_id");
+            String id = request.getParameter("singleMod_id");
+            String name = request.getParameter("mod_name");
+            String desc = request.getParameter("mod_desc");
             
-            Connection conn;
-            conn = login.loginToDB(out);
-
-            ModuleHelper.printOneModule(out, conn, singleMod_id);
+            Connection conn = login.loginToDB(out);
+            ModuleHelper.updateModule(id, name, desc, conn, out);
             
-            out.println("<div class=\"module-student-list\"");
-            
-            out.println("<div class=\"module-student-list-item\">");
-            out.println("<div>TODO: Table of students</div>");
-            out.println("</div>");
-            
-            out.println("</div>");
-            
-            
-            out.println("<script>");
-            out.println("   function enable() {");
-            //out.println("       document.getElementById(\'one-module-edit\').style.padding = \'20px\'");
-            out.println("       var inputs = document.getElementsByTagName(\'input\');");
-            out.println("       for (var i = 0; i < inputs.length; i++) {");
-            out.println("           if (inputs[i].type == 'text') {");
-            out.println("               inputs[i].disabled = false;");
-            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
-            out.println("           }");
-            out.println("       }");
-            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
-            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
-            out.println("   }");
-            out.println("</script>");
-            
-            
-            site.printEnd();
-            login.close();
+            out.println("<form name=\"auto\" action=\"oneModule\"><input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\"><input type=\"submit\"></form>");
+            //out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

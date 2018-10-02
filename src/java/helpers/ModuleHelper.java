@@ -52,6 +52,26 @@ public class ModuleHelper {
         }
     }
     
+    public static void updateModule(String id, String name, String desc, Connection conn, PrintWriter out) {
+        
+        try {
+            
+            PreparedStatement prepUpdate = conn.prepareStatement("UPDATE module SET mod_name = ?, mod_desc = ? WHERE mod_id = ?");
+            prepUpdate.setString(1, name);
+            prepUpdate.setString(2, desc);
+            prepUpdate.setString(3, id);
+            
+            System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
+            int countInserted = prepUpdate.executeUpdate();         
+            System.out.println(countInserted + " records inserted.\n");  
+            out.println(countInserted + " records inserted.\n");  
+            
+        }
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
+    }
+    
     /**
      * Prints all the students located in the student
      * table.
@@ -116,10 +136,10 @@ public class ModuleHelper {
                 String mod_name = rset.getString("mod_name");
                 String mod_desc = rset.getString("mod_desc");
                 out.println("<div>");
-                out.println("<form action=\"oneModule\">");
+                out.println("<form action=\"updateModule\">");
                 out.println("<input type=\"text\" name=\"singleMod_id\" value=\"" + mod_id + "\" disabled>");
-                out.println("<input type=\"text\" value=\"" + mod_name + "\" disabled>");
-                out.println("<input type=\"text\" value=\"" + mod_desc + "\" disabled>");
+                out.println("<input type=\"text\" name=\"mod_name\" value=\"" + mod_name + "\" disabled>");
+                out.println("<input type=\"text\" name=\"mod_desc\" value=\"" + mod_desc + "\" disabled>");
                 out.println("<input id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
                 out.println("<input id=\"one-module-save\" type=\"submit\" value=\"Save\">");
                 out.println("</form>");
