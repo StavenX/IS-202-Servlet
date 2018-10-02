@@ -1,19 +1,15 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package servlets;
 
-
-import helpers.ModuleHelper;
+import helpers.HtmlHelper;
+import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,17 +17,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-
+import helpers.ModuleHelper;
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class getModule extends HttpServlet {
-
+@WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
+public class oneModule extends HttpServlet {
     Statement stmt;
     Login login = new Login();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,26 +41,35 @@ public class getModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");          
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet getModule</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Single module", "one-module-container");
             
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                ModuleHelper.printModules(out, conn);
-                login.close();
-                
-            out.println("</body>");
-            out.println("</html>");
+            String modid = request.getParameter("modid");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
+
+            ModuleHelper.printOneModule(out, conn, modid);
+            
+            out.println("<div class=\"module-student-list\"");
+            
+            out.println("<div class=\"module-student-list-item\">");
+            out.println("<div>TODO: Table of students</div>");
+            out.println("</div>");
+            
+            out.println("</div>");
+            
+            
+            
+            
+
+            login.close();
+            
+            
+            site.printEnd();
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -78,10 +82,6 @@ public class getModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -96,9 +96,6 @@ public class getModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

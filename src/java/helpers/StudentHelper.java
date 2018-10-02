@@ -77,6 +77,9 @@ public class StudentHelper {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
+                
+                
+                
                 out.println("<form class=\"student-container\" action=\"oneStudent\">");
                 out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
@@ -111,7 +114,9 @@ public class StudentHelper {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
-            out.println(studentID + studentName + studentEducation);
+                out.println("<div>");
+                out.println(studentID + studentName + studentEducation);
+                out.println("</div>");
                 
             }
                 
