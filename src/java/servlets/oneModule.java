@@ -44,12 +44,12 @@ public class oneModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("Single module", "one-module-container");
             
-            String modid = request.getParameter("modid");
+            String singleMod_id = request.getParameter("singleMod_id");
             
             Connection conn;
             conn = login.loginToDB(out);
 
-            ModuleHelper.printOneModule(out, conn, modid);
+            ModuleHelper.printOneModule(out, conn, singleMod_id);
             
             out.println("<div class=\"module-student-list\"");
             
@@ -64,6 +64,23 @@ public class oneModule extends HttpServlet {
             
 
             login.close();
+            
+            
+            
+            out.println("<script>");
+            out.println("   function enable() {");
+            //out.println("       document.getElementById(\'one-module-edit\').style.padding = \'20px\'");
+            out.println("       var inputs = document.getElementsByTagName(\'input\');");
+            out.println("       for (var i = 0; i < inputs.length; i++) {");
+            out.println("           if (inputs[i].type == 'text') {");
+            out.println("               inputs[i].disabled = false;");
+            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
+            out.println("           }");
+            out.println("       }");
+            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
+            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
+            out.println("   }");
+            out.println("</script>");
             
             
             site.printEnd();

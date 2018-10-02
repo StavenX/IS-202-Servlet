@@ -91,19 +91,46 @@ a {
     
 }
  .nav-container {
-    background: blue;
+    margin: 0 20px 0 0;
+    background: #961034;
     max-width: 10%;
     padding: 5px;
 }
  .nav-item {
-    background: red;
+    border: 1px solid black;
     margin: 20px 0;
     width: 100%;
     text-align: center;
 }
+
+.nav-item a{
+    text-decoration: none;
+    color: white;
+}
  .body {
+    margin: 0;
     display: flex;
 }
  .nav-img {
     display: block;
+}
+
+.module-container {
+    margin: 20px 0;
+}
+
+.module-student-list {
+    margin: 10px auto;
+    width: 90%;
+    border: solid 2px black;
+    min-height: 300px;
+}
+
+#one-module-save {
+    display:none;
+}
+
+.one-module-enabled {
+    font-weight: bold;
+    font-size: 1.5em;
 }
