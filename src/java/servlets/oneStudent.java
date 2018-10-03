@@ -50,8 +50,11 @@ public class oneStudent extends HttpServlet {
             Connection conn;
             conn = login.loginToDB(out);
 
+            
+            out.println("<h2>Viewing a single student</h2>");
             StudentHelper.printOneStudent(out, conn, stid);
 
+            
             login.close();
             
             

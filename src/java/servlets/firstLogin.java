@@ -5,11 +5,12 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +22,9 @@ import network.Login;
  *
  * @author tobia
  */
-@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
-public class updateModule extends HttpServlet {
+@WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
+public class firstLogin extends HttpServlet {
     Login login = new Login();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,31 +38,43 @@ public class updateModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
-            
-            //body class 'invisible' makes no content on the page visible, and it should auto load
-            //due to javascript 
-            site.printHead("Updating module...", "invisible");
-            
-            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
-            
-            String id = request.getParameter("singleMod_id");
-            String name = request.getParameter("mod_name");
-            String desc = request.getParameter("mod_desc");
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet firstLogin</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet firstLogin at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
-            ModuleHelper.updateModule(id, name, desc, conn, out);
+            PreparedStatement getUsers;
+            try {
+                getUsers = conn.prepareStatement("SELECT * FROM users ORDER BY ?");
+                getUsers.setString(1, "users_id");
+                
+                ResultSet rset = getUsers.executeQuery();
+                
+                while (rset.next()) {
+                    
+                String users_id = rset.getString("users_id");
+                String users_username = rset.getString("users_username");
+                String users_password = rset.getString("users_password");
+                
+                String tryUserName = request.getParameter("username");
+                String tryPassword = request.getParameter("password");
+                
+                //TODO: check user/pass against db and proceed to index.html
+                
+                }
+                
+            } catch (SQLException e) {
+                out.println("sql exception: " + e);
+            }
             
-            //form that takes you back to the module you just edited
-            out.println("<form name=\"auto\" action=\"oneModule\">");
-            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
-            out.println("</form>");
             
-            //auto submits the form so the page auto loads
-            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
-            
-            site.printEnd();
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

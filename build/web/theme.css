@@ -75,7 +75,7 @@ a {
     display: list-item;
 }
  .invisible {
-    display:none;
+    display: none !important;
 }
  .student-container {
     margin: 30px 0;

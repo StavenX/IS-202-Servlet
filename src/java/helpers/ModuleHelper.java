@@ -64,7 +64,7 @@ public class ModuleHelper {
             System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
             int countInserted = prepUpdate.executeUpdate();         
             System.out.println(countInserted + " records inserted.\n");  
-            out.println(countInserted + " records inserted.\n");  
+            out.println(countInserted + " records updated.\n");  
             
         }
         catch (SQLException ex) {

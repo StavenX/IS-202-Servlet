@@ -19,6 +19,11 @@ public class HtmlHelper {
         this.out = out;
     }
     
+    /**
+     * Prints the start of the html page
+     * @param title the title visible in the tab of your browser
+     * @param bodyId the html class the body will be assigned
+     */
     public void printHead (String title, String bodyId) {
         out.println("<!DOCTYPE html>");
         out.println("<html>");
@@ -28,9 +33,12 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
         out.println("<title>Servlet getStudent</title>");            
         out.println("</head>");
-        out.println("<body>");
+        out.println("<body class=\"" + bodyId + "\">");
     }
     
+    /**
+     * Prints the closing tag of body and html
+     */
     public void printEnd () {
         out.println("</body>");
         out.println("</html>");
