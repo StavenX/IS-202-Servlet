@@ -55,17 +55,26 @@ public class firstLogin extends HttpServlet {
                 
                 ResultSet rset = getUsers.executeQuery();
                 
-                while (rset.next()) {
-                    
-                String users_id = rset.getString("users_id");
-                String users_username = rset.getString("users_username");
-                String users_password = rset.getString("users_password");
-                
                 String tryUserName = request.getParameter("username");
                 String tryPassword = request.getParameter("password");
+                boolean correctInfo = false;
                 
-                //TODO: check user/pass against db and proceed to index.html
-                
+                while (rset.next()) {
+                    
+                    String users_id = rset.getString("users_id");
+                    String users_username = rset.getString("users_username");
+                    String users_password = rset.getString("users_password");
+
+                    //checks the entered username and password against all db entries
+                    if (tryUserName.equals(users_username)) {
+                        if (tryPassword.equals(users_password)) {
+                            correctInfo = true;
+                            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Go to home\"></form>");
+                        }
+                    }
+                }
+                if (!correctInfo) {
+                    wrongLogin(out);
                 }
                 
             } catch (SQLException e) {
@@ -76,6 +85,10 @@ public class firstLogin extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
+    }
+    
+    public void wrongLogin(PrintWriter out) {
+        out.println("Username or password was wrong");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

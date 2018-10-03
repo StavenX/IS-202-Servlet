@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
 import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -43,15 +44,10 @@ public class getStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet getStudent</title>");            
-            out.println("</head>");
-            out.println("<body>");
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Students", "");
+            
             out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
 
                 Connection conn;
@@ -61,8 +57,7 @@ public class getStudent extends HttpServlet {
                 
                 login.close();
                 
-            out.println("</body>");
-            out.println("</html>");
+            site.printEnd();
         }
     }
 
