@@ -7,27 +7,24 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import helpers.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author tobia
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class oneStudent extends HttpServlet {
-    
-    Statement stmt;
+@WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
+public class firstLogin extends HttpServlet {
     Login login = new Login();
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -42,23 +39,42 @@ public class oneStudent extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet firstLogin</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet firstLogin at " + request.getContextPath() + "</h1>");
             
-            String stid = request.getParameter("stid");
+            Connection conn = login.loginToDB(out);
+            PreparedStatement getUsers;
+            try {
+                getUsers = conn.prepareStatement("SELECT * FROM users ORDER BY ?");
+                getUsers.setString(1, "users_id");
+                
+                ResultSet rset = getUsers.executeQuery();
+                
+                while (rset.next()) {
+                    
+                String users_id = rset.getString("users_id");
+                String users_username = rset.getString("users_username");
+                String users_password = rset.getString("users_password");
+                
+                String tryUserName = request.getParameter("username");
+                String tryPassword = request.getParameter("password");
+                
+                //TODO: check user/pass against db and proceed to index.html
+                
+                }
+                
+            } catch (SQLException e) {
+                out.println("sql exception: " + e);
+            }
             
-            Connection conn;
-            conn = login.loginToDB(out);
-
             
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
-
-            
-            login.close();
-            
-            
-            site.printEnd();
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 

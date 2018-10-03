@@ -5,27 +5,24 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import helpers.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author tobia
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class oneStudent extends HttpServlet {
-    
-    Statement stmt;
+@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
+public class updateModule extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -41,22 +38,29 @@ public class oneStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
             
-            String stid = request.getParameter("stid");
+            //body class 'invisible' makes no content on the page visible, and it should auto load
+            //due to javascript 
+            site.printHead("Updating module...", "invisible");
             
-            Connection conn;
-            conn = login.loginToDB(out);
-
+            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
             
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
-
+            String id = request.getParameter("singleMod_id");
+            String name = request.getParameter("mod_name");
+            String desc = request.getParameter("mod_desc");
             
-            login.close();
+            Connection conn = login.loginToDB(out);
+            ModuleHelper.updateModule(id, name, desc, conn, out);
             
+            //form that takes you back to the module you just edited
+            out.println("<form name=\"auto\" action=\"oneModule\">");
+            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
+            out.println("<input type=\"submit\">");
+            out.println("</form>");
+            
+            //auto submits the form so the page auto loads
+            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
             
             site.printEnd();
         }

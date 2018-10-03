@@ -44,29 +44,45 @@ public class oneModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("Single module", "one-module-container");
             
-            String modid = request.getParameter("modid");
+            String singleMod_id = request.getParameter("singleMod_id");
             
             Connection conn;
             conn = login.loginToDB(out);
 
-            ModuleHelper.printOneModule(out, conn, modid);
+            out.println("<h2>Viewing a single module</h2>");
             
+            ModuleHelper.printOneModule(out, conn, singleMod_id);
+            
+            //TODO box containing students
             out.println("<div class=\"module-student-list\"");
-            
             out.println("<div class=\"module-student-list-item\">");
             out.println("<div>TODO: Table of students</div>");
             out.println("</div>");
-            
             out.println("</div>");
             
             
-            
-            
-
-            login.close();
+            //javascript that enables you to edit the input fields (and thus the module)
+            out.println("<script>");
+            out.println("   function enable() {");
+            //gets all input fields
+            out.println("       var inputs = document.getElementsByTagName(\'input\');");
+            out.println("       for (var i = 0; i < inputs.length; i++) {");
+            //checks if they're type 'text'
+            out.println("           if (inputs[i].type == 'text') {");
+            //turns off disabled, and changes their class to give them another look through css
+            out.println("               inputs[i].disabled = false;");
+            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
+            out.println("           }");
+            out.println("       }");
+            //swaps the visibilities of the edit and save buttons
+            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
+            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
+            out.println("   }");
+            out.println("</script>");
             
             
             site.printEnd();
+            login.close();
         }
     }
 
