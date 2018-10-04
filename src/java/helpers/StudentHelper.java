@@ -78,8 +78,6 @@ public class StudentHelper {
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
                 
-                
-                
                 out.println("<form class=\"student-container\" action=\"oneStudent\">");
                 out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
@@ -88,6 +86,7 @@ public class StudentHelper {
                 out.println("<div>Education:" + studentEducation + "</div>");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</form>");
+                out.println("<form action=\"deleteStudent\"><input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\"><input type=\"submit\" value=\"Delete\"></form>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
