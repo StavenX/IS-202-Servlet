@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import helpers.getTime;
 /**
  *
  * @author adriannesvik
@@ -28,7 +28,9 @@ public class Calendar_serv extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            out.println("Success");
+            
+            getTime time = new getTime();
+            time.calObj(out);
         }
     }
 
