@@ -1,21 +1,16 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package servlets;
 
-
-import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,14 +20,11 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author tobia
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class getModule extends HttpServlet {
-
-    Statement stmt;
+@WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
+public class firstLogin extends HttpServlet {
     Login login = new Login();
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,21 +39,58 @@ public class getModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet firstLogin</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet firstLogin at " + request.getContextPath() + "</h1>");
             
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Modules", "");
-            
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
+            Connection conn = login.loginToDB(out);
+            PreparedStatement getUsers;
+            try {
+                getUsers = conn.prepareStatement("SELECT * FROM users ORDER BY ?");
+                getUsers.setString(1, "users_id");
                 
-                ModuleHelper.printModules(out, conn);
-                login.close();
+                ResultSet rset = getUsers.executeQuery();
                 
-            site.printEnd();
+                String tryUserName = request.getParameter("username");
+                String tryPassword = request.getParameter("password");
+                boolean correctInfo = false;
+                
+                while (rset.next()) {
+                    
+                    String users_id = rset.getString("users_id");
+                    String users_username = rset.getString("users_username");
+                    String users_password = rset.getString("users_password");
+
+                    //checks the entered username and password against all db entries
+                    if (tryUserName.equals(users_username)) {
+                        if (tryPassword.equals(users_password)) {
+                            correctInfo = true;
+                            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Go to home\"></form>");
+                        }
+                    }
+                }
+                if (!correctInfo) {
+                    wrongLogin(out);
+                }
+                
+            } catch (SQLException e) {
+                out.println("sql exception: " + e);
+            }
+            
+            
+            out.println("</body>");
+            out.println("</html>");
         }
     }
+    
+    public void wrongLogin(PrintWriter out) {
+        out.println("Username or password was wrong");
+    }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -74,10 +103,6 @@ public class getModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -92,9 +117,6 @@ public class getModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

@@ -52,6 +52,26 @@ public class ModuleHelper {
         }
     }
     
+    public static void updateModule(String id, String name, String desc, Connection conn, PrintWriter out) {
+        
+        try {
+            
+            PreparedStatement prepUpdate = conn.prepareStatement("UPDATE module SET mod_name = ?, mod_desc = ? WHERE mod_id = ?");
+            prepUpdate.setString(1, name);
+            prepUpdate.setString(2, desc);
+            prepUpdate.setString(3, id);
+            
+            System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
+            int countInserted = prepUpdate.executeUpdate();         
+            System.out.println(countInserted + " records inserted.\n");  
+            out.println(countInserted + " records updated.\n");  
+            
+        }
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
+    }
+    
     /**
      * Prints all the students located in the student
      * table.
@@ -64,8 +84,8 @@ public class ModuleHelper {
         PreparedStatement getModules; 
         
         try {
-            getModules = conn.prepareStatement("SELECT * FROM student ORDER BY ?");
-            getModules.setString(1, "student_id");
+            getModules = conn.prepareStatement("SELECT * FROM module ORDER BY ?");
+            getModules.setString(1, "mod_id");
                        
             ResultSet rset = getModules.executeQuery();
             
@@ -78,7 +98,17 @@ public class ModuleHelper {
                 String mod_id = rset.getString("mod_id");
                 String mod_name = rset.getString("mod_name");
                 String mod_desc = rset.getString("mod_desc");
-                out.println("Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "<br>");
+                //out.println("<div>Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "</div>");
+                
+                
+                out.println("<form class=\"module-container\" action=\"oneModule\">");
+                out.println("<input class=\"invisible\" name=\"singleMod_id\" value=\"" + mod_id + "\">");
+                out.println("<div>Row " + rowCount + "</div>");
+                out.println("<div name=\"modid\">Module Id:" + mod_id + "</div>");
+                out.println("<div>Name:" + mod_name + "</div>");
+                out.println("<div>Description:" + mod_desc + "</div>");
+                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("</form>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
@@ -90,6 +120,39 @@ public class ModuleHelper {
         catch (Exception e) {
             out.println("Something wrong happened: " + e);
         }       
+    }
+    
+    public static void printOneModule(PrintWriter out, Connection conn, String singleMod_id) {
+        PreparedStatement getOneModule;
+        
+        try {
+            getOneModule = conn.prepareStatement("SELECT * FROM module WHERE mod_id = ?");
+            getOneModule.setString(1, singleMod_id);
+            
+            ResultSet rset = getOneModule.executeQuery();
+            
+            while (rset.next()) {
+                String mod_id = rset.getString("mod_id");
+                String mod_name = rset.getString("mod_name");
+                String mod_desc = rset.getString("mod_desc");
+                out.println("<div>");
+                out.println("<form action=\"updateModule\">");
+                out.println("<input type=\"text\" name=\"singleMod_id\" value=\"" + mod_id + "\" disabled>");
+                out.println("<input type=\"text\" name=\"mod_name\" value=\"" + mod_name + "\" disabled>");
+                out.println("<input type=\"text\" name=\"mod_desc\" value=\"" + mod_desc + "\" disabled>");
+                out.println("<input id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
+                out.println("<input id=\"one-module-save\" type=\"submit\" value=\"Save\">");
+                out.println("</form>");
+                out.println("<form action=\"createDeliverables\"><input type=\"submit\" value=\"Create Deliverables\"></form>");
+                out.println("</div>");
+                
+            }
+                
+        }
+        
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
     }
     
 }
