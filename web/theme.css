@@ -77,10 +77,37 @@ a {
   text-align: center;
 }
 
+/* Calendar styling */
 .weekdays {
     list-style-type: none;
-    font-size: 50px;
+    margin: 0;
+    margin-right: 80%;
+    padding: 10px 0;
+    background-color:#ddd;
+    
 }
 
+.weekdays li {
+    display: inline-block;
+    width: 12%;
+    color: #666;
+    text-align: center;
+    font-size: 1vw;
+}
 
-/* Calendar styling */
+.days {
+    padding: 10px 0;
+    background: #eee;
+    margin: 0;
+    margin-right: 80%;
+}
+
+.days li {
+    list-style-type: none;
+    display: inline-block;
+    width: 12%;
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 1vw;
+    color: #777;
+}

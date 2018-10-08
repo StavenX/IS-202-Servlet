@@ -46,13 +46,13 @@ public class Calendar_serv extends HttpServlet {
             out.println("<body>");
             
             out.println("<ul class=\"weekdays\">");
-            out.println("<li>Monday</li>");
-            out.println("<li>Tuesday</li>");
-            out.println("<li>Wednesday</li>");
-            out.println("<li>Thursday</li>");
-            out.println("<li>Friday</li>");
-            out.println("<li>Saturday</li>");
-            out.println("<li>Sunday</li>");
+            out.println("<li>Mo</li>");
+            out.println("<li>Tu</li>");
+            out.println("<li>We</li>");
+            out.println("<li>Th</li>");
+            out.println("<li>Fr</li>");
+            out.println("<li>Sa</li>");
+            out.println("<li>Su</li>");
             out.println("</ul>");
 
             out.println("<ul class=\"days\">");
@@ -62,28 +62,28 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>4</li>");
             out.println("<li>5</li>");
             out.println("<li>6</li>");
-            out.println("<li>7</li>");
+            out.println("<li>7</li><br>");
             out.println("<li>8</li>");
             out.println("<li>9</li>");
             out.println("<li>10</li>");
             out.println("<li>11</li>");
             out.println("<li>12</li>");
             out.println("<li>13</li>");
-            out.println("<li>14</li>");
+            out.println("<li>14</li><br>");
             out.println("<li>15</li>");
             out.println("<li>16</li>");
             out.println("<li>17</li>");
             out.println("<li>18</li>");
             out.println("<li>19</li>");
             out.println("<li>20</li>");
-            out.println("<li>21</li>");
+            out.println("<li>21</li><br>");
             out.println("<li>22</li>");
             out.println("<li>23</li>");
             out.println("<li>24</li>");
             out.println("<li>25</li>");
             out.println("<li>26</li>");
             out.println("<li>27</li>");
-            out.println("<li>28</li>");
+            out.println("<li>28</li><br>");
                 // prints number of days according to month
                 if (month == 0 || month == 1 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
                     out.println("<li>29</li>");
