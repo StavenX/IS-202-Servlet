@@ -36,15 +36,16 @@ public class Calendar_serv extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            out.println(month);
+            out.println(df.format(calendar.getTime()));
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet createModule</title>");            
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
-
-            out.println("<ul class=\"weekdays>\"");
+            
+            out.println("<ul class=\"weekdays\">");
             out.println("<li>Monday</li>");
             out.println("<li>Tuesday</li>");
             out.println("<li>Wednesday</li>");
@@ -54,7 +55,7 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>Sunday</li>");
             out.println("</ul>");
 
-            out.println("<ul class=\"days>\"");
+            out.println("<ul class=\"days\">");
             out.println("<li>1</li>");
             out.println("<li>2</li>");
             out.println("<li>3</li>");

@@ -77,3 +77,10 @@ a {
   text-align: center;
 }
 
+.weekdays {
+    list-style-type: none;
+    font-size: 50px;
+}
+
+
+/* Calendar styling */
