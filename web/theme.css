@@ -77,9 +77,17 @@ a {
   text-align: center;
 }
 
-/* Calendar styling */
+/* Calendar styling starts here*/
+.month {
+    margin-right: 80%;
+    padding: 10px;
+    background-color:#ddd;
+    text-align: center;
+    font-size: 2vw;
+    color: #666;
+}
+
 .weekdays {
-    list-style-type: none;
     margin: 0;
     margin-right: 80%;
     padding: 10px 0;
@@ -89,7 +97,7 @@ a {
 
 .weekdays li {
     display: inline-block;
-    width: 12%;
+    width: 12.7%;
     color: #666;
     text-align: center;
     font-size: 1vw;
@@ -105,9 +113,10 @@ a {
 .days li {
     list-style-type: none;
     display: inline-block;
-    width: 12%;
+    width: 12.7%;
     text-align: center;
     margin-bottom: 5px;
     font-size: 1vw;
     color: #777;
 }
+/* Calendar styling ends here */

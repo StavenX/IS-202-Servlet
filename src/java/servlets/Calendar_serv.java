@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 /**
  *
  * @author adriannesvik
@@ -16,11 +17,17 @@ import java.text.SimpleDateFormat;
 @WebServlet(name = "Calendar_serv", urlPatterns = {"/Calendar_serv"})
 public class Calendar_serv extends HttpServlet {
     
-    
+    // Creates a date format and a calendar
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     Calendar calendar = Calendar.getInstance();
+    
+    // Assigns month and year to integers
     int month = calendar.get(Calendar.MONTH);
     int year = calendar.get(Calendar.YEAR);
+    
+    // Assigns month to a string
+    SimpleDateFormat mf = new SimpleDateFormat("MMMMMMMMMM", Locale.US);
+    String monthName = mf.format(calendar.getTime());
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,6 +44,7 @@ public class Calendar_serv extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             out.println(df.format(calendar.getTime()));
+            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -44,6 +52,11 @@ public class Calendar_serv extends HttpServlet {
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
+            
+            
+            out.println("<div class=\"month\">");
+            out.println("<p>" + monthName + "</p>");
+            out.println("</div>");
             
             out.println("<ul class=\"weekdays\">");
             out.println("<li>Mo</li>");
