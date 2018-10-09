@@ -88,7 +88,7 @@ public class StudentHelper {
                 out.println("</form>");
                 out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
                 out.println("<input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\">");
-                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" id=\"makesure-" + studentID + "\">");
+                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" class=\"makesure-" + studentID + "\" style=\"display: inline-block\">");
                 out.println("<p class=\"invisible makesure-" + studentID + "\">Really delete?<br></p>");
                 out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + studentID + "\">");
                 out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + studentID + ");\" class=\"invisible makesure-" + studentID + "\">");
@@ -103,16 +103,17 @@ public class StudentHelper {
                             + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
                             + "for (var i = 0; i < items.length; i++) { \n"
                                 + "flip(items[i]);  \n"
+                                + "console.log(stid); \n"
                             //+ "document.getElementById(\'makesure-\' + stid).style.display = \'none\'; \n"
                             + "} \n"
                         + "} \n"
                         + "function flip(item) { \n"
-                            + "if (item.style.display === \'none\') { \n"
-                                + "console.log('set to block'); \n"
-                                + "item.style.display = \'block\'; \n"
-                            + "} else { \n"
+                            + "if (item.style.display === \'inline-block\') { \n"
                                 + "console.log('set to none'); \n"
                                 + "item.style.display = \'none\'; \n"
+                            + "} else { \n"
+                                + "console.log('set to block'); \n"
+                                + "item.style.display = \'inline-block\'; \n"
                             + "} \n"
                     + "}</script>");
             conn.close();

@@ -77,6 +77,11 @@ a {
  .invisible {
     display: none;
 }
+
+.inline-block {
+    display: inline-block;
+}
+
  .student-container {
     margin: 30px 0;
 }
