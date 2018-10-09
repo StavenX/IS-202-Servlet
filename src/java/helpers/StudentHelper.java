@@ -77,15 +77,27 @@ public class StudentHelper {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
+                
                 out.println("<div class=\"student-container\">");
+                
+                //form containing student information
+                out.println("<div class=\"student-container-item\">");
                 out.println("<form  action=\"oneStudent\">");
                 out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
                 out.println("<div>Name:" + studentName + "</div>");
                 out.println("<div>Education:" + studentEducation + "</div>");
+                out.println("</div>");
+                
+                //more info button
+                out.println("<div class=\"student-container-item\">");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("</div>");
                 out.println("</form>");
+                
+                //delete buttons
+                out.println("<div class=\"student-container-item\">");
                 out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
                 out.println("<input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\">");
                 out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" class=\"makesure-" + studentID + "\" style=\"display: inline-block\">");
@@ -94,28 +106,31 @@ public class StudentHelper {
                 out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + studentID + ");\" class=\"invisible makesure-" + studentID + "\">");
                 out.println("</form>");
                 out.println("</div>");
+                
+                out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
+            //javascript for handling delete buttons
             out.println("<script>"
+                        //gets the buttons and uses the flip function
                         + "function makeSure(stid) { \n"
                             + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
                             + "for (var i = 0; i < items.length; i++) { \n"
                                 + "flip(items[i]);  \n"
-                                + "console.log(stid); \n"
-                            //+ "document.getElementById(\'makesure-\' + stid).style.display = \'none\'; \n"
                             + "} \n"
                         + "} \n"
+                    
+                    //changes display based on existing value
                         + "function flip(item) { \n"
                             + "if (item.style.display === \'inline-block\') { \n"
-                                + "console.log('set to none'); \n"
                                 + "item.style.display = \'none\'; \n"
                             + "} else { \n"
-                                + "console.log('set to block'); \n"
                                 + "item.style.display = \'inline-block\'; \n"
                             + "} \n"
                     + "}</script>");
+            
             conn.close();
         }
         catch (SQLException ex) {
@@ -126,15 +141,22 @@ public class StudentHelper {
         }       
     }
     
+    /**
+     * Prints more details about one student
+     * @param out
+     * @param conn
+     * @param stid 
+     */
     public static void printOneStudent(PrintWriter out, Connection conn, String stid) {
         PreparedStatement getOneStudent;
         
         try {
+            //sql statement
             getOneStudent = conn.prepareStatement("SELECT * FROM student WHERE student_id = ?");
             getOneStudent.setString(1, stid);
-            
             ResultSet rset = getOneStudent.executeQuery();
             
+            //loop only executes once but is necessary?
             while (rset.next()) {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
