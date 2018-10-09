@@ -26,8 +26,7 @@ public class Calendar_serv extends HttpServlet {
     int year = calendar.get(Calendar.YEAR);
     
     // Assigns month to a string
-    SimpleDateFormat mf = new SimpleDateFormat("MMMMMMMMMM", Locale.US);
-    String monthName = mf.format(calendar.getTime());
+    SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,7 +43,6 @@ public class Calendar_serv extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             out.println(df.format(calendar.getTime()));
-            
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -53,9 +51,10 @@ public class Calendar_serv extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
+            for(int i = 0; i < 3; i++) {
             
             out.println("<div class=\"month\">");
-            out.println("<p>" + monthName + "</p>");
+            out.println("<h1>" + (mf.format(calendar.getTime())) + "</h1>");
             out.println("</div>");
             
             out.println("<ul class=\"weekdays\">");
@@ -114,7 +113,12 @@ public class Calendar_serv extends HttpServlet {
                 else if (year % 400 == 0) {
                         out.println("<li>29</li>");
                 }
-            out.println("</ul>");
+                out.println("</ul>");
+                calendar.add(Calendar.MONTH, +1);
+                month++;
+            }
+            calendar = Calendar.getInstance();
+            month = calendar.get(Calendar.MONTH);
             
             out.println("</body>");
             out.println("</html>");

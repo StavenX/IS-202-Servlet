@@ -79,12 +79,15 @@ a {
 
 /* Calendar styling starts here*/
 .month {
+    height: 7%;
     margin-right: 80%;
     padding: 10px;
     background-color:#ddd;
     text-align: center;
-    font-size: 2vw;
+    font-size: 10px;
     color: #666;
+    margin-top: 10px;
+    
 }
 
 .weekdays {
