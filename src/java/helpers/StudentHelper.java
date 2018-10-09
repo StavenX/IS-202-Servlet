@@ -88,24 +88,33 @@ public class StudentHelper {
                 out.println("</form>");
                 out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
                 out.println("<input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\">");
-                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ")\" id=\"makesure-" + studentID + "\">");
+                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" id=\"makesure-" + studentID + "\">");
                 out.println("<p class=\"invisible makesure-" + studentID + "\">Really delete?<br></p>");
                 out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + studentID + "\">");
-                out.println("<input type=\"button\" value=\"No\" class=\"invisible makesure-" + studentID + "\">");
+                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + studentID + ");\" class=\"invisible makesure-" + studentID + "\">");
                 out.println("</form>");
                 out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
-            out.println("<script>");
-            out.println("function makeSure(stid) {");
-            out.println("var buttons = document.getElementsByClassName(\'makesure-\' + stid);");
-            out.println("document.getElementById(\'delete-\' + stid).style.display = \'none !important\';");
-            out.println("for (var i = 0; i < buttons.length; i++) {");
-            out.println("buttons[i].style.display = \'inline-block\'; }");
-            //out.println("document.forms[\'delete-form-\' + stid].submit();");
-            out.println("}</script>");
+            out.println("<script>"
+                        + "function makeSure(stid) { \n"
+                            + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
+                            + "for (var i = 0; i < items.length; i++) { \n"
+                                + "flip(items[i]);  \n"
+                            //+ "document.getElementById(\'makesure-\' + stid).style.display = \'none\'; \n"
+                            + "} \n"
+                        + "} \n"
+                        + "function flip(item) { \n"
+                            + "if (item.style.display === \'none\') { \n"
+                                + "console.log('set to block'); \n"
+                                + "item.style.display = \'block\'; \n"
+                            + "} else { \n"
+                                + "console.log('set to none'); \n"
+                                + "item.style.display = \'none\'; \n"
+                            + "} \n"
+                    + "}</script>");
             conn.close();
         }
         catch (SQLException ex) {
