@@ -46,7 +46,7 @@ public class getStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "");
+            site.printHead("Students", "bodyy");
             
             out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
 
@@ -54,6 +54,7 @@ public class getStudent extends HttpServlet {
                 conn = login.loginToDB(out);
                 
                 StudentHelper.printStudents(out, conn);
+                
                 
                 login.close();
                 

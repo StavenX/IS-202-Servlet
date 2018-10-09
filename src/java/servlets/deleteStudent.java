@@ -54,9 +54,9 @@ public class deleteStudent extends HttpServlet {
                 deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
                 deleteStudent.setString(1, student_id);
                 
-                out.println(deleteStudent.executeUpdate());
-                getStudent backToStudents = new getStudent();
-                backToStudents.processRequest(request, response);
+                int amountDeleted = deleteStudent.executeUpdate();
+                out.println("<div>" + amountDeleted + " students deleted.</div>");
+                out.println("<a href=\"getStudent\">Back to student list</a>");
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }

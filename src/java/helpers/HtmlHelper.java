@@ -33,7 +33,7 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
         out.println("<title>Servlet getStudent</title>");            
         out.println("</head>");
-        out.println("<body class=\"" + bodyId + "\">");
+        out.println("<body id=\"" + bodyId + "\">");
         out.println("<a href=\"http://localhost:8084/WEB/\">Go home</a>");
         //printNav();
     }
