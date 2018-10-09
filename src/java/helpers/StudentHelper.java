@@ -77,10 +77,8 @@ public class StudentHelper {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
-                
-                
-                
-                out.println("<form class=\"student-container\" action=\"oneStudent\">");
+                out.println("<div class=\"student-container\">");
+                out.println("<form  action=\"oneStudent\">");
                 out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
@@ -88,9 +86,35 @@ public class StudentHelper {
                 out.println("<div>Education:" + studentEducation + "</div>");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</form>");
+                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
+                out.println("<input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\">");
+                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" id=\"makesure-" + studentID + "\">");
+                out.println("<p class=\"invisible makesure-" + studentID + "\">Really delete?<br></p>");
+                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + studentID + "\">");
+                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + studentID + ");\" class=\"invisible makesure-" + studentID + "\">");
+                out.println("</form>");
+                out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
+            
+            out.println("<script>"
+                        + "function makeSure(stid) { \n"
+                            + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
+                            + "for (var i = 0; i < items.length; i++) { \n"
+                                + "flip(items[i]);  \n"
+                            //+ "document.getElementById(\'makesure-\' + stid).style.display = \'none\'; \n"
+                            + "} \n"
+                        + "} \n"
+                        + "function flip(item) { \n"
+                            + "if (item.style.display === \'none\') { \n"
+                                + "console.log('set to block'); \n"
+                                + "item.style.display = \'block\'; \n"
+                            + "} else { \n"
+                                + "console.log('set to none'); \n"
+                                + "item.style.display = \'none\'; \n"
+                            + "} \n"
+                    + "}</script>");
             conn.close();
         }
         catch (SQLException ex) {

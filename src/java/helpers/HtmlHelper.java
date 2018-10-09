@@ -33,7 +33,111 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
         out.println("<title>Servlet getStudent</title>");            
         out.println("</head>");
-        out.println("<body class=\"" + bodyId + "\">");
+        out.println("<body id=\"" + bodyId + "\">");
+        out.println("<a href=\"http://localhost:8084/WEB/\">Go home</a>");
+        //printNav();
+    }
+    
+    
+    public void printNav () {
+        out.println("\n" +
+"        <div class=\"nav-container\" id=\"nav-container\">\n" +
+"            <div class=\"nav-button\">\n" +
+"                <input onclick=\"hide()\" type=\"button\" value=\"<<\" id=\"nav-button\">\n" +
+"            </div>\n" +
+"            <div class=\"home-nav\" id=\"nav\">\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"#\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            My profile\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"student.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Students\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"module.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Modules\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"#\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            My profile\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"student.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Students\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"module.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Modules\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"#\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            My profile\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"student.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Students\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"                <div class=\"nav-item\">\n" +
+"                    <a href=\"module.html\">\n" +
+"                        <div class=\"nav-img\">\n" +
+"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
+"                        </div>\n" +
+"                        <div class=\"nav-text\">\n" +
+"                            Modules\n" +
+"                        </div>\n" +
+"                    </a>\n" +
+"                </div>\n" +
+"            </div>\n" +
+"        </div>");
     }
     
     /**

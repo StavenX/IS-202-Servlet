@@ -6,14 +6,11 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,12 +20,10 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class getStudent extends HttpServlet {
-
-    Statement stmt;
+@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
+public class deleteStudent extends HttpServlet {
     Login login = new Login();
     
     /**
@@ -46,18 +41,27 @@ public class getStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "bodyy");
+            site.printHead("Delete module", "delete-module");
             
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
-
-                Connection conn;
-                conn = login.loginToDB(out);
+            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
+            
+            Connection conn = login.loginToDB(out);
+            
+            String student_id = request.getParameter("student_id");
+            
+            PreparedStatement deleteStudent;
+            try {
+                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
+                deleteStudent.setString(1, student_id);
                 
-                StudentHelper.printStudents(out, conn);
-                
-                
-                login.close();
-                
+                int amountDeleted = deleteStudent.executeUpdate();
+                out.println("<div>" + amountDeleted + " students deleted.</div>");
+                out.println("<a href=\"getStudent\">Back to student list</a>");
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
+            
+            
             site.printEnd();
         }
     }
@@ -74,9 +78,6 @@ public class getStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
         processRequest(request, response);
     }
 
@@ -91,9 +92,6 @@ public class getStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
