@@ -17,16 +17,16 @@ import java.util.Locale;
 @WebServlet(name = "Calendar_serv", urlPatterns = {"/Calendar_serv"})
 public class Calendar_serv extends HttpServlet {
     
-    // Creates a date format and a calendar
+    // Creates a date formats
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
+    
+    // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
     
-    // Assigns month and year to integers
+    // Assigns month and year to integers from calendar
     int month = calendar.get(Calendar.MONTH);
     int year = calendar.get(Calendar.YEAR);
-    
-    // Assigns month to a string
-    SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,7 +42,10 @@ public class Calendar_serv extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            // Prints date (temporary)
             out.println(df.format(calendar.getTime()));
+            
+            // HTML initialization and link to css
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -51,12 +54,15 @@ public class Calendar_serv extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             
+            // Prints out multiple calendars with different months
             for(int i = 0; i < 3; i++) {
             
+            // Prints month
             out.println("<div class=\"month\">");
             out.println("<h1>" + (mf.format(calendar.getTime())) + "</h1>");
             out.println("</div>");
             
+            // Prints weekdays
             out.println("<ul class=\"weekdays\">");
             out.println("<li>Mo</li>");
             out.println("<li>Tu</li>");
@@ -66,7 +72,8 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>Sa</li>");
             out.println("<li>Su</li>");
             out.println("</ul>");
-
+            
+            // Prints days
             out.println("<ul class=\"days\">");
             out.println("<li>1</li>");
             out.println("<li>2</li>");
@@ -96,7 +103,8 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>26</li>");
             out.println("<li>27</li>");
             out.println("<li>28</li><br>");
-                // prints number of days according to month
+            
+                // prints according to number of days in month
                 if (month == 0 || month == 1 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
                     out.println("<li>29</li>");
                     out.println("<li>30</li>");
@@ -106,20 +114,26 @@ public class Calendar_serv extends HttpServlet {
                     out.println("<li>29</li>");
                     out.println("<li>30</li>");
                 }
-                // prints leap year
+                // Includes leap year
                 else if (year % 4 == 0 && year % 100 != 0) {
                         out.println("<li>29</li>");
                 }
                 else if (year % 400 == 0) {
                         out.println("<li>29</li>");
                 }
-                out.println("</ul>");
-                calendar.add(Calendar.MONTH, +1);
-                month++;
+                
+            out.println("</ul>");
+                
+            // Increments integer and calendar month
+            calendar.add(Calendar.MONTH, +1);
+            month++;
             }
+            
+            // Sets calendar and month to current time
             calendar = Calendar.getInstance();
             month = calendar.get(Calendar.MONTH);
             
+            // HTML end
             out.println("</body>");
             out.println("</html>");
         }
