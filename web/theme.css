@@ -108,7 +108,9 @@ a {
 .currentDay {
     background-color: black;
 }
-
+.thisDay {
+    background-color: black;
+}
 .days {
     padding: 10px 0;
     background: #eee;
