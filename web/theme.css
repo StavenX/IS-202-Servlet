@@ -81,8 +81,8 @@ a {
 .month {
     height: 7%;
     margin-right: 80%;
-    padding: 10px;
-    background-color:#ddd;
+    padding: 3px;
+    background-color: #ddd;
     text-align: center;
     font-size: 10px;
     color: #666;
@@ -105,6 +105,9 @@ a {
     text-align: center;
     font-size: 1vw;
 }
+.currentDay {
+    background-color: black;
+}
 
 .days {
     padding: 10px 0;
@@ -121,5 +124,10 @@ a {
     margin-bottom: 5px;
     font-size: 1vw;
     color: #777;
+    padding: 5px;
+}
+
+.days li:hover {
+    background-color: #737373;
 }
 /* Calendar styling ends here */

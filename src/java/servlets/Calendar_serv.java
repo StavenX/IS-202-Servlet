@@ -25,11 +25,14 @@ public class Calendar_serv extends HttpServlet {
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
     
-    // Assigns month and year to integers from calendar
-    //int month = calendar.get(Calendar.MONTH);
+    // Assigns month, year and day to integers from calendar
+    int month = calendar.get(Calendar.MONTH);
     int year = calendar.get(Calendar.YEAR);
+    int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
     
+    // ArrayList for days
     ArrayList<Integer> days = new ArrayList<>();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -75,15 +78,21 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>Su</li>");
             out.println("</ul>");
             
-            
-            // Prints days
+            // Creates three ArrayLists containing days for three months
             out.println("<ul class=\"days\">");
             for(int d = 1; d <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
-                days.add(d);
-                out.println("<li>" + d + "</li>");
-            }
                 
-            /*  Delete after testing for leap year
+                // Finds and assigns current day of current month to HTML class and adds day to days(ArrayList)
+                if (calendar.get(Calendar.MONTH) == month && d == currentDay) {
+                            out.println("<li class=\"currentDay\">" + currentDay + "</li>");
+                        }
+                else {  
+                    days.add(d);
+                    out.println("<li>" + d + "</li>");    
+                }
+            }
+            
+            /*  Delete this after testing for leap year
                 }
                 // Includes leap year
                 else if (year % 4 == 0 && year % 100 != 0) {
@@ -95,9 +104,10 @@ public class Calendar_serv extends HttpServlet {
                 
             out.println("</ul>");
                 
-            // Increments integer and calendar month
+            // Increments calendar month
             calendar.add(Calendar.MONTH, +1);
-            //month++;
+            
+            // Clears day ArrayList
             days.clear();
             }
             
