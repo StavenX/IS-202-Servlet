@@ -109,9 +109,23 @@ public class ModuleHelper {
                 out.println("<div>Description:" + mod_desc + "</div>");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</form>");
+                
+                
+                out.println("<form name=\"delete-form-" + mod_id + "\" action=\"deleteModule\">");
+                out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + mod_id + "\">");
+                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + mod_id + ");\" class=\"makesure-" + mod_id + "\" style=\"display: inline-block\">");
+                out.println("<p class=\"invisible makesure-" + mod_id + "\">Really delete?<br></p>");
+                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + mod_id + "\">");
+                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + mod_id + ");\" class=\"invisible makesure-" + mod_id + "\">");
+                out.println("</form>");
+                
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printJsForDeleteButton();
+            
             conn.close();
         }
         catch (SQLException ex) {

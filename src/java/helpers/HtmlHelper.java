@@ -38,6 +38,26 @@ public class HtmlHelper {
         //printNav();
     }
     
+    public void printJsForDeleteButton() {
+        //javascript for handling delete buttons
+            out.println("<script>"
+                        //gets the buttons and uses the flip function
+                        + "function makeSure(stid) { \n"
+                            + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
+                            + "for (var i = 0; i < items.length; i++) { \n"
+                                + "flip(items[i]);  \n"
+                            + "} \n"
+                        + "} \n"
+                    
+                    //changes display based on existing value
+                        + "function flip(item) { \n"
+                            + "if (item.style.display === \'inline-block\') { \n"
+                                + "item.style.display = \'none\'; \n"
+                            + "} else { \n"
+                                + "item.style.display = \'inline-block\'; \n"
+                            + "} \n"
+                    + "}</script>");
+    }
     
     public void printNav () {
         out.println("\n" +

@@ -112,6 +112,9 @@ public class StudentHelper {
             }
             out.println("Total number of records: " + rowCount);
             
+            HtmlHelper site = new HtmlHelper(out);
+            site.printJsForDeleteButton();
+            /*
             //javascript for handling delete buttons
             out.println("<script>"
                         //gets the buttons and uses the flip function
@@ -130,7 +133,7 @@ public class StudentHelper {
                                 + "item.style.display = \'inline-block\'; \n"
                             + "} \n"
                     + "}</script>");
-            
+            */
             conn.close();
         }
         catch (SQLException ex) {

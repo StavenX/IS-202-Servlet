@@ -7,10 +7,18 @@ and open the template in the editor.
     Created on : Aug 23, 2018, 9:52:28 AM
     Author     : Staven
 */
+
+@import url('https://fonts.googleapis.com/css?family=Rubik');
+
  * {box-sizing: border-box}
  body {
     background-color: lightblue;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+    /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
+}
+
+/*font type for entire page*/
+body, body * {
+    font-family: 'Rubik', sans-serif !important;
 }
 
  input {
