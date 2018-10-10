@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
 import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -38,13 +39,9 @@ public class createModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet createModule</title>");            
-            out.println("</head>");
-            out.println("<body>");
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("New module", "create-module");
             
             Connection conn;
                 conn = login.loginToDB(out);
@@ -57,8 +54,8 @@ public class createModule extends HttpServlet {
                 );
                 
                 login.close();
-            out.println("</body>");
-            out.println("</html>");
+                
+                site.printEnd();
         }
     }
 
