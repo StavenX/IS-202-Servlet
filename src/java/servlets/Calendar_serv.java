@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.ArrayList;
 /**
  *
  * @author adriannesvik
@@ -25,9 +26,10 @@ public class Calendar_serv extends HttpServlet {
     Calendar calendar = Calendar.getInstance();
     
     // Assigns month and year to integers from calendar
-    int month = calendar.get(Calendar.MONTH);
+    //int month = calendar.get(Calendar.MONTH);
     int year = calendar.get(Calendar.YEAR);
     
+    ArrayList<Integer> days = new ArrayList<>();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -73,46 +75,15 @@ public class Calendar_serv extends HttpServlet {
             out.println("<li>Su</li>");
             out.println("</ul>");
             
+            
             // Prints days
             out.println("<ul class=\"days\">");
-            out.println("<li>1</li>");
-            out.println("<li>2</li>");
-            out.println("<li>3</li>");
-            out.println("<li>4</li>");
-            out.println("<li>5</li>");
-            out.println("<li>6</li>");
-            out.println("<li>7</li><br>");
-            out.println("<li>8</li>");
-            out.println("<li>9</li>");
-            out.println("<li>10</li>");
-            out.println("<li>11</li>");
-            out.println("<li>12</li>");
-            out.println("<li>13</li>");
-            out.println("<li>14</li><br>");
-            out.println("<li>15</li>");
-            out.println("<li>16</li>");
-            out.println("<li>17</li>");
-            out.println("<li>18</li>");
-            out.println("<li>19</li>");
-            out.println("<li>20</li>");
-            out.println("<li>21</li><br>");
-            out.println("<li>22</li>");
-            out.println("<li>23</li>");
-            out.println("<li>24</li>");
-            out.println("<li>25</li>");
-            out.println("<li>26</li>");
-            out.println("<li>27</li>");
-            out.println("<li>28</li><br>");
-            
-                // prints according to number of days in month
-                if (month == 0 || month == 1 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
-                    out.println("<li>29</li>");
-                    out.println("<li>30</li>");
-                    out.println("<li>31</li>");
-                }
-                else if (month == 3 || month == 5 || month == 8 || month == 10) {
-                    out.println("<li>29</li>");
-                    out.println("<li>30</li>");
+            for(int d = 1; d <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
+                days.add(d);
+                out.println("<li>" + d + "</li>");
+            }
+                
+            /*  Delete after testing for leap year
                 }
                 // Includes leap year
                 else if (year % 4 == 0 && year % 100 != 0) {
@@ -120,18 +91,18 @@ public class Calendar_serv extends HttpServlet {
                 }
                 else if (year % 400 == 0) {
                         out.println("<li>29</li>");
-                }
+                }*/
                 
             out.println("</ul>");
                 
             // Increments integer and calendar month
             calendar.add(Calendar.MONTH, +1);
-            month++;
+            //month++;
+            days.clear();
             }
             
             // Sets calendar and month to current time
             calendar = Calendar.getInstance();
-            month = calendar.get(Calendar.MONTH);
             
             // HTML end
             out.println("</body>");
