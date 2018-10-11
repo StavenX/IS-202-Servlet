@@ -2,21 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/theme.css</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/oneModule.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/oneStudent.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/firstlogin.html</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/ModuleHelper.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/updateModule.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/student.html</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/classes/Deliverable.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/firstLogin.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/META-INF/context.xml</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/getModule.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/network/Login.java</file>
-            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/classes/Module.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
