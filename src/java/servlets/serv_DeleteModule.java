@@ -6,23 +6,25 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
-public class updateModule extends HttpServlet {
+@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -38,29 +40,27 @@ public class updateModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Delete module", "delete-module");
             
-            //body class 'invisible' makes no content on the page visible, and it should auto load
-            //due to javascript 
-            site.printHead("Updating module...", "invisible");
-            
-            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
-            
-            String id = request.getParameter("singleMod_id");
-            String name = request.getParameter("mod_name");
-            String desc = request.getParameter("mod_desc");
+            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
-            ModuleHelper.updateModule(id, name, desc, conn, out);
             
-            //form that takes you back to the module you just edited
-            out.println("<form name=\"auto\" action=\"oneModule\">");
-            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
-            out.println("</form>");
+            String module_id = request.getParameter("module_id");
             
-            //auto submits the form so the page auto loads
-            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
+            PreparedStatement deleteModule;
+            try {
+                deleteModule = conn.prepareStatement("DELETE FROM module WHERE mod_id = ?;");
+                deleteModule.setString(1, module_id);
+                
+                int amountDeleted = deleteModule.executeUpdate();
+                out.println("<div>" + amountDeleted + " modules deleted.</div>");
+                out.println("<a href=\"getModule\">Back to module list</a>");
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
             
             site.printEnd();
         }

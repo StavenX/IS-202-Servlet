@@ -5,26 +5,28 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
+import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-
+import helpers.ModuleHelper;
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
-public class firstLogin extends HttpServlet {
+@WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
+public class serv_OneModule extends HttpServlet {
+    Statement stmt;
     Login login = new Login();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,56 +41,49 @@ public class firstLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet firstLogin</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet firstLogin at " + request.getContextPath() + "</h1>");
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Single module", "one-module-container");
             
-            Connection conn = login.loginToDB(out);
-            PreparedStatement getUsers;
-            try {
-                getUsers = conn.prepareStatement("SELECT * FROM users ORDER BY ?");
-                getUsers.setString(1, "users_id");
-                
-                ResultSet rset = getUsers.executeQuery();
-                
-                String tryUserName = request.getParameter("username");
-                String tryPassword = request.getParameter("password");
-                boolean correctInfo = false;
-                
-                while (rset.next()) {
-                    
-                    String users_id = rset.getString("users_id");
-                    String users_username = rset.getString("users_username");
-                    String users_password = rset.getString("users_password");
+            String singleMod_id = request.getParameter("singleMod_id");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
 
-                    //checks the entered username and password against all db entries
-                    if (tryUserName.equals(users_username)) {
-                        if (tryPassword.equals(users_password)) {
-                            correctInfo = true;
-                            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Go to home\"></form>");
-                        }
-                    }
-                }
-                if (!correctInfo) {
-                    wrongLogin(out);
-                }
-                
-            } catch (SQLException e) {
-                out.println("sql exception: " + e);
-            }
+            out.println("<h2>Viewing a single module</h2>");
+            
+            ModuleHelper.printOneModule(out, conn, singleMod_id);
+            
+            //TODO box containing students
+            out.println("<div class=\"module-student-list\"");
+            out.println("<div class=\"module-student-list-item\">");
+            out.println("<div>TODO: Table of students</div>");
+            out.println("</div>");
+            out.println("</div>");
             
             
-            out.println("</body>");
-            out.println("</html>");
+            //javascript that enables you to edit the input fields (and thus the module)
+            out.println("<script>");
+            out.println("   function enable() {");
+            //gets all input fields
+            out.println("       var inputs = document.getElementsByTagName(\'input\');");
+            out.println("       for (var i = 0; i < inputs.length; i++) {");
+            //checks if they're type 'text'
+            out.println("           if (inputs[i].type == 'text') {");
+            //turns off disabled, and changes their class to give them another look through css
+            out.println("               inputs[i].disabled = false;");
+            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
+            out.println("           }");
+            out.println("       }");
+            //swaps the visibilities of the edit and save buttons
+            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
+            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
+            out.println("   }");
+            out.println("</script>");
+            
+            
+            site.printEnd();
+            login.close();
         }
-    }
-    
-    public void wrongLogin(PrintWriter out) {
-        out.println("Username or password was wrong");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

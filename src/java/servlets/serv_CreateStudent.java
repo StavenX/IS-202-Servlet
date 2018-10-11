@@ -10,23 +10,22 @@ import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-import helpers.ModuleHelper;
+
 /**
  *
- * @author Tobias
+ * @author Staven
  */
-@WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
-public class oneModule extends HttpServlet {
-    Statement stmt;
-    Login login = new Login();
+@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
+public class serv_CreateStudent extends HttpServlet {
 
+    Login login = new Login();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,49 +39,23 @@ public class oneModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single module", "one-module-container");
+            site.printHead("New student", "create-student");
             
-            String singleMod_id = request.getParameter("singleMod_id");
-            
-            Connection conn;
-            conn = login.loginToDB(out);
-
-            out.println("<h2>Viewing a single module</h2>");
-            
-            ModuleHelper.printOneModule(out, conn, singleMod_id);
-            
-            //TODO box containing students
-            out.println("<div class=\"module-student-list\"");
-            out.println("<div class=\"module-student-list-item\">");
-            out.println("<div>TODO: Table of students</div>");
-            out.println("</div>");
-            out.println("</div>");
-            
-            
-            //javascript that enables you to edit the input fields (and thus the module)
-            out.println("<script>");
-            out.println("   function enable() {");
-            //gets all input fields
-            out.println("       var inputs = document.getElementsByTagName(\'input\');");
-            out.println("       for (var i = 0; i < inputs.length; i++) {");
-            //checks if they're type 'text'
-            out.println("           if (inputs[i].type == 'text') {");
-            //turns off disabled, and changes their class to give them another look through css
-            out.println("               inputs[i].disabled = false;");
-            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
-            out.println("           }");
-            out.println("       }");
-            //swaps the visibilities of the edit and save buttons
-            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
-            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
-            out.println("   }");
-            out.println("</script>");
-            
-            
+                Connection conn;
+                conn = login.loginToDB(out);
+                
+                StudentHelper.insertStudent(
+                        request.getParameter("student_name"),
+                        request.getParameter("student_edu"),
+                        conn, 
+                        out
+                );
+                
+                login.close();
+                
             site.printEnd();
-            login.close();
         }
     }
 
@@ -98,6 +71,9 @@ public class oneModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -112,6 +88,9 @@ public class oneModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

@@ -6,10 +6,14 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
+import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,9 +25,10 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "createModule", urlPatterns = {"/createModule"})
-public class createModule extends HttpServlet {
+@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
+public class serv_GetStudent extends HttpServlet {
 
+    Statement stmt;
     Login login = new Login();
     
     /**
@@ -41,21 +46,19 @@ public class createModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New module", "create-module");
+            site.printHead("Students", "bodyy");
             
-            Connection conn;
+            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
+
+                Connection conn;
                 conn = login.loginToDB(out);
                 
-                ModuleHelper.insertModule(
-                        request.getParameter("mod_name"),
-                        request.getParameter("mod_desc"),
-                        conn, 
-                        out
-                );
+                StudentHelper.printStudents(out, conn);
+                
                 
                 login.close();
                 
-                site.printEnd();
+            site.printEnd();
         }
     }
 
@@ -73,7 +76,7 @@ public class createModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
+        request.setCharacterEncoding("UTF-8");  
         processRequest(request, response);
     }
 

@@ -28,7 +28,7 @@ import network.Login;
  * @author Staven
  */
 @WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class getModule extends HttpServlet {
+public class serv_GetModule extends HttpServlet {
 
     Statement stmt;
     Login login = new Login();
