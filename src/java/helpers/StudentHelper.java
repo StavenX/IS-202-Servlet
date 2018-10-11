@@ -60,7 +60,6 @@ public class StudentHelper {
      */
     public static void printStudents(PrintWriter out, Connection conn) {
 
-        HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getModules; 
         
         try {
@@ -79,38 +78,18 @@ public class StudentHelper {
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
                 
-                out.println("<div class=\"student-container\">");
-                
-                //form containing student information
-                out.println("<div class=\"student-container-item\">");
-                out.println("<form  action=\"oneStudent\">");
+                out.println("<form class=\"student-container\" action=\"oneStudent\">");
                 out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
                 out.println("<div>Name:" + studentName + "</div>");
                 out.println("<div>Education:" + studentEducation + "</div>");
-                out.println("</div>");
-                
-                //more info button
-                out.println("<div class=\"student-container-item\">");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
-                out.println("</div>");
                 out.println("</form>");
-                
-                //delete buttons
-                out.println("<div class=\"student-container-item\">");
-                
-                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
-                site.printDeleteButton("deleteStudent", "student_id", studentID);
-                out.println("</div>");
-                
-                out.println("</div>");
+                out.println("<form action=\"deleteStudent\"><input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\"><input type=\"submit\" value=\"Delete\"></form>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
-            
-            site.printJsForDeleteButton();
-            
             conn.close();
         }
         catch (SQLException ex) {
@@ -121,22 +100,15 @@ public class StudentHelper {
         }       
     }
     
-    /**
-     * Prints more details about one student
-     * @param out
-     * @param conn
-     * @param stid 
-     */
     public static void printOneStudent(PrintWriter out, Connection conn, String stid) {
         PreparedStatement getOneStudent;
         
         try {
-            //sql statement
             getOneStudent = conn.prepareStatement("SELECT * FROM student WHERE student_id = ?");
             getOneStudent.setString(1, stid);
+            
             ResultSet rset = getOneStudent.executeQuery();
             
-            //loop only executes once but is necessary?
             while (rset.next()) {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");

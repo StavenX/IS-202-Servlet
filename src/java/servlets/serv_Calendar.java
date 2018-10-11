@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ArrayList;
-
 /**
  *
  * @author adriannesvik
@@ -19,12 +18,6 @@ import java.util.ArrayList;
 @WebServlet(name = "Calendar_serv", urlPatterns = {"/Calendar_serv"})
 public class serv_Calendar extends HttpServlet {
     
-
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-    Calendar calendar = Calendar.getInstance();
-    int month = calendar.get(Calendar.MONTH);
-    int year = calendar.get(Calendar.YEAR);
-
     // Creates a date formats
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
@@ -56,65 +49,6 @@ public class serv_Calendar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            out.println(month);
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet createModule</title>");            
-            out.println("</head>");
-            out.println("<body>");
-
-            out.println("<ul class=\"weekdays>\"");
-            out.println("<li>Monday</li>");
-            out.println("<li>Tuesday</li>");
-            out.println("<li>Wednesday</li>");
-            out.println("<li>Thursday</li>");
-            out.println("<li>Friday</li>");
-            out.println("<li>Saturday</li>");
-            out.println("<li>Sunday</li>");
-            out.println("</ul>");
-
-            out.println("<ul class=\"days>\"");
-            out.println("<li>1</li>");
-            out.println("<li>2</li>");
-            out.println("<li>3</li>");
-            out.println("<li>4</li>");
-            out.println("<li>5</li>");
-            out.println("<li>6</li>");
-            out.println("<li>7</li>");
-            out.println("<li>8</li>");
-            out.println("<li>9</li>");
-            out.println("<li>10</li>");
-            out.println("<li>11</li>");
-            out.println("<li>12</li>");
-            out.println("<li>13</li>");
-            out.println("<li>14</li>");
-            out.println("<li>15</li>");
-            out.println("<li>16</li>");
-            out.println("<li>17</li>");
-            out.println("<li>18</li>");
-            out.println("<li>19</li>");
-            out.println("<li>20</li>");
-            out.println("<li>21</li>");
-            out.println("<li>22</li>");
-            out.println("<li>23</li>");
-            out.println("<li>24</li>");
-            out.println("<li>25</li>");
-            out.println("<li>26</li>");
-            out.println("<li>27</li>");
-            out.println("<li>28</li>");
-                // prints number of days according to month
-                if (month == 0 || month == 1 || month == 4 || month == 6 || month == 7 || month == 9 || month == 11) {
-                    out.println("<li>29</li>");
-                    out.println("<li>30</li>");
-                    out.println("<li>31</li>");
-                }
-                else if (month == 3 || month == 5 || month == 8 || month == 10) {
-                    out.println("<li>29</li>");
-                    out.println("<li>30</li>");
-                }
-                // prints leap year
-          
             // Prints date (temporary)
             out.println(df.format(calendar.getTime()));
             
@@ -182,10 +116,6 @@ public class serv_Calendar extends HttpServlet {
                 }
                 else if (year % 400 == 0) {
                         out.println("<li>29</li>");
-
-                }
-            out.println("</ul>");
-
                 }*/
                 
             out.println("</ul>");
