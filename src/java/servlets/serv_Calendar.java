@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
  * @author adriannesvik
  */
 @WebServlet(name = "Calendar_serv", urlPatterns = {"/Calendar_serv"})
-public class Calendar_serv extends HttpServlet {
+public class serv_Calendar extends HttpServlet {
     
     
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");

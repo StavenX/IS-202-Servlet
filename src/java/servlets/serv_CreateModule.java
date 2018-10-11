@@ -1,21 +1,15 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package servlets;
 
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -27,10 +21,9 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class getModule extends HttpServlet {
+@WebServlet(name = "createModule", urlPatterns = {"/createModule"})
+public class serv_CreateModule extends HttpServlet {
 
-    Statement stmt;
     Login login = new Login();
     
     /**
@@ -46,22 +39,26 @@ public class getModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Modules", "");
+            site.printHead("New module", "create-module");
             
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
-            
-                Connection conn;
+            Connection conn;
                 conn = login.loginToDB(out);
                 
-                ModuleHelper.printModules(out, conn);
+                ModuleHelper.insertModule(
+                        request.getParameter("mod_name"),
+                        request.getParameter("mod_desc"),
+                        conn, 
+                        out
+                );
+                
                 login.close();
                 
-            site.printEnd();
+                site.printEnd();
         }
     }
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -74,7 +71,6 @@ public class getModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8"); 

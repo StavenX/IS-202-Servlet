@@ -10,10 +10,6 @@ import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,10 +21,9 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class getStudent extends HttpServlet {
+@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
+public class serv_CreateStudent extends HttpServlet {
 
-    Statement stmt;
     Login login = new Login();
     
     /**
@@ -46,14 +41,17 @@ public class getStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "");
+            site.printHead("New student", "create-student");
             
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
-
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                StudentHelper.printStudents(out, conn);
+                StudentHelper.insertStudent(
+                        request.getParameter("student_name"),
+                        request.getParameter("student_edu"),
+                        conn, 
+                        out
+                );
                 
                 login.close();
                 
@@ -75,7 +73,7 @@ public class getStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

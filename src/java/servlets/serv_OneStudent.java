@@ -23,7 +23,7 @@ import network.Login;
  * @author Tobias
  */
 @WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class oneStudent extends HttpServlet {
+public class serv_OneStudent extends HttpServlet {
     
     Statement stmt;
     Login login = new Login();

@@ -23,7 +23,7 @@ import network.Login;
  * @author tobia
  */
 @WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
-public class firstLogin extends HttpServlet {
+public class serv_FirstLogin extends HttpServlet {
     Login login = new Login();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

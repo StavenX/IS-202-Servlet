@@ -53,7 +53,6 @@ public class Login
             
             //DataSource ds = (DataSource)cont.lookup("jdbc/LocalhostDS");
             conn = ds.getConnection();
-            out.println("CONNECTED!");
             return conn;
             // Step 2: Allocate a 'Statement' object in the Connection
             //stmt = conn.createStatement();     
