@@ -38,6 +38,20 @@ public class HtmlHelper {
         //printNav();
     }
     
+    public void printDeleteButton (String servletName, String entityPK, String entityID) {
+                out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
+                out.println("<input class=\"invisible\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
+                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\" class=\"makesure-" + entityID + "\" style=\"display: inline-block\">");
+                out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
+                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + entityID + "\">");
+                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\" class=\"invisible makesure-" + entityID + "\">");
+                out.println("</form>");
+    }
+    
+    public void printJsForDeleteButton() {
+        //javascript for handling delete buttons
+        out.println("<script src=\"FirstScripts.js\"></script>");
+    }
     
     public void printNav () {
         out.println("\n" +

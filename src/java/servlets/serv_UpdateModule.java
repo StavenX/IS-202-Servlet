@@ -6,25 +6,23 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-import helpers.ModuleHelper;
+
 /**
  *
- * @author Tobias
+ * @author tobia
  */
-@WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
-public class oneModule extends HttpServlet {
-    Statement stmt;
+@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
+public class serv_UpdateModule extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -40,49 +38,31 @@ public class oneModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single module", "one-module-container");
             
-            String singleMod_id = request.getParameter("singleMod_id");
+            //body class 'invisible' makes no content on the page visible, and it should auto load
+            //due to javascript 
+            site.printHead("Updating module...", "invisible");
             
-            Connection conn;
-            conn = login.loginToDB(out);
-
-            out.println("<h2>Viewing a single module</h2>");
+            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
             
-            ModuleHelper.printOneModule(out, conn, singleMod_id);
+            String id = request.getParameter("singleMod_id");
+            String name = request.getParameter("mod_name");
+            String desc = request.getParameter("mod_desc");
             
-            //TODO box containing students
-            out.println("<div class=\"module-student-list\"");
-            out.println("<div class=\"module-student-list-item\">");
-            out.println("<div>TODO: Table of students</div>");
-            out.println("</div>");
-            out.println("</div>");
+            Connection conn = login.loginToDB(out);
+            ModuleHelper.updateModule(id, name, desc, conn, out);
             
+            //form that takes you back to the module you just edited
+            out.println("<form name=\"auto\" action=\"oneModule\">");
+            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
+            out.println("<input type=\"submit\">");
+            out.println("</form>");
             
-            //javascript that enables you to edit the input fields (and thus the module)
-            out.println("<script>");
-            out.println("   function enable() {");
-            //gets all input fields
-            out.println("       var inputs = document.getElementsByTagName(\'input\');");
-            out.println("       for (var i = 0; i < inputs.length; i++) {");
-            //checks if they're type 'text'
-            out.println("           if (inputs[i].type == 'text') {");
-            //turns off disabled, and changes their class to give them another look through css
-            out.println("               inputs[i].disabled = false;");
-            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
-            out.println("           }");
-            out.println("       }");
-            //swaps the visibilities of the edit and save buttons
-            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
-            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
-            out.println("   }");
-            out.println("</script>");
-            
+            //auto submits the form so the page auto loads
+            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
             
             site.printEnd();
-            login.close();
         }
     }
 

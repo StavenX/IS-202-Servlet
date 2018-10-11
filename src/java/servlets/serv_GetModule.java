@@ -1,12 +1,14 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -25,8 +27,8 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class getStudent extends HttpServlet {
+@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
+public class serv_GetModule extends HttpServlet {
 
     Statement stmt;
     Login login = new Login();
@@ -44,24 +46,24 @@ public class getStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "bodyy");
-            
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
 
+            site.printHead("Modules", "bodyy");
+            site.printHead("Modules", "");
+            
+            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
+            
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                StudentHelper.printStudents(out, conn);
-                
-                
+                ModuleHelper.printModules(out, conn);
                 login.close();
                 
             site.printEnd();
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -74,9 +76,10 @@ public class getStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

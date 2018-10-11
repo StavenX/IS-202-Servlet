@@ -15,13 +15,27 @@ and open the template in the editor.
     <body>
         <a href="http://localhost:8084/WEB/">Go home</a>
         <div>
-            <form action="firstLogin">
+            <form action="firstLogin" method ="POST">
                 <p>Username: </p>
                 <input name="username" type="text">
                 <p>Password: </p>
                 <input name="password" type="password">
                 <input type="submit" value="Log in">
             </form>
+            <button onclick="show()">Create a new user</button>
+            <form action="serv_CreateNewUser" class="invisible" id="theform" method="post">
+                <p>username</p>
+                <input name="users_username" type="text">
+                <p>password</p>
+                <input name="users_password" type="password">
+                <br>
+                <input type="submit" value="Create new user">
+            </form>
         </div>
+        <script>
+            function show() {
+                document.getElementById('theform').style.display = 'block';
+            }
+        </script>
     </body>
 </html>

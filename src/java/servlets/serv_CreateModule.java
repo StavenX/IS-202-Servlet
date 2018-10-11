@@ -6,11 +6,10 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,10 +19,11 @@ import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author Staven
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class deleteStudent extends HttpServlet {
+@WebServlet(name = "createModule", urlPatterns = {"/createModule"})
+public class serv_CreateModule extends HttpServlet {
+
     Login login = new Login();
     
     /**
@@ -41,28 +41,21 @@ public class deleteStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
+            site.printHead("New module", "create-module");
             
-            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
-            
-            Connection conn = login.loginToDB(out);
-            
-            String student_id = request.getParameter("student_id");
-            
-            PreparedStatement deleteStudent;
-            try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
+            Connection conn;
+                conn = login.loginToDB(out);
                 
-                int amountDeleted = deleteStudent.executeUpdate();
-                out.println("<div>" + amountDeleted + " students deleted.</div>");
-                out.println("<a href=\"getStudent\">Back to student list</a>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            
-            site.printEnd();
+                ModuleHelper.insertModule(
+                        request.getParameter("mod_name"),
+                        request.getParameter("mod_desc"),
+                        conn, 
+                        out
+                );
+                
+                login.close();
+                
+                site.printEnd();
         }
     }
 
@@ -78,6 +71,9 @@ public class deleteStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -92,6 +88,9 @@ public class deleteStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
