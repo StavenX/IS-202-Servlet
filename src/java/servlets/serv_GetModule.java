@@ -1,16 +1,21 @@
+package servlets;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package servlets;
+
 
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,10 +25,12 @@ import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author Staven
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class deleteStudent extends HttpServlet {
+@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
+public class serv_GetModule extends HttpServlet {
+
+    Statement stmt;
     Login login = new Login();
     
     /**
@@ -39,33 +46,24 @@ public class deleteStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
+
+            site.printHead("Modules", "bodyy");
+            site.printHead("Modules", "");
             
-            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
             
-            Connection conn = login.loginToDB(out);
-            
-            String student_id = request.getParameter("student_id");
-            
-            PreparedStatement deleteStudent;
-            try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
+                Connection conn;
+                conn = login.loginToDB(out);
                 
-                out.println(deleteStudent.executeUpdate());
-                getStudent backToStudents = new getStudent();
-                backToStudents.processRequest(request, response);
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            
+                ModuleHelper.printModules(out, conn);
+                login.close();
+                
             site.printEnd();
         }
     }
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -78,6 +76,10 @@ public class deleteStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 
@@ -92,6 +94,9 @@ public class deleteStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

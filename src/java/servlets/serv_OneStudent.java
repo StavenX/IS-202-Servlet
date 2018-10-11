@@ -7,24 +7,27 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import helpers.*;
+import java.sql.Connection;
+import java.sql.Statement;
 import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "firstLogin", urlPatterns = {"/firstLogin"})
-public class firstLogin extends HttpServlet {
+@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
+public class serv_OneStudent extends HttpServlet {
+    
+    Statement stmt;
     Login login = new Login();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -39,56 +42,24 @@ public class firstLogin extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet firstLogin</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet firstLogin at " + request.getContextPath() + "</h1>");
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Single student", "one-student-container");
             
-            Connection conn = login.loginToDB(out);
-            PreparedStatement getUsers;
-            try {
-                getUsers = conn.prepareStatement("SELECT * FROM users ORDER BY ?");
-                getUsers.setString(1, "users_id");
-                
-                ResultSet rset = getUsers.executeQuery();
-                
-                String tryUserName = request.getParameter("username");
-                String tryPassword = request.getParameter("password");
-                boolean correctInfo = false;
-                
-                while (rset.next()) {
-                    
-                    String users_id = rset.getString("users_id");
-                    String users_username = rset.getString("users_username");
-                    String users_password = rset.getString("users_password");
+            String stid = request.getParameter("stid");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
 
-                    //checks the entered username and password against all db entries
-                    if (tryUserName.equals(users_username)) {
-                        if (tryPassword.equals(users_password)) {
-                            correctInfo = true;
-                            out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Go to home\"></form>");
-                        }
-                    }
-                }
-                if (!correctInfo) {
-                    wrongLogin(out);
-                }
-                
-            } catch (SQLException e) {
-                out.println("sql exception: " + e);
-            }
+            
+            out.println("<h2>Viewing a single student</h2>");
+            StudentHelper.printOneStudent(out, conn, stid);
+
+            
+            login.close();
             
             
-            out.println("</body>");
-            out.println("</html>");
+            site.printEnd();
         }
-    }
-    
-    public void wrongLogin(PrintWriter out) {
-        out.println("Username or password was wrong");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

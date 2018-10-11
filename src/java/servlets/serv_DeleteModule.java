@@ -5,27 +5,26 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import helpers.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import network.Login;
 
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class oneStudent extends HttpServlet {
-    
-    Statement stmt;
+@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -41,22 +40,27 @@ public class oneStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
+            site.printHead("Delete module", "delete-module");
             
-            String stid = request.getParameter("stid");
+            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
             
-            Connection conn;
-            conn = login.loginToDB(out);
-
+            Connection conn = login.loginToDB(out);
             
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
-
+            String module_id = request.getParameter("module_id");
             
-            login.close();
-            
+            PreparedStatement deleteModule;
+            try {
+                deleteModule = conn.prepareStatement("DELETE FROM module WHERE mod_id = ?;");
+                deleteModule.setString(1, module_id);
+                
+                int amountDeleted = deleteModule.executeUpdate();
+                out.println("<div>" + amountDeleted + " modules deleted.</div>");
+                out.println("<a href=\"getModule\">Back to module list</a>");
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
             
             site.printEnd();
         }

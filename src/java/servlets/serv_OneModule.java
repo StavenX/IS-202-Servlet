@@ -23,7 +23,7 @@ import helpers.ModuleHelper;
  * @author Tobias
  */
 @WebServlet(name = "oneModule", urlPatterns = {"/oneModule"})
-public class oneModule extends HttpServlet {
+public class serv_OneModule extends HttpServlet {
     Statement stmt;
     Login login = new Login();
 

@@ -5,24 +5,29 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
-import helpers.ModuleHelper;
+import classes.PasswordStorage;
+import classes.PasswordStorage.CannotPerformOperationException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import helpers.HtmlHelper;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "updateModule", urlPatterns = {"/updateModule"})
-public class updateModule extends HttpServlet {
+@WebServlet(name = "serv_CreateNewUser", urlPatterns = {"/serv_CreateNewUser"})
+public class serv_CreateNewUser extends HttpServlet {
+    Connection conn;
     Login login = new Login();
 
     /**
@@ -38,29 +43,47 @@ public class updateModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Create new user", "body");
             
-            //body class 'invisible' makes no content on the page visible, and it should auto load
-            //due to javascript 
-            site.printHead("Updating module...", "invisible");
             
-            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
+            String users_username = request.getParameter("users_username");
+            String plain_password = request.getParameter("users_password");
+            if (users_username.length() > 20) {
+                out.println("Username is too long");
+            }
+            else if (plain_password.length() > 20){
+                out.println("Password is too long");
+            }
+            else {
+                try {
+                    String users_password = PasswordStorage.createHash(plain_password);
+                    try {
+                        conn = login.loginToDB(out);
+                        PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (users_username, users_password) VALUES (?,?);");
+                        prepInsert.setString(1, users_username);
+                        prepInsert.setString(2, users_password);
+
+                        System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
+                        int countInserted = prepInsert.executeUpdate();   
+                        out.println(countInserted);
+                    } catch (SQLException ex) {
+                        if (ex.getMessage().toLowerCase().contains("duplicate entry")) {
+                            out.println("Username is taken, please choose another");
+                        }
+                        else {
+                            out.println(ex);
+                        }
+                    }
+                } catch (CannotPerformOperationException ex) {
+                    out.println(ex);
+                }
+            }
             
-            String id = request.getParameter("singleMod_id");
-            String name = request.getParameter("mod_name");
-            String desc = request.getParameter("mod_desc");
             
-            Connection conn = login.loginToDB(out);
-            ModuleHelper.updateModule(id, name, desc, conn, out);
+            out.println("<a href=\"firstlogin.html\">Return to login page</a>");
             
-            //form that takes you back to the module you just edited
-            out.println("<form name=\"auto\" action=\"oneModule\">");
-            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
-            out.println("</form>");
-            
-            //auto submits the form so the page auto loads
-            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
             
             site.printEnd();
         }
