@@ -7,29 +7,23 @@ and open the template in the editor.
     Created on : Aug 23, 2018, 9:52:28 AM
     Author     : Staven
 */
-
-* {box-sizing: border-box}
-
-body {
+ * {box-sizing: border-box}
+ body {
     background-color: lightblue;
     font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
-
-label {
+ label {
 }
-
-/* Add padding to containers */
+ /* Add padding to containers */
 .container {
   padding: 16px;
-
-  width: 50%;
+   width: 50%;
   height: 500px;
   vertical-align: middle;
   align-content: center;
   text-align: center;
 }
-
-/* Full-width input fields */
+ /* Full-width input fields */
 input[type=text], input[type=password] {
   width: 100%;
   padding: 15px;
@@ -38,19 +32,16 @@ input[type=text], input[type=password] {
   border: none;
   background: #f1f1f1;
 }
-
-input[type=text]:focus, input[type=password]:focus {
+ input[type=text]:focus, input[type=password]:focus {
   background-color: #ddd;
   outline: none;
 }
-
-/* Overwrite default styles of hr */
+ /* Overwrite default styles of hr */
 hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
-
-/* Set a style for the submit/register button */
+ /* Set a style for the submit/register button */
 .registerbtn {
   background-color: #4CAF50;
   color: white;
@@ -61,19 +52,86 @@ hr {
   width: 100%;
   opacity: 0.9;
 }
-
-.registerbtn:hover {
+ .registerbtn:hover {
   opacity:1;
 }
-
-/* Add a blue text color to links */
+ /* Add a blue text color to links */
 a {
   color: dodgerblue;
 }
-
-/* Set a grey background color and center the text of the "sign in" section */
+ /* Set a grey background color and center the text of the "sign in" section */
 .signin {
   background-color: #f1f1f1;
   text-align: center;
 }
+ .student-input {
+    max-width: 20%;
+    
+}
+ .form1 {
+    text-align: center;
+}
+ .form1 input {
+    display: list-item;
+}
+ .invisible {
+    display: none !important;
+}
+ .student-container {
+    margin: 30px 0;
+}
+ .student-container div {
+    /*display: inline;*/
+}
+ #nav {
+    display:block;
+}
+ .home-nav {
+    max-width: 100%;
+    
+}
+ .nav-container {
+    margin: 0 20px 0 0;
+    background: #961034;
+    max-width: 10%;
+    padding: 5px;
+}
+ .nav-item {
+    border: 1px solid black;
+    margin: 20px 0;
+    width: 100%;
+    text-align: center;
+}
 
+.nav-item a{
+    text-decoration: none;
+    color: white;
+}
+ .body {
+    margin: 0;
+    display: flex;
+}
+ .nav-img {
+    display: block;
+}
+
+.module-container {
+    border: 1px solid darkblue;
+    margin: 20px 0;
+}
+
+.module-student-list {
+    margin: 10px auto;
+    width: 90%;
+    border: solid 2px black;
+    min-height: 300px;
+}
+
+#one-module-save {
+    display:none;
+}
+
+.one-module-enabled {
+    font-weight: bold;
+    font-size: 1.5em;
+}

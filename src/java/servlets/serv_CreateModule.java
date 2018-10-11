@@ -5,14 +5,11 @@
  */
 package servlets;
 
-import helpers.StudentHelper;
+import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +21,9 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class getStudent extends HttpServlet {
+@WebServlet(name = "createModule", urlPatterns = {"/createModule"})
+public class serv_CreateModule extends HttpServlet {
 
-    Statement stmt;
     Login login = new Login();
     
     /**
@@ -43,26 +39,23 @@ public class getStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet getStudent</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
-
-                Connection conn;
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("New module", "create-module");
+            
+            Connection conn;
                 conn = login.loginToDB(out);
                 
-                StudentHelper.printStudents(out, conn);
+                ModuleHelper.insertModule(
+                        request.getParameter("mod_name"),
+                        request.getParameter("mod_desc"),
+                        conn, 
+                        out
+                );
                 
                 login.close();
                 
-            out.println("</body>");
-            out.println("</html>");
+                site.printEnd();
         }
     }
 
@@ -80,7 +73,7 @@ public class getStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
+        request.setCharacterEncoding("UTF-8"); 
         processRequest(request, response);
     }
 

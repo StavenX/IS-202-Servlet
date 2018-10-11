@@ -77,7 +77,16 @@ public class StudentHelper {
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
-                out.println("Row " + rowCount + ": " + studentID + ": " + studentName + ", " + studentEducation + "<br>");
+                
+                out.println("<form class=\"student-container\" action=\"oneStudent\">");
+                out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
+                out.println("<div>Row " + rowCount + "</div>");
+                out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
+                out.println("<div>Name:" + studentName + "</div>");
+                out.println("<div>Education:" + studentEducation + "</div>");
+                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("</form>");
+                out.println("<form action=\"deleteStudent\"><input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\"><input type=\"submit\" value=\"Delete\"></form>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
@@ -89,5 +98,31 @@ public class StudentHelper {
         catch (Exception e) {
             out.println("Something wrong happened: " + e);
         }       
+    }
+    
+    public static void printOneStudent(PrintWriter out, Connection conn, String stid) {
+        PreparedStatement getOneStudent;
+        
+        try {
+            getOneStudent = conn.prepareStatement("SELECT * FROM student WHERE student_id = ?");
+            getOneStudent.setString(1, stid);
+            
+            ResultSet rset = getOneStudent.executeQuery();
+            
+            while (rset.next()) {
+                String studentID = rset.getString("student_id");
+                String studentName = rset.getString("student_name");
+                String studentEducation = rset.getString("student_education");
+                out.println("<div>");
+                out.println(studentID + studentName + studentEducation);
+                out.println("</div>");
+                
+            }
+                
+        }
+        
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
     }
 }
