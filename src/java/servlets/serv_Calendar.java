@@ -34,6 +34,8 @@ public class serv_Calendar extends HttpServlet {
     // ArrayList for days(days of the month and weekdays(days of the week)
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
+    ArrayList<String> weekdaysFullName = new ArrayList<>();
+    ArrayList<Integer> time = new ArrayList<>();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -52,15 +54,6 @@ public class serv_Calendar extends HttpServlet {
             // Prints date (temporary)
             out.println(df.format(calendar.getTime()));
             
-            // HTML initialization and link to css
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("<title>Servlet Calendar</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            
             // Add elements to weekdays ArrayList
             weekdays.add("Mo");
             weekdays.add("Tu");
@@ -69,7 +62,20 @@ public class serv_Calendar extends HttpServlet {
             weekdays.add("Fr");
             weekdays.add("Sa");
             weekdays.add("Su");
+            
+            // Add elements to time ArrayList
+            for (int m = 7; m <= 17; m++) {
+                time.add(m);
+            }
 
+            // HTML initialization and link to css
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("<title>Servlet Calendar</title>");            
+            out.println("</head>");
+            out.println("<body>");
             
             // Prints out multiple calendars with different months
             for(int i = 0; i < 3; i++) {
@@ -133,10 +139,55 @@ public class serv_Calendar extends HttpServlet {
             // Sets calendar and month to current time
             calendar = Calendar.getInstance();
             
+            /*
+                This is section handles the timetable in calendar class
+            */
+            // Add elements to weekdaysFullName ArrayList
+            weekdaysFullName.add("Monday");
+            weekdaysFullName.add("Tuesday");
+            weekdaysFullName.add("Wednesday");
+            weekdaysFullName.add("Thursday");
+            weekdaysFullName.add("Friday");
+            weekdaysFullName.add("Saturday");
+            weekdaysFullName.add("Sunday");
+            
+            out.println("<table align=\"center\">");
+            out.println("<tr>");
+            
+            // Code below is definetly subject to change. Momentarily functionality.
+            
+            // If-else statement for highlighting current day of the week in CSS
+            out.println("<th> <th>");
+            for(int i = 0; i <= 6; i++)
+                if(i == day && month == calendar.get(Calendar.MONTH)) {
+                    out.println("<th class=\"thisDay\">" + weekdaysFullName.get(day) + "</th>");
+                }
+                else {
+                    out.println("<th>" + weekdaysFullName.get(i) + "</th>");
+                }
+            weekdaysFullName.clear();
+            out.println(" </tr>");
+            
+            // Prints time in table
+            int w = 0;
+            while(w < 3) {
+                out.println("<tr><td>" + "0" + time.get(w) + ":00" + "</td></tr> ");
+                w++;
+            }
+            int v = 3;
+            while(v < time.size()) {
+                out.println("<tr><td>" + time.get(v) + ":00" + "</td></tr> ");
+                v++;
+            }
+            out.println("</tr>");
+            time.clear();
+            
             // HTML end
             out.println("</body>");
             out.println("</html>");
+            
         }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

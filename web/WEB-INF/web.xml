@@ -12,8 +12,4 @@
         <res-auth> Container</res-auth>
     </resource-ref>
     
-    <servlet-mapping>
-    <servlet-name>Calendar_serv</servlet-name>
-    <url-pattern>/Calendar_serv</url-pattern>
-    </servlet-mapping>
 </web-app>

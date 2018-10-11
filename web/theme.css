@@ -160,10 +160,10 @@ a {
     font-size: 1vw;
 }
 .currentDay {
-    background-color: black;
+    background-color: white;
 }
 .thisDay {
-    background-color: black;
+    background-color: white;
 }
 .days {
     padding: 10px 0;
@@ -187,7 +187,6 @@ a {
     background-color: #737373;
 }
 /* Calendar styling ends here */
-=======
 .one-module-enabled {
     font-weight: bold;
     font-size: 1.5em;
