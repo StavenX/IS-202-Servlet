@@ -60,6 +60,7 @@ public class StudentHelper {
      */
     public static void printStudents(PrintWriter out, Connection conn) {
 
+        HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getModules; 
         
         try {
@@ -98,13 +99,9 @@ public class StudentHelper {
                 
                 //delete buttons
                 out.println("<div class=\"student-container-item\">");
+                
                 out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
-                out.println("<input class=\"invisible\" name=\"student_id\" value=\"" + studentID + "\">");
-                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + studentID + ");\" class=\"makesure-" + studentID + "\" style=\"display: inline-block\">");
-                out.println("<p class=\"invisible makesure-" + studentID + "\">Really delete?<br></p>");
-                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + studentID + "\">");
-                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + studentID + ");\" class=\"invisible makesure-" + studentID + "\">");
-                out.println("</form>");
+                site.printDeleteButton("deleteStudent", "student_id", studentID);
                 out.println("</div>");
                 
                 out.println("</div>");
@@ -112,28 +109,8 @@ public class StudentHelper {
             }
             out.println("Total number of records: " + rowCount);
             
-            HtmlHelper site = new HtmlHelper(out);
             site.printJsForDeleteButton();
-            /*
-            //javascript for handling delete buttons
-            out.println("<script>"
-                        //gets the buttons and uses the flip function
-                        + "function makeSure(stid) { \n"
-                            + "var items = document.getElementsByClassName(\'makesure-\' + stid); \n"
-                            + "for (var i = 0; i < items.length; i++) { \n"
-                                + "flip(items[i]);  \n"
-                            + "} \n"
-                        + "} \n"
-                    
-                    //changes display based on existing value
-                        + "function flip(item) { \n"
-                            + "if (item.style.display === \'inline-block\') { \n"
-                                + "item.style.display = \'none\'; \n"
-                            + "} else { \n"
-                                + "item.style.display = \'inline-block\'; \n"
-                            + "} \n"
-                    + "}</script>");
-            */
+            
             conn.close();
         }
         catch (SQLException ex) {

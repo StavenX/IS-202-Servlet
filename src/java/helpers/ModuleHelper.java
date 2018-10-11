@@ -81,7 +81,8 @@ public class ModuleHelper {
      */
     public static void printModules(PrintWriter out, Connection conn) {
 
-        PreparedStatement getModules; 
+            HtmlHelper site = new HtmlHelper(out);
+            PreparedStatement getModules; 
         
         try {
             getModules = conn.prepareStatement("SELECT * FROM module ORDER BY ?");
@@ -98,32 +99,23 @@ public class ModuleHelper {
                 String mod_id = rset.getString("mod_id");
                 String mod_name = rset.getString("mod_name");
                 String mod_desc = rset.getString("mod_desc");
-                //out.println("<div>Row " + rowCount + ": " + mod_id + ": " + mod_name + ", " + mod_desc + "</div>");
                 
-                
-                out.println("<form class=\"module-container\" action=\"oneModule\">");
-                out.println("<input class=\"invisible\" name=\"singleMod_id\" value=\"" + mod_id + "\">");
+                out.println("<div class=\"module-container\"");
+                out.println("<form action=\"oneModule\">");
+                out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + mod_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"modid\">Module Id:" + mod_id + "</div>");
                 out.println("<div>Name:" + mod_name + "</div>");
                 out.println("<div>Description:" + mod_desc + "</div>");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</form>");
-                
-                
-                out.println("<form name=\"delete-form-" + mod_id + "\" action=\"deleteModule\">");
-                out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + mod_id + "\">");
-                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + mod_id + ");\" class=\"makesure-" + mod_id + "\" style=\"display: inline-block\">");
-                out.println("<p class=\"invisible makesure-" + mod_id + "\">Really delete?<br></p>");
-                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + mod_id + "\">");
-                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + mod_id + ");\" class=\"invisible makesure-" + mod_id + "\">");
-                out.println("</form>");
+                site.printDeleteButton("deleteModule", "module_id", mod_id);
+                out.println("</div>");
                 
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
-            HtmlHelper site = new HtmlHelper(out);
             site.printJsForDeleteButton();
             
             conn.close();
