@@ -41,7 +41,9 @@ public class serv_DeleteStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
+
             site.printHead("Delete student", "delete-student");
+            site.printHead("Delete module", "delete-module");
             
             out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
             
@@ -57,6 +59,11 @@ public class serv_DeleteStudent extends HttpServlet {
                 int amountDeleted = deleteStudent.executeUpdate();
                 out.println("<div>" + amountDeleted + " students deleted.</div>");
                 out.println("<a href=\"getStudent\">Back to student list</a>");
+
+                out.println(deleteStudent.executeUpdate());
+                serv_GetStudent backToStudents = new serv_GetStudent();
+                backToStudents.processRequest(request, response);
+
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }
