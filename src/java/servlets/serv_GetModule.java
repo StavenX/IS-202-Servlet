@@ -49,6 +49,8 @@ public class serv_GetModule extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             
             HtmlHelper site = new HtmlHelper(out);
+
+            site.printHead("Modules", "bodyy");
             site.printHead("Modules", "");
             
             out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");

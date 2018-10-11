@@ -16,16 +16,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import network.Login;
 
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class serv_DeleteStudent extends HttpServlet {
+@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,33 +42,25 @@ public class serv_DeleteStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-
-            site.printHead("Delete student", "delete-student");
             site.printHead("Delete module", "delete-module");
             
             out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
             
-            String student_id = request.getParameter("student_id");
+            String module_id = request.getParameter("module_id");
             
-            PreparedStatement deleteStudent;
+            PreparedStatement deleteModule;
             try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
+                deleteModule = conn.prepareStatement("DELETE FROM module WHERE mod_id = ?;");
+                deleteModule.setString(1, module_id);
                 
-                int amountDeleted = deleteStudent.executeUpdate();
-                out.println("<div>" + amountDeleted + " students deleted.</div>");
-                out.println("<a href=\"getStudent\">Back to student list</a>");
-
-                out.println(deleteStudent.executeUpdate());
-                serv_GetStudent backToStudents = new serv_GetStudent();
-                backToStudents.processRequest(request, response);
-
+                int amountDeleted = deleteModule.executeUpdate();
+                out.println("<div>" + amountDeleted + " modules deleted.</div>");
+                out.println("<a href=\"getModule\">Back to module list</a>");
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }
-            
             
             site.printEnd();
         }

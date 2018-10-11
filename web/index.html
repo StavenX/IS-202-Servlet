@@ -1,76 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>System</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="css/simple-sidebar.css" rel="stylesheet">
-</head>
-
-<body>
-    <div id="wrapper">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="about.html">
-                        About
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>        
+        <link rel="stylesheet" type="text/css" href="theme.css">
+        <link rel="icon" href="placeholder_v1.png" type="image/png">
+        <title>Dashboard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body class="body">
+        <div class="nav-container" id="nav-container">
+            <div class="nav-button">
+                <input onclick="hide()" type="button" value="<<" id="nav-button">
+            </div>
+            <div class="home-nav" id="nav">
+                <div class="nav-item">
+                    <a href="#">
+                        <div class="nav-img">
+                            <img src="http://via.placeholder.com/50x50" alt="lol">
+                        </div>
+                        <div class="nav-text">
+                            My profile
+                        </div>
                     </a>
-                </li>
-                <li>
-                    <a href="student.html">Student</a>
-                </li>
-                <li>
-                    <a href="module.html">Module</a>
-                </li>
-                <li>
-                    <a href="serv_FileUpload">Upload</a>
-                </li>
-                <li>
-                    <a href="serv_Calendar">Calendar</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <h1> Education system </h1>
-                <!--<h1>Simple Sidebar</h1>
-                <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
-                -->
-                <a href="#menu-toggle" class="btn btn-secondary" id="menu-toggle">Toggle Menu</a>
+                </div>
+                <div class="nav-item">
+                    <a href="student.html">
+                        <div class="nav-img">
+                            <img src="http://via.placeholder.com/50x50" alt="lol">
+                        </div>
+                        <div class="nav-text">
+                            Students
+                        </div>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="module.html">
+                        <div class="nav-img">
+                            <img src="http://via.placeholder.com/50x50" alt="lol">
+                        </div>
+                        <div class="nav-text">
+                            Modules
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-
-</body>
+        <div class="home-page"> 
+            <h1></h1>
+            <h1> <a href ="student.html"> Students </a> </h1>
+            <h1> <a href ="module.html"> Modules </a> </h1>
+            <h1> <a href ="serv_Calendar"> Calendar </a> </h1> 
+            <h1> <a href ="serv_FileUpload"> File Upload </a> </h1> 
+        </div>
+        <script>
+            function hide() {
+                cont = document.getElementById('nav-container').style;
+                nav = document.getElementById('nav').style;
+                button = document.getElementById('nav-button');
+                temp = '';
+                    
+                if (nav.display === 'none') {
+                    nav.display = 'block';
+                    button.setAttribute('value', '<<');
+                    cont.background = temp;
+                } else {
+                   nav.display = 'none';
+                   button.setAttribute('value', '>>');
+                   temp = cont.background;
+                   cont.background = 'rgba(0,0,0,0)';
+                }
+                
+            }
+        </script>
+    </body>
 </html>
