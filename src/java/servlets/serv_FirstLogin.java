@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
 
+import classes.PasswordStorage;
+
+
 /**
  *
  * @author tobia
@@ -57,6 +60,11 @@ public class serv_FirstLogin extends HttpServlet {
                 
                 String tryUserName = request.getParameter("username");
                 String tryPassword = request.getParameter("password");
+                
+                try {
+                    String hashedTryPassWord = PasswordStorage.createHash(tryPassword);
+                    out.println(hashedTryPassWord);
+                
                 boolean correctInfo = false;
                 
                 while (rset.next()) {
@@ -67,7 +75,7 @@ public class serv_FirstLogin extends HttpServlet {
 
                     //checks the entered username and password against all db entries
                     if (tryUserName.equals(users_username)) {
-                        if (tryPassword.equals(users_password)) {
+                        if (PasswordStorage.verifyPassword(tryPassword, users_password)) {
                             correctInfo = true;
                             out.println("<form action=\"index.html\"><input type=\"submit\" value=\"Go to home\"></form>");
                         }
@@ -77,10 +85,16 @@ public class serv_FirstLogin extends HttpServlet {
                     wrongLogin(out);
                 }
                 
+                
+                } catch (PasswordStorage.CannotPerformOperationException ex) {
+                    out.println(ex);
+                } catch (PasswordStorage.InvalidHashException ex) {
+                    out.println(ex);
+                }
+                
             } catch (SQLException e) {
                 out.println("sql exception: " + e);
             }
-            
             
             out.println("</body>");
             out.println("</html>");
