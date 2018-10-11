@@ -156,7 +156,12 @@ a {
     display:none;
 }
 
-/* Calendar styling starts here ADRIAN*/
+.one-module-enabled {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+/* Calendar styling starts here*/
 .month {
     height: 7%;
     margin-right: 80%;
@@ -212,8 +217,3 @@ a {
     background-color: #737373;
 }
 /* Calendar styling ends here */
-=======
-.one-module-enabled {
-    font-weight: bold;
-    font-size: 1.5em;
-}
