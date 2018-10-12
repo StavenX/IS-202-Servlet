@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Date;
 /**
  *
  * @author adriannesvik
@@ -21,9 +22,14 @@ public class serv_Calendar extends HttpServlet {
     // Creates a date formats
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
+    SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();
+    
+    //
+    
     
     // Assigns month, year, currentday(day of the month) and day(day of the week) to integers from calendar
     int month = calendar.get(Calendar.MONTH);
@@ -35,7 +41,7 @@ public class serv_Calendar extends HttpServlet {
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
     ArrayList<String> weekdaysFullName = new ArrayList<>();
-    ArrayList<Integer> time = new ArrayList<>();
+    ArrayList<Date> time = new ArrayList<>();
     
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -51,8 +57,15 @@ public class serv_Calendar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            // Clears arraylist and calendars to avoid element duplication
+            cal.clear();
+            time.clear();
+            days.clear();
+            weekdays.clear();
+            calendar = Calendar.getInstance();
+            
             // Prints date (temporary)
-            out.println(df.format(calendar.getTime()));
+            //out.println(df.format(calendar.getTime()));
             
             // Add elements to weekdays ArrayList
             weekdays.add("Mo");
@@ -65,7 +78,7 @@ public class serv_Calendar extends HttpServlet {
             
             // Add elements to time ArrayList
             for (int m = 7; m <= 17; m++) {
-                time.add(m);
+                //time.add(m);
             }
 
             // HTML initialization and link to css
@@ -128,19 +141,10 @@ public class serv_Calendar extends HttpServlet {
                 
             // Increments calendar month
             calendar.add(Calendar.MONTH, +1);
-            
-            // Clears day ArrayList
-            days.clear();
             }
             
-            // Clears weekdays ArrayList
-            weekdays.clear();
-            
-            // Sets calendar and month to current time
-            calendar = Calendar.getInstance();
-            
             /*
-                This is section handles the timetable in calendar class
+                This is section handles the timetable in the calendar
             */
             // Add elements to weekdaysFullName ArrayList
             weekdaysFullName.add("Monday");
@@ -157,6 +161,7 @@ public class serv_Calendar extends HttpServlet {
             // Code below is definetly subject to change. Momentarily functionality.
             
             // If-else statement for highlighting current day of the week in CSS
+            calendar = Calendar.getInstance();
             out.println("<th> <th>");
             for(int i = 0; i <= 6; i++)
                 if(i == day && month == calendar.get(Calendar.MONTH)) {
@@ -167,20 +172,18 @@ public class serv_Calendar extends HttpServlet {
                 }
             weekdaysFullName.clear();
             out.println(" </tr>");
+
+            // Prints time of the day from 08:00 to 18:00
+            int l = -30;
+            for (int g = 0; g <= 20; g++) {
+                cal.set(Calendar.HOUR_OF_DAY, 8);
+                cal.set(Calendar.MINUTE, l += 30);
             
-            // Prints time in table
-            int w = 0;
-            while(w < 3) {
-                out.println("<tr><td>" + "0" + time.get(w) + ":00" + "</td></tr> ");
-                w++;
+                Date caldate = cal.getTime();
+                time.add(caldate);
+                
+                out.println(hm.format(time.get(g)));
             }
-            int v = 3;
-            while(v < time.size()) {
-                out.println("<tr><td>" + time.get(v) + ":00" + "</td></tr> ");
-                v++;
-            }
-            out.println("</tr>");
-            time.clear();
             
             // HTML end
             out.println("</body>");
