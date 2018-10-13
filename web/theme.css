@@ -162,62 +162,79 @@ a {
 }
 
 /* Calendar styling starts here*/
+
+ul {list-style-type: none;}
+.Calendars {
+    float: left;
+    width: 20%;
+}
+.cd-schedule {
+    float:left;
+    margin-left: 3%;
+    width: 77%;
+    background-color:yellow;
+}
+
 .month {
-    height: 7%;
-    margin-right: 80%;
+    width: 100%;
     padding: 3px;
     background-color: #ddd;
     text-align: center;
     font-size: 10px;
     color: #666;
-    margin-top: 10px;
     
 }
 
 .weekdays {
     margin: 0;
-    margin-right: 80%;
-    padding: 10px 0;
+    padding: 0;
+    display: table;
+    width: 100%;
     background-color:#ddd;
-    
 }
 
 .weekdays li {
-    display: inline-block;
-    width: 12.7%;
-    color: #666;
+
+    display: table-cell;
+    width: auto;
     text-align: center;
-    font-size: 1vw;
+    color: #666;
 }
-.currentDay {
+#highlightWeekday {
     background-color: white;
 }
 .thisDay {
     background-color: white;
 }
 .days {
-    padding: 10px 0;
-    background: #eee;
     margin: 0;
-    margin-right: 80%;
+    margin-bottom: 5px;
+    padding: 0;
+    display: table;
+    width: 100%;
+    background: #eee;
 }
 
 .days li {
     list-style-type: none;
     display: inline-block;
-    width: 12.7%;
+    width: 14.2857143%;
     text-align: center;
-    margin-bottom: 5px;
     font-size: 1vw;
     color: #777;
     padding: 5px;
 }
 
+
 .days li:hover {
     background-color: #737373;
 }
 
+/* Timetable styling */
+
+
 /* Calendar styling ends here */
+
 .one-module-enabled {
     font-weight: bold;
     font-size: 1.5em;
