@@ -163,16 +163,18 @@ a {
 
 /* Calendar styling starts here*/
 
-ul {list-style-type: none;}
 .Calendars {
     float: left;
     width: 20%;
+    margin-right: 1%;
+    min-width: 155px;
 }
+ 
 .cd-schedule {
     float:left;
-    margin-left: 3%;
-    width: 77%;
-    background-color:yellow;
+    margin-right: 1%;
+    width: 78%;
+    min-width: 800px;
 }
 
 .month {
@@ -182,7 +184,6 @@ ul {list-style-type: none;}
     text-align: center;
     font-size: 10px;
     color: #666;
-    
 }
 
 .weekdays {
@@ -200,15 +201,18 @@ ul {list-style-type: none;}
     text-align: center;
     color: #666;
 }
+
 #highlightWeekday {
     background-color: white;
 }
+
 .thisDay {
     background-color: white;
 }
+
 .days {
     margin: 0;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding: 0;
     display: table;
     width: 100%;
@@ -222,17 +226,113 @@ ul {list-style-type: none;}
     text-align: center;
     font-size: 1vw;
     color: #777;
-    padding: 5px;
+    padding: 10px;
 }
-
 
 .days li:hover {
     background-color: #737373;
 }
 
 /* Timetable styling */
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+ul {
+  list-style: none;
+}
 
+.cd-schedule {
+  position: relative;
+  margin: 0 0;
+}
 
+@media only screen and (min-width: 800px) {
+  .cd-schedule .timeline {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
+  }
+  .cd-schedule .timeline li {
+    position: relative;
+    height: 79.3px;
+  }
+  .cd-schedule .timeline li::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: black;
+  }
+  .cd-schedule .timeline li:last-of-type::after {
+    display: none;
+  }
+  .cd-schedule .timeline li span {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .cd-schedule .timeline li::after {
+    width: calc(100% - 60px);
+    left: 60px;
+  }
+  .cd-schedule .timeline li span {
+    display: inline-block;
+    -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+  }
+}
+.cd-schedule .events .top-info {
+  width: 100%;
+  padding: 0 5%;
+}
+
+@media only screen and (min-width: 800px) {
+  .cd-schedule .events {
+    float: left;
+    width: 100%;
+  }
+  .cd-schedule .events .events-group {
+    width: 14.2857143%;
+    float: left;
+    border: 1px solid black;
+    /* reset style */
+    margin-bottom: 0;
+  }
+  .cd-schedule .events .events-group:not(:first-of-type) {
+    border-left-width: 0;
+  }
+  .cd-schedule .events .top-info {
+    /* vertically center its content */
+    display: table;
+    height: 50px;
+    border-bottom: 1px solid black;
+    text-align: center;
+    padding: 15px;
+  }
+  
+  .cd-schedule .events .events-group > ul {
+    height: 950px;
+  }
+}
+
+@media only screen and (min-width: 1000px) {
+  .cd-schedule .events {
+    /* 60px is the .timeline element width */
+    width: calc(100% - 60px);
+    margin-left: 60px;
+  }
+}
+
+.weekdays .thisDay {
+    background-color: white;
+}
 /* Calendar styling ends here */
 
 .one-module-enabled {
