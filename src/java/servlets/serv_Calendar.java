@@ -79,6 +79,9 @@ public class serv_Calendar extends HttpServlet {
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
+                                out.println(weekdays.get(day));
+            // Calendar and timetable wrapper for layout purposes
+            out.println("<div class=\"calendarWrapper\">");
             
             // Prints out multiple calendars with different months
             out.println("<div class=\"Calendars\">");
@@ -92,10 +95,11 @@ public class serv_Calendar extends HttpServlet {
                 // Prints weekdays by iterating through ArrayList weekdays
                 out.println("<ul class=\"weekdays\">");
                 for(int w = 0; w <= 6; w++) {
-                    
+                    out.println(w);
+
                     // If-else statement for highlighting current day of the week in CSS
-                    if(w == (7-day) && month == calendar.get(Calendar.MONTH)) {
-                        out.println("<li class=\"thisDay\">" + weekdays.get(w) + "</li>");
+                    if(w == day && month == calendar.get(Calendar.MONTH)) {
+                        out.println("<li class=\"thisDay\">" + weekdays.get(day) + "</li>");
                     }
                     else {
                         out.println("<li>" + weekdays.get(w) + "</li>");
@@ -151,7 +155,7 @@ public class serv_Calendar extends HttpServlet {
             
             // If-else statement for highlighting current day of the week in CSS
             calendar = Calendar.getInstance();
-            out.println("<div class=\"cd-schedule\">");
+            out.println("<div class=\"schedule\">");
             out.println("<div class=\"events\">");
             out.println("<ul>");
 
