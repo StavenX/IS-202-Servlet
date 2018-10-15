@@ -20,7 +20,6 @@ import java.util.Date;
 public class serv_Calendar extends HttpServlet {
     
     // Creates a date formats
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
     SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
     
@@ -30,9 +29,8 @@ public class serv_Calendar extends HttpServlet {
     
     // Assigns month, year, currentday(day of the month) and day(day of the week) to integers from calendar
     int month = calendar.get(Calendar.MONTH);
-    int year = calendar.get(Calendar.YEAR);
-    int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-    int day = calendar.get(Calendar.DAY_OF_WEEK);
+    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     
     // ArrayList for days(days of the month and weekdays(days of the week)
     ArrayList<Integer> days = new ArrayList<>();
@@ -94,7 +92,7 @@ public class serv_Calendar extends HttpServlet {
                 out.println("<ul class=\"weekdays\">");
                 for(int w = 0; w <= 6; w++) {
                     // If-else statement for highlighting current day of the week in CSS
-                    if(w == day-2 && month == calendar.get(Calendar.MONTH)) {
+                    if(w == dayOfWeek-2 && month == calendar.get(Calendar.MONTH)) {
                         out.println("<li class=\"thisDay\">" + weekdays.get(w).substring(0,2) + "</li>");
                     }
                     else {
@@ -109,8 +107,8 @@ public class serv_Calendar extends HttpServlet {
                 for(int d = 1; d <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
                 
                     // Finds and assigns current day of current month to HTML class and adds day to days(ArrayList)
-                    if (calendar.get(Calendar.MONTH) == month && d == currentDay) {
-                            out.println("<li class=\"thisDay\">" + currentDay + "</li>");
+                    if (calendar.get(Calendar.MONTH) == month && d == dayOfMonth) {
+                            out.println("<li class=\"thisDay\">" + dayOfMonth + "</li>");
                     }
                     else {  
                         days.add(d);
@@ -148,10 +146,10 @@ public class serv_Calendar extends HttpServlet {
             out.println("<ul>");
 
             for(int i = 0; i <= 6; i++) {
-                if(i == day && month == calendar.get(Calendar.MONTH)) {
+                if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
                     out.println("<li class=\"events-group\">");
                     out.println("<div class=\"top-info\">");
-                    out.println("<span>" + weekdays.get(day) + "</span>");
+                    out.println("<span>" + weekdays.get(dayOfWeek) + "</span>");
                     out.println("</div>");
                     out.println("<ul></li></ul></li>");
                 }
@@ -186,6 +184,10 @@ public class serv_Calendar extends HttpServlet {
             out.println("</ul>");
             out.println("</div>");
             out.println("</div>");
+            
+            out.println("<form>");
+            out.println("<input type=\"button\" value=\"DO NOT CLICK UNDER ANY CIRCUMSTANCES\" onclick=\"window.location.href='https://www.youtube.com/watch?v=6n3pFFPSlW4'\" />");
+            out.println("</form>");
             
             // HTML end
             out.println("</body>");
