@@ -37,7 +37,6 @@ public class serv_Calendar extends HttpServlet {
     // ArrayList for days(days of the month and weekdays(days of the week)
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
-    ArrayList<String> weekdaysFullName = new ArrayList<>();
     ArrayList<Date> time = new ArrayList<>();
     
     /**
@@ -60,16 +59,15 @@ public class serv_Calendar extends HttpServlet {
             days.clear();
             weekdays.clear();
             calendar = Calendar.getInstance();
-            weekdaysFullName.clear();
             
             // Add elements to weekdays ArrayList
-            weekdays.add("Mo");
-            weekdays.add("Tu");
-            weekdays.add("We");
-            weekdays.add("Th");
-            weekdays.add("Fr");
-            weekdays.add("Sa");
-            weekdays.add("Su");
+            weekdays.add("Monday");
+            weekdays.add("Tuesday");
+            weekdays.add("Wednesday");
+            weekdays.add("Thursday");
+            weekdays.add("Friday");
+            weekdays.add("Saturday");
+            weekdays.add("Sunday");
 
             // HTML initialization and link to css
             out.println("<!DOCTYPE html>");
@@ -79,7 +77,7 @@ public class serv_Calendar extends HttpServlet {
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
-                                out.println(weekdays.get(day));
+
             // Calendar and timetable wrapper for layout purposes
             out.println("<div class=\"calendarWrapper\">");
             
@@ -95,14 +93,12 @@ public class serv_Calendar extends HttpServlet {
                 // Prints weekdays by iterating through ArrayList weekdays
                 out.println("<ul class=\"weekdays\">");
                 for(int w = 0; w <= 6; w++) {
-                    out.println(w);
-
                     // If-else statement for highlighting current day of the week in CSS
-                    if(w == day && month == calendar.get(Calendar.MONTH)) {
-                        out.println("<li class=\"thisDay\">" + weekdays.get(day) + "</li>");
+                    if(w == day-2 && month == calendar.get(Calendar.MONTH)) {
+                        out.println("<li class=\"thisDay\">" + weekdays.get(w).substring(0,2) + "</li>");
                     }
                     else {
-                        out.println("<li>" + weekdays.get(w) + "</li>");
+                        out.println("<li>" + weekdays.get(w).substring(0,2) + "</li>");
                     }
                 }
                 out.println("</ul>");
@@ -142,14 +138,6 @@ public class serv_Calendar extends HttpServlet {
             /*
                 This is section handles the timetable in the calendar
             */
-            // Add elements to weekdaysFullName ArrayList
-            weekdaysFullName.add("Monday");
-            weekdaysFullName.add("Tuesday");
-            weekdaysFullName.add("Wednesday");
-            weekdaysFullName.add("Thursday");
-            weekdaysFullName.add("Friday");
-            weekdaysFullName.add("Saturday");
-            weekdaysFullName.add("Sunday");
             
             // Code below is definetly subject to change. Momentarily functionality.
             
@@ -163,14 +151,14 @@ public class serv_Calendar extends HttpServlet {
                 if(i == day && month == calendar.get(Calendar.MONTH)) {
                     out.println("<li class=\"events-group\">");
                     out.println("<div class=\"top-info\">");
-                    out.println("<span>" + weekdaysFullName.get(day) + "</span>");
+                    out.println("<span>" + weekdays.get(day) + "</span>");
                     out.println("</div>");
                     out.println("<ul></li></ul></li>");
                 }
                 else {
                     out.println("<li class=\"events-group\">");
                     out.println("<div class=\"top-info\">");
-                    out.println(weekdaysFullName.get(i));
+                    out.println(weekdays.get(i));
                     out.println("</div>");
                     out.println("<ul></li></ul></li>");
                 }
