@@ -36,7 +36,7 @@ public class serv_Calendar extends HttpServlet {
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
     ArrayList<Date> time = new ArrayList<>();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -146,20 +146,22 @@ public class serv_Calendar extends HttpServlet {
             out.println("<ul>");
 
             for(int i = 0; i <= 6; i++) {
-                if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
+                /*if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
                     out.println("<li class=\"events-group\">");
                     out.println("<div class=\"top-info\">");
                     out.println("<span>" + weekdays.get(dayOfWeek) + "</span>");
                     out.println("</div>");
                     out.println("<ul></li></ul></li>");
-                }
-                else {
+                }*/
+
                     out.println("<li class=\"events-group\">");
                     out.println("<div class=\"top-info\">");
                     out.println(weekdays.get(i));
                     out.println("</div>");
-                    out.println("<ul></li></ul></li>");
-                }
+                    out.println("<ul><li class=\"single-event\">data-start=\"09:30\" data-end=\"10:30\" data-content=\"event-abs-circuit\" data-event=\"event-1\"<a href=\"#0\"");
+                    out.println();
+                    out.println("</a></ul></li>");
+                
             }
             out.println("</li>");
             out.println("</ul>");
