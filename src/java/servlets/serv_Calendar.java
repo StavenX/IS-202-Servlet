@@ -136,14 +136,14 @@ public class serv_Calendar extends HttpServlet {
             /*
                 This is section handles the timetable in the calendar
             */
-            
             // Code below is definetly subject to change. Momentarily functionality.
             
             // If-else statement for highlighting current day of the week in CSS
             calendar = Calendar.getInstance();
-            out.println("<div class=\"schedule\">");
-            out.println("<div class=\"events\">");
-            out.println("<ul>");
+            out.println("<table class=\"timetable\">");
+            out.println("<thead>");
+            out.println("<tr>");
+            out.println("<th>&nbsp;</th>");
 
             for(int i = 0; i <= 6; i++) {
                 /*if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
@@ -154,39 +154,48 @@ public class serv_Calendar extends HttpServlet {
                     out.println("<ul></li></ul></li>");
                 }*/
 
-                    out.println("<li class=\"events-group\">");
-                    out.println("<div class=\"top-info\">");
-                    out.println(weekdays.get(i));
-                    out.println("</div>");
-                    out.println("<ul><li class=\"single-event\">data-start=\"09:30\" data-end=\"10:30\" data-content=\"event-abs-circuit\" data-event=\"event-1\"<a href=\"#0\"");
-                    out.println();
-                    out.println("</a></ul></li>");
+                    out.println("<th class= thWeekday>" + weekdays.get(i) + "</th>");
                 
             }
-            out.println("</li>");
-            out.println("</ul>");
-            out.println("</div>");
+            out.println("</tr>");
+            out.println("</thead>");
             
             // Prints time of the day from 08:00 to 18:00
-            out.println("<div class=\"timeline\">");
-            out.println("<ul>");
+            out.println("<tbody>");
+            out.println("<tr>");
+            
+            cal.set(Calendar.MINUTE, 0);
+                
             int l = 6;
             for (int g = 0; g <= 11; g++) {
                 cal.set(Calendar.HOUR_OF_DAY, l += 1);
-                cal.set(Calendar.MINUTE, 0);
+
             
                 Date caldate = cal.getTime();
                 time.add(caldate);
                 
-                out.println("<li>");
-                out.println("<span>" + hm.format(time.get(g)) + "</span>");
-                out.println("</li>");
+                if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
+                    // test
+                    out.println("<td>10:00</td>\n" + 
+                    "<td class=\" test-events\" rowspan=\"4\">\n" +
+                    "<span class=\"clockStart\">10:00</span><br>\n" +
+                    "<span class=\"clockEnd\">13:00</span>\n" +
+                    "<span class=\"title\">test subject</span><br>\n" +
+                    "<span class=\"lecturer\">test lecturer</span><br>\n" +
+                    "<span class=\"class\">test class 3421</span>\n" +
+                    "</td>");
+                }
+                
+                else {
+                    out.println("<tr><td>" + hm.format(time.get(g)) + "</tr></td>");
+                }
             }
             
-            out.println("</ul>");
-            out.println("</div>");
-            out.println("</div>");
+            out.println("</tr>");
+            out.println("</tbody>");
+            out.println("</table>");
             
+            out.println("<br><br><br><br><br>");
             out.println("<form>");
             out.println("<input type=\"button\" value=\"DO NOT CLICK UNDER ANY CIRCUMSTANCES\" onclick=\"window.location.href='https://www.youtube.com/watch?v=6n3pFFPSlW4'\" />");
             out.println("</form>");
