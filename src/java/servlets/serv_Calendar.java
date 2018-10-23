@@ -72,7 +72,7 @@ public class serv_Calendar extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");

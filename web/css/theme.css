@@ -9,16 +9,34 @@ and open the template in the editor.
 */
 
 @import url('https://fonts.googleapis.com/css?family=Rubik');
+@import url('https://fonts.googleapis.com/css?family=Rubik');
 
  * {box-sizing: border-box}
  body {
-    background-color: lightblue;
+     background-color: #6666ff;
     /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
 /*font type for entire page*/
 body, body * {
-    font-family: 'Rubik', sans-serif !important;
+    font-family: 'Cabin', sans-serif !important;
+    
+}
+    
+h1 {
+    color: #ffffff;
+}
+
+h2 {
+    color: #ffffff;
+}
+
+h3 {
+    color: #ffffff;
+}
+
+p {
+    color: #ffffff;
 }
 
  input {
@@ -65,7 +83,7 @@ hr {
 }
  /* Add a blue text color to links */
 a {
-  color: dodgerblue;
+  color: white;
 }
  /* Set a grey background color and center the text of the "sign in" section */
 .signin {
