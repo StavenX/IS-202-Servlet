@@ -9,6 +9,7 @@
         <res-type> javax.sql.DataSource</res-type>
         <res-auth> Container</res-auth>
     </resource-ref>
+<<<<<<< Updated upstream
     
     <!--Timeout of 30 minutes-->
     <session-config>
@@ -73,4 +74,6 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+=======
+>>>>>>> Stashed changes
 </web-app>

@@ -13,7 +13,11 @@ and open the template in the editor.
 
  * {box-sizing: border-box}
  body {
+<<<<<<< Updated upstream:build/web/css/theme.css
      background-color: #6666ff;
+=======
+     background-color: lightblue;
+>>>>>>> Stashed changes:web/theme.css
     /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
@@ -42,14 +46,14 @@ p {
  input {
      padding: 15px;
      margin: 10px 0;
-     background: #f1f1f1;
+     background: black;
      border: none;
      border-radius: 5px;
  }
  
  input[type=submit], input[type=button] {
      border: solid 1px black;
-     background-color: #dddde4;
+     background-color: orange;
      font-weight: bold;
  }
  
@@ -83,7 +87,11 @@ hr {
 }
  /* Add a blue text color to links */
 a {
+<<<<<<< Updated upstream:build/web/css/theme.css
   color: white;
+=======
+  color: brown;
+>>>>>>> Stashed changes:web/theme.css
 }
  /* Set a grey background color and center the text of the "sign in" section */
 .signin {
@@ -130,12 +138,12 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: #961034;
+    background: lightgray;
     max-width: 10%;
     padding: 5px;
 }
  .nav-item {
-    border: 1px solid black;
+    border: 1px solid beige;
     margin: 20px 0;
     width: 100%;
     text-align: center;
@@ -159,7 +167,7 @@ a {
 }
 
 .module-container {
-    border: 1px solid darkblue;
+    border: 1px solid grey;
     margin: 20px 0;
 }
 
