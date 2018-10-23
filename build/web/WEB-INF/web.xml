@@ -4,12 +4,73 @@
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	 version="3.1">
- 
-    
     <resource-ref>
         <res-ref-name>jdbc/localhostDS</res-ref-name>
         <res-type> javax.sql.DataSource</res-type>
         <res-auth> Container</res-auth>
     </resource-ref>
+    
+    <!--Timeout of 30 minutes-->
+    <session-config>
+        <session-timeout> 30 </session-timeout>
+    </session-config>
+    
+    <!-- A security constraint is a limit on what the users can do. 
+          The constraint is enforced by tomcat, no programming is needed
+          All necessary info is in this file -->
+    <security-constraint>
+        <!--  to access these pages  -->
+        <web-resource-collection>
+            <web-resource-name>UserResources</web-resource-name>
+            <url-pattern>/module.html</url-pattern>
+            <url-pattern>/student.html</url-pattern>
+            <url-pattern>/serv_Calendar</url-pattern>
+            <url-pattern>/serv_FileUpload</url-pattern>
+            <url-pattern>/serv_GetModule</url-pattern>
+            <url-pattern>/serv_GetStudent</url-pattern>
+            <url-pattern>/serv_OneModule</url-pattern>
+            <url-pattern>/serv_CreateNewUser</url-pattern>
+            <url-pattern>/serv_OneStudent</url-pattern>
+        </web-resource-collection>
+        <!--  the user must have one of these roles  -->
+        <auth-constraint>
+            <role-name>Student</role-name>
+            <role-name>Lecturer</role-name>        
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminResources</web-resource-name>
+            <url-pattern>/serv_CreateModule</url-pattern>
+            <url-pattern>/serv_CreateNewUser</url-pattern>
+            <url-pattern>/serv_CreateStudent</url-pattern>
+            <url-pattern>/serv_DeleteModule</url-pattern>
+            <url-pattern>/serv_DeleteStudent</url-pattern>
+            <url-pattern>/serv_UpdateModule</url-pattern>
+            <url-pattern>/AdminSaveContact</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Lecturer</role-name>
+        </auth-constraint>
+    </security-constraint>
   
+    <!--  the available roles  -->
+    <security-role>
+        <role-name>Student</role-name> <!--user_Student-->
+    </security-role>
+    
+    <security-role>
+        <role-name>Lecturer</role-name> <!--user_Admin-->
+    </security-role>
+
+    <!-- which realm to use -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>DataSourceRealm</realm-name>
+    </login-config>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
 </web-app>
