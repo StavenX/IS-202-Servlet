@@ -9,34 +9,16 @@ and open the template in the editor.
 */
 
 @import url('https://fonts.googleapis.com/css?family=Rubik');
-@import url('https://fonts.googleapis.com/css?family=Rubik');
 
  * {box-sizing: border-box}
  body {
-     background-color: #6666ff;
+    background-color: lightblue;
     /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
 /*font type for entire page*/
 body, body * {
-    font-family: 'Cabin', sans-serif !important;
-    
-}
-    
-h1 {
-    color: #ffffff;
-}
-
-h2 {
-    color: #ffffff;
-}
-
-h3 {
-    color: #ffffff;
-}
-
-p {
-    color: #ffffff;
+    font-family: 'Rubik', sans-serif !important;
 }
 
  input {
@@ -83,7 +65,7 @@ hr {
 }
  /* Add a blue text color to links */
 a {
-  color: white;
+  color: dodgerblue;
 }
  /* Set a grey background color and center the text of the "sign in" section */
 .signin {
@@ -180,62 +162,122 @@ a {
 }
 
 /* Calendar styling starts here*/
+.calendarWrapper {
+    min-width: 1300px;
+}
+
+.Calendars {
+    float: left;
+    width: 20%;
+    margin-right: 1%;
+    min-width: 260px;
+}
+ 
+.schedule {
+    float:left;
+    margin-right: 1%;
+    width: 78%;
+    min-width: 870px;
+}
+
 .month {
-    height: 7%;
-    margin-right: 80%;
+    width: 100%;
     padding: 3px;
     background-color: #ddd;
     text-align: center;
     font-size: 10px;
     color: #666;
-    margin-top: 10px;
-    
 }
 
 .weekdays {
     margin: 0;
-    margin-right: 80%;
-    padding: 10px 0;
+    padding: 0;
+    display: table;
+    width: 100%;
     background-color:#ddd;
-    
 }
 
 .weekdays li {
-    display: inline-block;
-    width: 12.7%;
-    color: #666;
+
+    display: table-cell;
+    width: auto;
     text-align: center;
-    font-size: 1vw;
+    color: #666;
 }
-.currentDay {
-    background-color: white;
-}
+
 .thisDay {
     background-color: white;
 }
+
 .days {
-    padding: 10px 0;
-    background: #eee;
     margin: 0;
-    margin-right: 80%;
+    margin-bottom: 10px;
+    padding: 0;
+    display: table;
+    width: 100%;
+    background: #eee;
+    min-height: 170px;
 }
 
 .days li {
     list-style-type: none;
     display: inline-block;
-    width: 12.7%;
+    width: 14.2857143%;
     text-align: center;
-    margin-bottom: 5px;
-    font-size: 1vw;
+    font-size: 1rem;
     color: #777;
-    padding: 5px;
+    padding: 10px;
 }
 
 .days li:hover {
     background-color: #737373;
 }
 
+/* Timetable styling */
+.timetable .thWeekday {
+  width: 14.2857143%;
+}
+
+.timetable {
+  border-collapse: collapse;
+}
+
+th {
+  border: solid black;
+  padding: 20px;
+}
+
+th:first-child {
+  border: none;
+}
+
+tr:last-child { 
+    border-bottom: none; 
+}
+
+td {
+  padding: 21px;
+  border: solid black;
+  position: relative;
+}
+
+.test-events {
+  background-color: yellow;
+}
+
+.clockStart {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.clockEnd {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
 /* Calendar styling ends here */
+
 .one-module-enabled {
     font-weight: bold;
     font-size: 1.5em;
