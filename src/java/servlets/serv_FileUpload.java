@@ -34,6 +34,7 @@ public class serv_FileUpload extends HttpServlet {
 		.append("<html>\r\n")
 		.append("    <head>\r\n")
 		.append("        <title>File Upload Form</title>\r\n")
+                .append("            <link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">")
 		.append("    </head>\r\n")
 		.append("    <body>\r\n");
 		out.append("<h1>Upload file</h1>\r\n");
@@ -84,7 +85,6 @@ public class serv_FileUpload extends HttpServlet {
 						+ fileName
 						+ "<br>\r\n");
 			}
-		}
-                
+		}            
 	}
 }
