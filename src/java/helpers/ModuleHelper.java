@@ -93,8 +93,11 @@ public class ModuleHelper {
         
         try {
             
+            //base string for sql preparedstatement
             String sqlString = "SELECT * FROM module ORDER BY ";
             
+            //based on @param orderBy, something is added to complete the string
+            //values received from "sort by" buttons at the top of page
             switch (orderBy.toLowerCase()) {                            
                 case "name":    sqlString += "module_name";
                                 break;
@@ -106,13 +109,15 @@ public class ModuleHelper {
                 default:    sqlString += "module_id";
             }
             
+            //preparedstatement is prepared and executed
             getModules = conn.prepareStatement(sqlString);
-                       
             ResultSet rset = getModules.executeQuery();
+            
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
+            //"sort by"-buttons (can probably be reduced to one form)
             out.println("<h2>Sort by: </h2>");
             out.println("<form action=\"getModule\">");
             out.println("<input type=\"submit\" name=\"orderBy\" value=\"ID\">");
@@ -126,12 +131,13 @@ public class ModuleHelper {
             
             // While there exists more entries (rows?)
             while (rset.next()) {               
-                // The different columns
+                // The different columns from the db
                 String module_id = rset.getString("module_id");
                 String module_name = rset.getString("module_name");
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
                 
+                //the module info in a container
                 out.println("<div class=\"module-container\">");
                 out.println("<form action=\"oneModule\" method=\"post\">");
                 out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + module_id + "\">");

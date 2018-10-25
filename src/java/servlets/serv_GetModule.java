@@ -57,6 +57,8 @@ public class serv_GetModule extends HttpServlet {
                 Connection conn;
                 conn = login.loginToDB(out);
                 
+                //is null if first time entering the page, which is handled by a
+                //'default' in a switch in printModules()
                 String orderBy = request.getParameter("orderBy");
                
                 

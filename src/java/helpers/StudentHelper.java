@@ -77,19 +77,22 @@ public class StudentHelper {
                 // The different columns
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
-                String studentEducationFirst = rset.getString("student_education");
+                String studentEducationUnchecked = rset.getString("student_education");
                 
-                String[] anArray= studentEducationFirst.split("");
-                
+                //divides string into an array, each array item containing string of length 1
+                String[] letters = studentEducationUnchecked.split("");
                 String studentEducation = "";
                 
-                for (String letter : anArray) {
+                //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
+                //(prevents images etc being posted instead of text
+                for (String letter : letters) {
                     if (letter.equals("<")) {
                         letter = "&#x003C";
                     }
                     if (letter.equals(">")) {
                         letter = "&#x003E";
                     }
+                    //adds each letter to a new string to be used later
                     studentEducation += letter;
                 }
                 
@@ -105,24 +108,23 @@ public class StudentHelper {
                 out.println("<div>Education:" + studentEducation + "</div>");
                 out.println("</div>");
                 
-                //more info button
+                //"more info"-button
                 out.println("<div class=\"student-container-item\">");
                 out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</div>");
                 out.println("</form>");
                 
-                //delete buttons
+                //delete-buttons
                 out.println("<div class=\"student-container-item\">");
-                
                 out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
                 site.printDeleteButton("deleteStudent", "student_id", studentID);
                 out.println("</div>");
-                
                 out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
+            //prints javascript
             site.printJsForDeleteButton();
             
             conn.close();
