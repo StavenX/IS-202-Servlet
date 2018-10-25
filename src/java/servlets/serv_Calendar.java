@@ -195,6 +195,8 @@ public class serv_Calendar extends HttpServlet {
             out.println("</tbody>");
             out.println("</table>");
             
+            out.println("<h1> <a href =\"createCalendarEvent.html\"> Create event </a> </h1>");
+            
             out.println("<br><br><br><br><br>");
             out.println("<form>");
             out.println("<input type=\"button\" value=\"DO NOT CLICK UNDER ANY CIRCUMSTANCES\" onclick=\"window.location.href='https://www.youtube.com/watch?v=6n3pFFPSlW4'\" />");
