@@ -77,7 +77,21 @@ public class StudentHelper {
                 // The different columns
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
+                String studentEducationFirst = rset.getString("student_education");
+                
+                String[] anArray= studentEducationFirst.split("");
+                
+                String studentEducation = "";
+                
+                for (String letter : anArray) {
+                    if (letter.equals("<")) {
+                        letter = "&#x003C";
+                    }
+                    if (letter.equals(">")) {
+                        letter = "&#x003E";
+                    }
+                    studentEducation += letter;
+                }
                 
                 out.println("<div class=\"student-container\">");
                 

@@ -51,14 +51,16 @@ public class serv_GetModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
 
             site.printHead("Modules", "bodyy");
-            site.printHead("Modules", "");
             
             out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
             
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                ModuleHelper.printModules(out, conn);
+                String orderBy = request.getParameter("orderBy");
+               
+                
+                ModuleHelper.printModules(out, conn, orderBy);
                 login.close();
                 
             site.printEnd();

@@ -47,8 +47,9 @@ public class serv_CreateModule extends HttpServlet {
                 conn = login.loginToDB(out);
                 
                 ModuleHelper.insertModule(
-                        request.getParameter("mod_name"),
-                        request.getParameter("mod_desc"),
+                        request.getParameter("module_name"),
+                        request.getParameter("module_desc"),
+                        request.getParameter("module_points"),
                         conn, 
                         out
                 );
