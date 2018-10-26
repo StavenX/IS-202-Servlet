@@ -49,7 +49,7 @@ public class ModuleHelper {
             
             out.println(
                 "<form action=\"getModule\" method=\"post\">\n" +
-"                   <input type=\"Submit\" name=\"get\" value=\"Get all Modules from Database\">   \n" +
+"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Modules from Database\">   \n" +
 "               </form>");
         }
         catch (SQLException ex) {
@@ -186,14 +186,28 @@ public class ModuleHelper {
                 String module_points = rset.getString("module_points");
                 out.println("<div>");
                 out.println("<form action=\"updateModule\">");
+                out.println("<div class=\"inline-block module-edit-input\">");
+                out.println("<p>Module ID (can't be changed)</p>");
                 out.println("<input type=\"text\" name=\"module_id\" value=\"" + module_id + "\" disabled>");
+                out.println("</div>");
+                out.println("<div class=\"inline-block module-edit-input\">");
+                out.println("<p>Module name</p>");
                 out.println("<input type=\"text\" name=\"module_name\" value=\"" + module_name + "\" disabled>");
+                out.println("</div>");
+                out.println("<div class=\"inline-block module-edit-input\">");
+                out.println("<p>Module description</p>");
                 out.println("<input type=\"text\" name=\"module_desc\" value=\"" + module_desc + "\" disabled>");
+                out.println("</div>");
+                out.println("<div class=\"inline-block module-edit-input\">");
+                out.println("<p>Module points</p>");
                 out.println("<input type=\"text\" name=\"module_points\" value=\"" + module_points + "\" disabled>");
-                out.println("<input id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
-                out.println("<input id=\"one-module-save\" type=\"submit\" value=\"Save\">");
+                out.println("</div>");
+                out.println("<input class=\"button\" id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
+                out.println("<input class=\"button\" id=\"one-module-save\" type=\"submit\" value=\"Save\">");
                 out.println("</form>");
-                out.println("<form action=\"createDeliverables\"><input type=\"submit\" value=\"Create Deliverables\"></form>");
+                out.println("<form action=\"createDeliverables\">");
+                out.println("<input class=\"button\" type=\"submit\" value=\"Create Deliverables\">");
+                out.println("</form>");
                 out.println("</div>");
                 
             }

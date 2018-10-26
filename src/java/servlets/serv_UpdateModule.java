@@ -57,7 +57,7 @@ public class serv_UpdateModule extends HttpServlet {
             //form that takes you back to the module you just edited
             out.println("<form name=\"auto\" action=\"oneModule\">");
             out.println("<input name=\"module_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
+            out.println("<input class=\"button\" type=\"submit\">");
             out.println("</form>");
             
             //auto submits the form so the page auto loads

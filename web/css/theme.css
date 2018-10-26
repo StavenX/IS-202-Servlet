@@ -13,39 +13,24 @@ and open the template in the editor.
  * {box-sizing: border-box}
  body {
     background-color: #F8F1E5;
-    /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
-/*font type for entire page*/
+/*font type for the page and all items in the page*/
 body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
-/*
- input {
-     padding: 15px;
+ 
+/* makes typeable input boxes bigger */
+ input[type=text], input[type=password] {
      margin: 10px 0;
-     background: #D8D1C5;
-     border: solid 1px black;
-     border-radius: 5px;
+     padding: 15px;
  }
  
- 
- input[type=submit], input[type=button] {
-     border: solid 1px black;
-     background-color: #D8D1C5;
-     font-weight: bold;
- }
- 
- input[type=submit]:hover, input[type=button]:hover {
-     cursor: pointer;
-     background-color: #C8C1B5;
- }
- 
+ /*input boxes changes when clicked on */
  input[type=text]:focus, input[type=password]:focus {
   background-color: #ddd;
   outline: none;
 }
-*/
 
  /* Overwrite default styles of hr */
 hr {
@@ -311,6 +296,16 @@ td {
     height: 60px;
 }
 
+.module-edit-input {
+    margin: 0 10px;
+    padding: 5px;
+    text-align: center;
+}
+
  .invisible {
     display: none;
+}
+
+.inline-block {
+    display: inline-block;
 }

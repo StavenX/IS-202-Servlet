@@ -47,7 +47,7 @@ public class serv_CreateStudent extends HttpServlet {
             out.println("<form action=\"createStudent\" method=\"post\">");      
             out.println("<input class=\"student-input\" type=\"text\" name=\"student_name\" placeholder=\"Insert name\">");   
             out.println("<input class=\"student-input\" type=\"text\" name=\"student_edu\" placeholder=\"Insert education\">");
-            out.println("<input type=\"Submit\" name=\"get\" value=\"Create\">");
+            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
             out.println("</form>");
             site.printEnd();
         }       
