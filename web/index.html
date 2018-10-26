@@ -18,7 +18,7 @@ and open the template in the editor.
         
         <div class="nav-container" id="nav-container">
             <div class="nav-button">
-                <input onclick="hide()" type="button" value="<<" id="nav-button">
+                <input type="button" class="button" onclick="hide()" value="<<" id="nav-button">
             </div>
             <div class="home-nav" id="nav">
                 <div class="nav-item">
@@ -32,7 +32,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="student.html">
+                    <a href="Student">
                         <div class="nav-img">
                             <img src="http://via.placeholder.com/50x50" alt="lol">
                         </div>
@@ -42,7 +42,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="module.html">
+                    <a href="Module">
                         <div class="nav-img">
                             <img src="http://via.placeholder.com/50x50" alt="lol">
                         </div>
@@ -65,8 +65,8 @@ and open the template in the editor.
         </div>
         <div class="home-page"> 
             <h1></h1>
-            <form action="student.html"> <button class="button button-default">Students</button> </form>
-            <form action="module.html"> <button class="button button-default">Modules</button> </form>
+            <form action="Student"> <button class="button button-default">Students</button> </form>
+            <form action="Module"> <button class="button button-default">Modules</button> </form>
             <form action="serv_Calendar"> <button class="button button-default">Calendar</button> </form>
             <form action="serv_FileUpload"> <button class="button button-default">File Upload</button> </form>
         </div>
@@ -76,6 +76,7 @@ and open the template in the editor.
                 nav = document.getElementById('nav').style;
                 button = document.getElementById('nav-button');
                 temp = '';
+                temp_button = '';
                     
                 if (nav.display === 'none') {
                     nav.display = 'block';

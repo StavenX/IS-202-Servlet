@@ -13,37 +13,25 @@ and open the template in the editor.
  * {box-sizing: border-box}
  body {
     background-color: #F8F1E5;
-    /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
-/*font type for entire page*/
+/*font type for the page and all items in the page*/
 body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
-
- input {
-     padding: 15px;
+ 
+/* makes typeable input boxes bigger */
+ input[type=text], input[type=password] {
      margin: 10px 0;
-     background: #D8D1C5;
-     border: solid 1px black;
-     border-radius: 5px;
+     padding: 15px;
  }
  
- input[type=submit], input[type=button] {
-     border: solid 1px black;
-     background-color: #D8D1C5;
-     font-weight: bold;
- }
- 
- input[type=submit]:hover, input[type=button]:hover {
-     cursor: pointer;
-     background-color: #C8C1B5;
- }
- 
+ /*input boxes changes when clicked on */
  input[type=text]:focus, input[type=password]:focus {
   background-color: #ddd;
   outline: none;
 }
+
  /* Overwrite default styles of hr */
 hr {
   border: 1px solid #f1f1f1;
@@ -81,9 +69,6 @@ a {
 }
  .form1 input {
     display: list-item;
-}
- .invisible {
-    display: none;
 }
 
  .student-container {
@@ -138,6 +123,7 @@ a {
 #nav-button {
     padding: 5px 15px;
     background-color: #F8F1E5;
+    color: #2F3131;
     margin: 0 auto;
     border-radius: 0px;
 }
@@ -308,4 +294,18 @@ td {
 .button-default {
     width: 150px;
     height: 60px;
+}
+
+.module-edit-input {
+    margin: 0 10px;
+    padding: 5px;
+    text-align: center;
+}
+
+ .invisible {
+    display: none;
+}
+
+.inline-block {
+    display: inline-block;
 }
