@@ -22,6 +22,8 @@ public class serv_Calendar extends HttpServlet {
     // Creates a date formats
     SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
     SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
+    SimpleDateFormat wd = new SimpleDateFormat("EEEE", Locale.US);
+    SimpleDateFormat dt = new SimpleDateFormat("dd.MM");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
@@ -35,7 +37,6 @@ public class serv_Calendar extends HttpServlet {
     // ArrayList for days(days of the month and weekdays(days of the week)
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
-    ArrayList<Date> time = new ArrayList<>();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,7 +54,6 @@ public class serv_Calendar extends HttpServlet {
 
             // Clears arraylist and calendars to avoid element duplication
             cal.clear();
-            time.clear();
             days.clear();
             weekdays.clear();
             calendar = Calendar.getInstance();
@@ -136,27 +136,21 @@ public class serv_Calendar extends HttpServlet {
             /*
                 This is section handles the timetable in the calendar
             */
-            // Code below is definetly subject to change. Momentarily functionality.
             
-            // If-else statement for highlighting current day of the week in CSS
+            // Prints day of the week in timetable
             calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
+
             out.println("<table class=\"timetable\">");
             out.println("<thead>");
             out.println("<tr>");
             out.println("<th>&nbsp;</th>");
 
             for(int i = 0; i <= 6; i++) {
-                /*if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
-                    out.println("<li class=\"events-group\">");
-                    out.println("<div class=\"top-info\">");
-                    out.println("<span>" + weekdays.get(dayOfWeek) + "</span>");
-                    out.println("</div>");
-                    out.println("<ul></li></ul></li>");
-                }*/
-
-                    out.println("<th class= thWeekday>" + weekdays.get(i) + "</th>");
-                
+                    out.println("<th class= thWeekday>" + wd.format(calendar.getTime()) + "<br>" + dt.format(calendar.getTime()) + "</th>");
+                    calendar.set(Calendar.DAY_OF_WEEK,(calendar.get(Calendar.DAY_OF_WEEK)) + 1);
             }
+            
             out.println("</tr>");
             out.println("</thead>");
             
@@ -164,17 +158,12 @@ public class serv_Calendar extends HttpServlet {
             out.println("<tbody>");
             out.println("<tr>");
             
+            cal.set(Calendar.HOUR_OF_DAY, 8);
             cal.set(Calendar.MINUTE, 0);
-                
-            int l = 6;
-            for (int g = 0; g <= 11; g++) {
-                cal.set(Calendar.HOUR_OF_DAY, l += 1);
+            int l = 0;
+            while (cal.get(Calendar.HOUR_OF_DAY) <= 18) {
 
-            
-                Date caldate = cal.getTime();
-                time.add(caldate);
-                
-                if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
+                /*if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
                     // test
                     out.println("<td>10:00</td>\n" + 
                     "<td class=\" test-events\" rowspan=\"4\">\n" +
@@ -184,11 +173,10 @@ public class serv_Calendar extends HttpServlet {
                     "<span class=\"lecturer\">test lecturer</span><br>\n" +
                     "<span class=\"class\">test class 3421</span>\n" +
                     "</td>");
-                }
+                }*/
                 
-                else {
-                    out.println("<tr><td>" + hm.format(time.get(g)) + "</tr></td>");
-                }
+                out.println("<tr><td>" + hm.format(cal.getTime()) + "</tr></td>");
+                cal.set(Calendar.MINUTE, + 30);
             }
             
             out.println("</tr>");
