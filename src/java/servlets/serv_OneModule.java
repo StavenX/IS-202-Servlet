@@ -44,7 +44,7 @@ public class serv_OneModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("Single module", "one-module-container");
             
-            String singleMod_id = request.getParameter("singleMod_id");
+            String singleMod_id = request.getParameter("module_id");
             
             Connection conn;
             conn = login.loginToDB(out);

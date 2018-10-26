@@ -30,7 +30,7 @@ public class HtmlHelper {
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<link rel=\"icon\" href=\"placeholder_v1.png\" type=\"image/png\">");
-        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
         out.println("<title>Servlet getStudent</title>");            
         out.println("</head>");
         out.println("<body id=\"" + bodyId + "\">");
@@ -47,10 +47,28 @@ public class HtmlHelper {
                 out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\" class=\"invisible makesure-" + entityID + "\">");
                 out.println("</form>");
     }
-    
+        
     public void printJsForDeleteButton() {
         //javascript for handling delete buttons
         out.println("<script src=\"FirstScripts.js\"></script>");
+    }
+    
+    public String checkForHtmlTags(String toCheck) {
+        String checked = "";
+        String[] letters = toCheck.split("");
+            //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
+            //(prevents images etc being posted instead of text
+            for (String letter : letters) {
+                if (letter.equals("<")) {
+                    letter = "&#x003C";
+                }
+                if (letter.equals(">")) {
+                    letter = "&#x003E";
+                }
+                //adds each letter to a new string to be used later
+                checked += letter;
+            }
+        return checked;
     }
     
     public void printNav () {

@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.ArrayList;
+import java.util.Date;
 /**
  *
  * @author adriannesvik
@@ -19,24 +20,23 @@ import java.util.ArrayList;
 public class serv_Calendar extends HttpServlet {
     
     // Creates a date formats
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     SimpleDateFormat mf = new SimpleDateFormat("MMMM", Locale.US);
+    SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();
     
     // Assigns month, year, currentday(day of the month) and day(day of the week) to integers from calendar
     int month = calendar.get(Calendar.MONTH);
-    int year = calendar.get(Calendar.YEAR);
-    int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-    int day = calendar.get(Calendar.DAY_OF_WEEK)-2;
+    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
     
     // ArrayList for days(days of the month and weekdays(days of the week)
     ArrayList<Integer> days = new ArrayList<>();
     ArrayList<String> weekdays = new ArrayList<>();
-    ArrayList<String> weekdaysFullName = new ArrayList<>();
-    ArrayList<Integer> time = new ArrayList<>();
-    
+    ArrayList<Date> time = new ArrayList<>();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,22 +51,21 @@ public class serv_Calendar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            // Prints date (temporary)
-            out.println(df.format(calendar.getTime()));
+            // Clears arraylist and calendars to avoid element duplication
+            cal.clear();
+            time.clear();
+            days.clear();
+            weekdays.clear();
+            calendar = Calendar.getInstance();
             
             // Add elements to weekdays ArrayList
-            weekdays.add("Mo");
-            weekdays.add("Tu");
-            weekdays.add("We");
-            weekdays.add("Th");
-            weekdays.add("Fr");
-            weekdays.add("Sa");
-            weekdays.add("Su");
-            
-            // Add elements to time ArrayList
-            for (int m = 7; m <= 17; m++) {
-                time.add(m);
-            }
+            weekdays.add("Monday");
+            weekdays.add("Tuesday");
+            weekdays.add("Wednesday");
+            weekdays.add("Thursday");
+            weekdays.add("Friday");
+            weekdays.add("Saturday");
+            weekdays.add("Sunday");
 
             // HTML initialization and link to css
             out.println("<!DOCTYPE html>");
@@ -76,43 +75,48 @@ public class serv_Calendar extends HttpServlet {
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
+
+            // Calendar and timetable wrapper for layout purposes
+            out.println("<div class=\"calendarWrapper\">");
             
             // Prints out multiple calendars with different months
+            out.println("<div class=\"Calendars\">");
             for(int i = 0; i < 3; i++) {
             
-            // Prints month
-            out.println("<div class=\"month\">");
-            out.println("<h1>" + (mf.format(calendar.getTime())) + "</h1>");
-            out.println("</div>");
+                // Prints month
+                out.println("<div class=\"month\">");
+                out.println("<h1>" + (mf.format(calendar.getTime())) + "</h1>");
+                out.println("</div>");
             
-            // Prints weekdays by iterating through ArrayList weekdays
-            out.println("<ul class=\"weekdays\">");
-            for(int w = 0; w <= 6; w++) {
+                // Prints weekdays by iterating through ArrayList weekdays
+                out.println("<ul class=\"weekdays\">");
+                for(int w = 0; w <= 6; w++) {
+                    // If-else statement for highlighting current day of the week in CSS
+                    if(w == dayOfWeek-2 && month == calendar.get(Calendar.MONTH)) {
+                        out.println("<li class=\"thisDay\">" + weekdays.get(w).substring(0,2) + "</li>");
+                    }
+                    else {
+                        out.println("<li>" + weekdays.get(w).substring(0,2) + "</li>");
+                    }
+                }
+                out.println("</ul>");
                 
-                // If-else statement for highlighting current day of the week in CSS
-                if(w == day && month == calendar.get(Calendar.MONTH)) {
-                    out.println("<li class=\"thisDay\">" + weekdays.get(day) + "</li>");
-                }
-                else {
-                    out.println("<li>" + weekdays.get(w) + "</li>");
-                }
-            }
-            
-            out.println("</ul>");
-            
-            // Creates three ArrayLists containing days for three months
-            out.println("<ul class=\"days\">");
-            for(int d = 1; d <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
+                // Creates three ArrayLists containing days for three months
+                out.println("<div class=\"daysDiv\">");
+                out.println("<ul class=\"days\">");
+                for(int d = 1; d <= calendar.getActualMaximum(Calendar.DAY_OF_MONTH); d++) {
                 
-                // Finds and assigns current day of current month to HTML class and adds day to days(ArrayList)
-                if (calendar.get(Calendar.MONTH) == month && d == currentDay) {
-                            out.println("<li class=\"currentDay\">" + currentDay + "</li>");
+                    // Finds and assigns current day of current month to HTML class and adds day to days(ArrayList)
+                    if (calendar.get(Calendar.MONTH) == month && d == dayOfMonth) {
+                            out.println("<li class=\"thisDay\">" + dayOfMonth + "</li>");
+                    }
+                    else {  
+                        days.add(d);
+                        out.println("<li>" + d + "</li>");    
+                    }
                 }
-                else {  
-                    days.add(d);
-                    out.println("<li>" + d + "</li>");    
-                }
-            }
+                out.println("</ul>");
+                out.println("</div>");
             
             /*  Delete this after testing for leap year
                 }
@@ -124,63 +128,77 @@ public class serv_Calendar extends HttpServlet {
                         out.println("<li>29</li>");
                 }*/
                 
-            out.println("</ul>");
-                
-            // Increments calendar month
-            calendar.add(Calendar.MONTH, +1);
-            
-            // Clears day ArrayList
-            days.clear();
+                // Increments calendar month
+                calendar.add(Calendar.MONTH, +1);
             }
             
-            // Clears weekdays ArrayList
-            weekdays.clear();
-            
-            // Sets calendar and month to current time
-            calendar = Calendar.getInstance();
-            
+            out.println("</div>");
             /*
-                This is section handles the timetable in calendar class
+                This is section handles the timetable in the calendar
             */
-            // Add elements to weekdaysFullName ArrayList
-            weekdaysFullName.add("Monday");
-            weekdaysFullName.add("Tuesday");
-            weekdaysFullName.add("Wednesday");
-            weekdaysFullName.add("Thursday");
-            weekdaysFullName.add("Friday");
-            weekdaysFullName.add("Saturday");
-            weekdaysFullName.add("Sunday");
-            
-            out.println("<table align=\"center\">");
-            out.println("<tr>");
-            
             // Code below is definetly subject to change. Momentarily functionality.
             
             // If-else statement for highlighting current day of the week in CSS
-            out.println("<th> <th>");
-            for(int i = 0; i <= 6; i++)
-                if(i == day && month == calendar.get(Calendar.MONTH)) {
-                    out.println("<th class=\"thisDay\">" + weekdaysFullName.get(day) + "</th>");
-                }
-                else {
-                    out.println("<th>" + weekdaysFullName.get(i) + "</th>");
-                }
-            weekdaysFullName.clear();
-            out.println(" </tr>");
-            
-            // Prints time in table
-            int w = 0;
-            while(w < 3) {
-                out.println("<tr><td>" + "0" + time.get(w) + ":00" + "</td></tr> ");
-                w++;
-            }
-            int v = 3;
-            while(v < time.size()) {
-                out.println("<tr><td>" + time.get(v) + ":00" + "</td></tr> ");
-                v++;
+            calendar = Calendar.getInstance();
+            out.println("<table class=\"timetable\">");
+            out.println("<thead>");
+            out.println("<tr>");
+            out.println("<th>&nbsp;</th>");
+
+            for(int i = 0; i <= 6; i++) {
+                /*if(i == dayOfWeek && month == calendar.get(Calendar.MONTH)) {
+                    out.println("<li class=\"events-group\">");
+                    out.println("<div class=\"top-info\">");
+                    out.println("<span>" + weekdays.get(dayOfWeek) + "</span>");
+                    out.println("</div>");
+                    out.println("<ul></li></ul></li>");
+                }*/
+
+                    out.println("<th class= thWeekday>" + weekdays.get(i) + "</th>");
+                
             }
             out.println("</tr>");
-            time.clear();
+            out.println("</thead>");
+            
+            // Prints time of the day from 08:00 to 18:00
+            out.println("<tbody>");
+            out.println("<tr>");
+            
+            cal.set(Calendar.MINUTE, 0);
+                
+            int l = 6;
+            for (int g = 0; g <= 11; g++) {
+                cal.set(Calendar.HOUR_OF_DAY, l += 1);
+
+            
+                Date caldate = cal.getTime();
+                time.add(caldate);
+                
+                if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
+                    // test
+                    out.println("<td>10:00</td>\n" + 
+                    "<td class=\" test-events\" rowspan=\"4\">\n" +
+                    "<span class=\"clockStart\">10:00</span><br>\n" +
+                    "<span class=\"clockEnd\">13:00</span>\n" +
+                    "<span class=\"title\">test subject</span><br>\n" +
+                    "<span class=\"lecturer\">test lecturer</span><br>\n" +
+                    "<span class=\"class\">test class 3421</span>\n" +
+                    "</td>");
+                }
+                
+                else {
+                    out.println("<tr><td>" + hm.format(time.get(g)) + "</tr></td>");
+                }
+            }
+            
+            out.println("</tr>");
+            out.println("</tbody>");
+            out.println("</table>");
+            
+            out.println("<br><br><br><br><br>");
+            out.println("<form>");
+            out.println("<input type=\"button\" value=\"DO NOT CLICK UNDER ANY CIRCUMSTANCES\" onclick=\"window.location.href='https://www.youtube.com/watch?v=6n3pFFPSlW4'\" />");
+            out.println("</form>");
             
             // HTML end
             out.println("</body>");
