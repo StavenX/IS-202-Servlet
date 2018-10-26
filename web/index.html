@@ -8,11 +8,14 @@ and open the template in the editor.
     <head>        
         <link rel="stylesheet" type="text/css" href="css/theme.css">
         <link rel="icon" href="placeholder_v1.png" type="image/png">
+        <link rel="stylesheet" href="theme.css" type="text/css"/>
+
         <title>Dashboard</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body class="body">
+        
         <div class="nav-container" id="nav-container">
             <div class="nav-button">
                 <input onclick="hide()" type="button" value="<<" id="nav-button">
@@ -62,10 +65,10 @@ and open the template in the editor.
         </div>
         <div class="home-page"> 
             <h1></h1>
-            <h1> <a href ="student.html"> Students </a> </h1>
-            <h1> <a href ="module.html"> Modules </a> </h1>
-            <h1> <a href ="serv_Calendar"> Calendar </a> </h1> 
-            <h1> <a href ="serv_FileUpload"> File Upload </a> </h1> 
+            <form action="student.html"> <button class="button button-default">Students</button> </form>
+            <form action="module.html"> <button class="button button-default">Modules</button> </form>
+            <form action="serv_Calendar"> <button class="button button-default">Calendar</button> </form>
+            <form action="serv_FileUpload"> <button class="button button-default">File Upload</button> </form>
         </div>
         <script>
             function hide() {
