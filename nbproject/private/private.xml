@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/adria_000/Desktop/Git%20repos/IS-202-Servlet/web/theme.css</file>
-            <file>file:/C:/Users/adria_000/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
-            <file>file:/C:/Users/adria_000/Desktop/Git%20repos/IS-202-Servlet/web/index.html</file>
-            <file>file:/C:/Users/adria_000/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_CreateStudent.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/FirstScripts.js</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/createCalendarEvent.html</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/index.html</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/theme.css</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/createStudent.html</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/module.html</file>
         </group>
     </open-files>
 </project-private>
