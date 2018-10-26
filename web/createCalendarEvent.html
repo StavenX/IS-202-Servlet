@@ -12,28 +12,41 @@ and open the template in the editor.
         <link rel="stylesheet" type="text/css" href="css/theme.css">
     </head>
     <body>
-        <fieldset>
-        <form action="createEvent" method="post">
+        <form action="serv_CreateTimetableEvent" method="post">
             Class<br>
-            <input type="text">
+            <input type="text" name="class">
             <br><br>
             Classroom<br>
-            <input type="text">
+            <input type="text" name="classroom">
             <br><br>
             Lecturer(s)<br>
-            <input type="text">
+            <input type="text" name="lecturer">
             <br><br>
             Start time<br>
-            <input type="time">
+            <input type="time" name="st">
             <br><br>
             End time<br>
-            <input type="time">
+            <input type="time" name="et">
+            <br><br>
+            Repeat every: <br>
+            <input type="checkbox" name="Monday" value="0"> Monday
+            <br>
+            <input type="checkbox" name="Tuesday" value="1"> Tuesday
+            <br>
+            <input type="checkbox" name="Wednesday" value="2"> Wednesday
+            <br>
+            <input type="checkbox" name="Thursday" value="3"> Thursday
+            <br>
+            <input type="checkbox" name="Friday" value="4"> Friday
+            <br>
+            <input type="checkbox" name="Saturday" value="5"> Saturday
+            <br>
+            <input type="checkbox" name="Sunday" value="6"> Sunday
             <br><br>
             Note<br>
-            <input type="text">
+            <input type="text" name="note">
             <br><br>
             <input type="submit" value="Submit">
         </form>
-        </fieldset>
     </body>
 </html>
