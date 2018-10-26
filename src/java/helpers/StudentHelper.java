@@ -75,6 +75,7 @@ public class StudentHelper {
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
+                
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
