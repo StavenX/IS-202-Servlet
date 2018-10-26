@@ -47,7 +47,8 @@ public class serv_Calendar extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
@@ -159,8 +160,7 @@ public class serv_Calendar extends HttpServlet {
             out.println("<tr>");
             
             cal.set(Calendar.HOUR_OF_DAY, 8);
-            cal.set(Calendar.MINUTE, 0);
-            int l = 0;
+
             while (cal.get(Calendar.HOUR_OF_DAY) <= 18) {
 
                 /*if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
@@ -176,14 +176,14 @@ public class serv_Calendar extends HttpServlet {
                 }*/
                 
                 out.println("<tr><td>" + hm.format(cal.getTime()) + "</tr></td>");
-                cal.set(Calendar.MINUTE, + 30);
+                cal.add(Calendar.MINUTE, 30);
             }
             
             out.println("</tr>");
             out.println("</tbody>");
             out.println("</table>");
             
-            out.println("<h1> <a href =\"createCalendarEvent.html\"> Create event </a> </h1>");
+            out.println("<h1> <a href =\"CreateTimetableEvent\"> Create event </a> </h1>");
             
             out.println("<br><br><br><br><br>");
             out.println("<form>");
@@ -197,44 +197,4 @@ public class serv_Calendar extends HttpServlet {
         }
         
     }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }
