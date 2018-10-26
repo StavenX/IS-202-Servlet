@@ -29,6 +29,7 @@ public class HtmlHelper {
         out.println("<html>");
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
+        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
         out.println("<link rel=\"icon\" href=\"images/placeholder_v1.png\" type=\"image/png\">");
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
         out.println("<title>Servlet getStudent</title>");            
