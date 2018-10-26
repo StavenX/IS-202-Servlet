@@ -47,7 +47,6 @@ public class serv_CreateModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New module", "create-module");
             
-            out.println("<a href=\"http://localhost:8084/WEB/\">Go home</a>");  
             out.println("<h1> Create a new module </h1>");  
             out.println("<div class =\"form1\">");  
             out.println("<form action=\"createModule\" method=\"post\">");  
