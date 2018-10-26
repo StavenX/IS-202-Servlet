@@ -12,7 +12,7 @@ and open the template in the editor.
 
  * {box-sizing: border-box}
  body {
-    background-color: lightblue;
+    background-color: #F8F1E5;
     /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
 }
 
@@ -24,7 +24,7 @@ body, body * {
  input {
      padding: 15px;
      margin: 10px 0;
-     background: #f1f1f1;
+     background: #F8F1E5;
      border: none;
      border-radius: 5px;
  }
@@ -51,8 +51,8 @@ hr {
 }
  /* Set a style for the submit/register button */
 .registerbtn {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #2F3131;
+  color: #F8F1E5;
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
@@ -112,12 +112,12 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: #961034;
+    background: #2F3131;
     max-width: 10%;
     padding: 5px;
 }
  .nav-item {
-    border: 1px solid black;
+    border: 1px;
     margin: 20px 0;
     width: 100%;
     text-align: center;
@@ -125,7 +125,7 @@ a {
 
 .nav-item a{
     text-decoration: none;
-    color: white;
+    color: #F8F1E5;
 }
  .body {
     margin: 0;
@@ -137,11 +137,13 @@ a {
 
 #nav-button {
     padding: 5px 15px;
+    background-color: #F8F1E5;
     margin: 0 auto;
+    border-radius: 0px;
 }
 
 .module-container {
-    border: 1px solid darkblue;
+    border: 1px solid #2F3131;
     margin: 20px 0;
 }
 
@@ -285,6 +287,27 @@ td {
 
 }
 
-.nav-text {
+.button {
+    background-color: #2F3131; 
+    border: none; 
+    color: #F8F1E5; 
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
 
+.button-home {
+    padding: 2px;
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+}
+
+.button-default {
+    width: 150px;
+    height: 60px;
 }
