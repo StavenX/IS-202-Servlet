@@ -75,4 +75,11 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    
+    <error-page>
+    <!-- Missing resource -->
+    <error-code>404</error-code>
+    <location>/serv_ERROR404</location>
+    </error-page>
+    
 </web-app>
