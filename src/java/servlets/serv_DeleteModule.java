@@ -52,7 +52,7 @@ public class serv_DeleteModule extends HttpServlet {
             
             PreparedStatement deleteModule;
             try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE mod_id = ?;");
+                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
                 deleteModule.setString(1, module_id);
                 
                 int amountDeleted = deleteModule.executeUpdate();

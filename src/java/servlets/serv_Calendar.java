@@ -50,7 +50,7 @@ public class serv_Calendar extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+            
             // Clears arraylist and calendars to avoid element duplication
             cal.clear();
             time.clear();

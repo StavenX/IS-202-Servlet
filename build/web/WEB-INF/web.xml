@@ -42,6 +42,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
+            <url-pattern>/module.html</url-pattern>
+            <url-pattern>/student.html</url-pattern>
             <url-pattern>/serv_CreateModule</url-pattern>
             <url-pattern>/serv_CreateNewUser</url-pattern>
             <url-pattern>/serv_CreateStudent</url-pattern>

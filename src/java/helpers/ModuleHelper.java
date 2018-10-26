@@ -22,19 +22,23 @@ public class ModuleHelper {
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
      * 
-     * @param name The student name
-     * @param edu The student's education
+     * @param name
+     * @param desc
+     * @param points
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
+        
     public static void insertModule(String name, String desc, String points, Connection conn, PrintWriter out) {
         
         try {
             
+            HtmlHelper site = new HtmlHelper(out);
+            
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points) values (?, ?, ?);");
-            prepInsert.setString(1, name);
-            prepInsert.setString(2, desc);
-            prepInsert.setString(3, points);            
+            prepInsert.setString(1, site.checkForHtmlTags(name));
+            prepInsert.setString(2, site.checkForHtmlTags(desc));
+            prepInsert.setString(3, site.checkForHtmlTags(points));    
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         

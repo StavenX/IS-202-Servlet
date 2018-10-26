@@ -8,26 +8,17 @@ and open the template in the editor.
     <head>        
         <link rel="stylesheet" type="text/css" href="css/theme.css">
         <link rel="icon" href="placeholder_v1.png" type="image/png">
+        <link rel="stylesheet" href="theme.css" type="text/css"/>
         <title>Student</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <a href="http://localhost:8084/WEB/">Go home</a>
+        <form action="http://localhost:8084/WEB/"> <button class="button button-home">Go home</button> </form>
         <h1> Student operations </h1>
-        <h1> <a href ="createStudent.html"> Create student </a> </h1> 
+        <form action="createStudent"> <button class="button">Create student</button> </form>
         
-        <div class ="form1">
-        <form action="createStudent" method="post">         
-                <input type="Submit" name="get" value="Create a new student">   
-        </form>  
-        </div>
-        
-        <div class ="form1">
-        <form action="getStudent" method="post">         
-                <input type="Submit" name="get" value="Get all Students from Database">   
-        </form>  
-        </div>
+        <form action="getStudent"> <button class="button">Get all students from database</button> </form>
         
     </body>
 </html>
