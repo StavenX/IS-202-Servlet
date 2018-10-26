@@ -26,40 +26,6 @@ public class serv_CreateModule extends HttpServlet {
 
     Login login = new Login();
 
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New module", "create-module");
-            
-            Connection conn = login.loginToDB(out);
-
-            ModuleHelper.insertModule(
-                    request.getParameter("module_name"),
-                    request.getParameter("module_desc"),
-                    request.getParameter("module_points"),
-                    conn,
-                    out
-            );
-
-            login.close();
-
-            site.printEnd();
-        }
-    }
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -85,8 +51,9 @@ public class serv_CreateModule extends HttpServlet {
             out.println("<h1> Create a new module </h1>");  
             out.println("<div class =\"form1\">");  
             out.println("<form action=\"createModule\" method=\"post\">");  
-            out.println("<input type=\"text\" name=\"mod_name\" placeholder=\"Insert module name\">");  
-            out.println("<input type=\"text\" name=\"mod_desc\" placeholder=\"Insert module description\">");
+            out.println("<input type=\"text\" name=\"module_name\" placeholder=\"Insert module name\">");  
+            out.println("<input type=\"text\" name=\"module_desc\" placeholder=\"Insert module description\">");
+            out.println("<input type=\"text\" name=\"module_points\" placeholder=\"Insert module points\">");
             out.println("<input type=\"Submit\" name=\"get\" value=\"Create\">"); 
             out.println("</form>"); 
         }
@@ -117,8 +84,8 @@ public class serv_CreateModule extends HttpServlet {
                 conn = login.loginToDB(out);
                 
                 ModuleHelper.insertModule(
-                        request.getParameter("mod_name"),
-                        request.getParameter("mod_desc"),
+                        request.getParameter("module_name"),
+                        request.getParameter("module_desc"),
                         request.getParameter("module_points"),
                         conn, 
                         out
