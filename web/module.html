@@ -8,18 +8,15 @@ and open the template in the editor.
     <head>        
         <link rel="stylesheet" type="text/css" href="css/theme.css">
         <link rel="icon" href="placeholder_v1.png" type="image/png">
+        <link rel="stylesheet" href="theme.css" type="text/css"/>
         <title>Module</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <a href="http://localhost:8084/WEB/">Go home</a>
+        <form action="http://localhost:8084/WEB/"> <button class="button button-home">Go home</button> </form>
         <h1> Module operations </h1>
-        <h1> <a href ="createModule"> Create module </a> </h1> 
-        <div class ="form1">
-        <form action="getModule" method="post">         
-                <input type="Submit" name="get" value="Get all Modules from Database">   
-        </form>    
-        </div>
+        <form action="createModule.html"> <button class="button">Create module</button> </form>
+        <form action="getModule"> <button class="button">Get all modules from database</button> </form>
     </body>
 </html>
