@@ -60,7 +60,9 @@ public class serv_GetModule extends HttpServlet {
                 //is null if first time entering the page, which is handled by a
                 //'default' in a switch in printModules()
                 String orderBy = request.getParameter("orderBy");
-               
+                if (orderBy == null) {
+                    orderBy = "";
+                }
                 
                 ModuleHelper.printModules(out, conn, orderBy);
                 login.close();

@@ -30,10 +30,12 @@ public class StudentHelper {
     public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
         
         try {
+            HtmlHelper site = new HtmlHelper(out);
+            
             
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, name);
-            prepInsert.setString(2, edu);            
+            prepInsert.setString(1, site.checkForHtmlTags(name));
+            prepInsert.setString(2, site.checkForHtmlTags(edu));            
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -77,24 +79,7 @@ public class StudentHelper {
                 // The different columns
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
-                String studentEducationUnchecked = rset.getString("student_education");
-                
-                //divides string into an array, each array item containing string of length 1
-                String[] letters = studentEducationUnchecked.split("");
-                String studentEducation = "";
-                
-                //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
-                //(prevents images etc being posted instead of text
-                for (String letter : letters) {
-                    if (letter.equals("<")) {
-                        letter = "&#x003C";
-                    }
-                    if (letter.equals(">")) {
-                        letter = "&#x003E";
-                    }
-                    //adds each letter to a new string to be used later
-                    studentEducation += letter;
-                }
+                String studentEducation = rset.getString("student_education");
                 
                 out.println("<div class=\"student-container\">");
                 

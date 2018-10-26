@@ -43,20 +43,19 @@ public class serv_CreateModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New module", "create-module");
             
-            Connection conn;
-                conn = login.loginToDB(out);
-                
-                ModuleHelper.insertModule(
-                        request.getParameter("module_name"),
-                        request.getParameter("module_desc"),
-                        request.getParameter("module_points"),
-                        conn, 
-                        out
-                );
-                
-                login.close();
-                
-                site.printEnd();
+            Connection conn = login.loginToDB(out);
+
+            ModuleHelper.insertModule(
+                    request.getParameter("module_name"),
+                    request.getParameter("module_desc"),
+                    request.getParameter("module_points"),
+                    conn,
+                    out
+            );
+
+            login.close();
+
+            site.printEnd();
         }
     }
 
