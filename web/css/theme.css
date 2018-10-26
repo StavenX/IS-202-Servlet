@@ -20,7 +20,7 @@ and open the template in the editor.
 body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
-
+/*
  input {
      padding: 15px;
      margin: 10px 0;
@@ -28,6 +28,7 @@ body, body * {
      border: solid 1px black;
      border-radius: 5px;
  }
+ 
  
  input[type=submit], input[type=button] {
      border: solid 1px black;
@@ -44,6 +45,8 @@ body, body * {
   background-color: #ddd;
   outline: none;
 }
+*/
+
  /* Overwrite default styles of hr */
 hr {
   border: 1px solid #f1f1f1;
@@ -81,9 +84,6 @@ a {
 }
  .form1 input {
     display: list-item;
-}
- .invisible {
-    display: none;
 }
 
  .student-container {
@@ -138,6 +138,7 @@ a {
 #nav-button {
     padding: 5px 15px;
     background-color: #F8F1E5;
+    color: #2F3131;
     margin: 0 auto;
     border-radius: 0px;
 }
@@ -308,4 +309,8 @@ td {
 .button-default {
     width: 150px;
     height: 60px;
+}
+
+ .invisible {
+    display: none;
 }

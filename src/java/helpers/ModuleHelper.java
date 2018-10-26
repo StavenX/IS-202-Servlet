@@ -124,13 +124,13 @@ public class ModuleHelper {
             //"sort by"-buttons (can probably be reduced to one form)
             out.println("<h2>Sort by: </h2>");
             out.println("<form action=\"getModule\">");
-            out.println("<input type=\"submit\" name=\"orderBy\" value=\"ID\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID\">");
             out.println("</form>");
             out.println("<form action=\"getModule\">");
-            out.println("<input type=\"submit\" name=\"orderBy\" value=\"Name\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name\">");
             out.println("</form>");
             out.println("<form action=\"getModule\">");
-            out.println("<input type=\"submit\" name=\"orderBy\" value=\"Points\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points\">");
             out.println("</form>");
             
             // While there exists more entries (rows?)
@@ -150,7 +150,7 @@ public class ModuleHelper {
                 out.println("<div>Name:" + module_name + "</div>");
                 out.println("<div>Description:" + module_desc + "</div>");
                 out.println("<div>Max points:" + module_points + "</div>");
-                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
                 site.printDeleteButton("deleteModule", "module_id", module_id);
                 out.println("</div>");
