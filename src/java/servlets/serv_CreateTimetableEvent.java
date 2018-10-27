@@ -39,7 +39,7 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             out.println("<body>");
             
             // Form for new event input
-            out.println("<form action=\"serv_CreateTimetableEvent\" method=\"post\">");
+            out.println("<form method=\"post\">");
             out.println("Class<br><input type=\"text\" name=\"class\"><br><br>");
             out.println("Classroom<br><input type=\"text\" name=\"classroom\"><br><br>");
             out.println("Lecturer(s)<br><input type=\"text\" name=\"lecturer\"><br><br>");
@@ -55,6 +55,27 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             out.println("Note<br><input type=\"text\" name=\"note\"><br><br>");
             out.println("<input type=\"submit\" value=\"Submit\">");
             out.println("</form>");
+            
+            
+            
+            out.println("</body>");
+            out.println("</html>");
+        }
+    }
+            
+            @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet serv_CreateTimetableEvent</title>");  
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("</head>");
+            out.println("<body>");
             
             request.getParameter("class");
             request.getParameter("classroom");
