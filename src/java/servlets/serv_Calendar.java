@@ -94,28 +94,34 @@ public class serv_Calendar extends HttpServlet {
                         out.println("<li>" + weekdays.get(w).substring(0,2) + "</li>");
                     }
                 }
-                
                 out.println("</ul>");
+                
                 out.println("<div class=\"daysDiv\">");
                 out.println("<ul class=\"days\">");
                 
-
+                // Fix printing wrong startpoint for second calendar
+                calendar.add(Calendar.MONTH, -1);
+                int lastMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_WEEK);
+                calendar.add(Calendar.MONTH, +1);
+                
                 calendar.set(Calendar.DAY_OF_MONTH, 1);
                 
                 // Prints spacing before first day of month
-                // Previous month days needs fixing. Fix day of month ends too early first.
-                int prevMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
                 for(int q = 2; q < calendar.get(Calendar.DAY_OF_WEEK); q++) {
-                        out.println("<li>" + (prevMonth) + "</li>");
+                        out.println("<li class=\"Empty\">" + (lastMonth + q) + "</li>");
                 }
-                
-                // Prints all days of month
-                // Day of month ends one day too early.
-                while(calendar.get(Calendar.DAY_OF_MONTH) != calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
 
-                    out.println("<li>" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
+                // Prints all days of month
+                while(calendar.get(Calendar.DAY_OF_MONTH) != calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                    if(calendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
+                        out.println("<li calss=\"thisDay\">" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
+                    }  
+                    else {
+                        out.println("<li>" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
+                    }
                     calendar.add(Calendar.DAY_OF_MONTH, +1);
                 }
+                out.println("<li>" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
                 
                 out.println("</ul>");
                 out.println("</div>");
@@ -123,12 +129,10 @@ public class serv_Calendar extends HttpServlet {
                 // Increments calendar month
                 calendar.add(Calendar.MONTH, +1);
             }
-            
             out.println("</div>");
             
-            /*
-                This is section handles the timetable in the calendar
-            */
+            //This is section handles the timetable in the calendar
+                        
             // Prints day of the week in timetable
             calendar = Calendar.getInstance();
             calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
@@ -145,18 +149,17 @@ public class serv_Calendar extends HttpServlet {
             
             out.println("</tr>");
             out.println("</thead>");
-            
-            // Prints time of the day from 08:00 to 18:00
             out.println("<tbody>");
             out.println("<tr>");
             
             calendar.set(Calendar.HOUR_OF_DAY, 8);
             calendar.set(Calendar.MINUTE, 0);
-
+            
+            // Prints time of the day from 08:00 to 18:00
             while (calendar.get(Calendar.HOUR_OF_DAY) <= 18) {
-
-                /*if(cal.get(Calendar.HOUR_OF_DAY) == 10) {
+                if(calendar.get(Calendar.HOUR_OF_DAY) == 10 && calendar.get(Calendar.MINUTE) == 0) {
                     // test
+                    // Fix printing two tds
                     out.println("<td>10:00</td>\n" + 
                     "<td class=\" test-events\" rowspan=\"4\">\n" +
                     "<span class=\"clockStart\">10:00</span><br>\n" +
@@ -165,8 +168,7 @@ public class serv_Calendar extends HttpServlet {
                     "<span class=\"lecturer\">test lecturer</span><br>\n" +
                     "<span class=\"class\">test class 3421</span>\n" +
                     "</td>");
-                }*/
-                
+                }
                 out.println("<tr><td>" + hm.format(calendar.getTime()) + "</tr></td>");
                 calendar.add(Calendar.MINUTE, 30);
             }
@@ -181,7 +183,7 @@ public class serv_Calendar extends HttpServlet {
             out.println("<form>");
             out.println("<input type=\"button\" value=\"DO NOT CLICK UNDER ANY CIRCUMSTANCES\" onclick=\"window.location.href='https://www.youtube.com/watch?v=6n3pFFPSlW4'\" />");
             out.println("</form>");
-            
+
             // HTML end
             out.println("</body>");
             out.println("</html>");
