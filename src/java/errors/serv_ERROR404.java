@@ -40,8 +40,10 @@ public class serv_ERROR404 extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
             
-            site.printHead("404", "");
-            out.println("Missing resource");
+            site.printHead("404", "error-404");
+            out.println("<p>Missing resource</p>");
+            out.println("<h1>ERROR 404: PAGE NOT FOUND.</h1>");
+            out.println("<p>The link is either dead or does not exist, make sure the URL was correct</p>");
             site.printEnd();
         }        
     }
