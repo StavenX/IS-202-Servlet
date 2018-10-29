@@ -96,7 +96,7 @@ public class StudentHelper {
                 
                 //"more info"-button
                 out.println("<div class=\"student-container-item\">");
-                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</div>");
                 out.println("</form>");
                 

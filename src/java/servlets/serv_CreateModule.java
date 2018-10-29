@@ -53,7 +53,7 @@ public class serv_CreateModule extends HttpServlet {
             out.println("<input type=\"text\" name=\"module_name\" placeholder=\"Insert module name\">");  
             out.println("<input type=\"text\" name=\"module_desc\" placeholder=\"Insert module description\">");
             out.println("<input type=\"text\" name=\"module_points\" placeholder=\"Insert module points\">");
-            out.println("<input type=\"Submit\" name=\"get\" value=\"Create\">"); 
+            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">"); 
             out.println("</form>"); 
         }
     }
