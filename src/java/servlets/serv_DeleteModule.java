@@ -45,7 +45,7 @@ public class serv_DeleteModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("Delete module", "delete-module");
             
-            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
             
@@ -58,7 +58,7 @@ public class serv_DeleteModule extends HttpServlet {
                 
                 int amountDeleted = deleteModule.executeUpdate();
                 out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<a href=\"getModule\">Back to module list</a>");
+                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }

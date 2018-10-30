@@ -44,8 +44,8 @@ public class StudentHelper {
             
             // The button that prints all students
             out.println(
-                "<form action=\"getStudent\" method=\"post\">\n" +
-"                   <input type=\"Submit\" name=\"get\" value=\"Get all Students from Database\">   \n" +
+                "<form action=\"getStudent\" method=\"get\">\n" +
+"                   <input class=\"button\" type=\"Submit\" value=\"Get all Students from Database\">   \n" +
 "               </form>");
         }
         catch (SQLException ex) {
@@ -102,7 +102,7 @@ public class StudentHelper {
                 
                 //delete-buttons
                 out.println("<div class=\"student-container-item\">");
-                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
+                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\" method=\"get\">");
                 site.printDeleteButton("deleteStudent", "student_id", studentID);
                 out.println("</div>");
                 out.println("</div>");
