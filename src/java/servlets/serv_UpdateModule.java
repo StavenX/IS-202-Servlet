@@ -42,9 +42,9 @@ public class serv_UpdateModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
             
-            //body class 'invisible' makes no content on the page visible, and it should auto load
+            //body id 'invisible' makes no content on the page visible, and it should auto load
             //due to javascript 
-            site.printHead("Updating module...", "invisible");
+            site.printHead("Updating module...", "");
             
             out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
             
