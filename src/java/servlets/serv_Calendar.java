@@ -24,6 +24,7 @@ public class serv_Calendar extends HttpServlet {
     SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
     SimpleDateFormat wd = new SimpleDateFormat("EEEE", Locale.US);
     SimpleDateFormat dt = new SimpleDateFormat("dd.MM");
+    SimpleDateFormat pt = new SimpleDateFormat("ddMMHHmm");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
@@ -155,11 +156,11 @@ public class serv_Calendar extends HttpServlet {
             calendar.set(Calendar.HOUR_OF_DAY, 8);
             calendar.set(Calendar.MINUTE, 0);
             
-            // Prints time of the day from 08:00 to 18:00
+            // Prints time of the day from 08:00 to 18:00 and gives each td a date and time
             while (calendar.get(Calendar.HOUR_OF_DAY) <= 18) {
                 out.println("<tr><td class=\"time\">" + hm.format(calendar.getTime()) + "</td>");
                 for(int e = 0; e <= 6; e++) {
-                out.println("<td class=" + dt.format(calendar.getTime()) + "id=" + hm.format(calendar.getTime()) + ">" + dt.format(calendar.getTime()) + " " + hm.format(calendar.getTime()) + "</td>");
+                out.println("<td class=\"emptyEvent\" id=" + pt.format(calendar.getTime()) + ">" + "</td>");
                 calendar.add(Calendar.DAY_OF_MONTH, 1);
                 }
                 out.println("</tr>");
@@ -178,8 +179,10 @@ public class serv_Calendar extends HttpServlet {
             out.println("</tbody>");
             out.println("</table>");
             
-            out.println("<script>");
-            out.println("</script>");
+            out.println("<p class=hi>hi</p>");
+
+            out.println("<script src=\"js_timetableEvent.js\"></script>");
+
             
             out.println("<h1> <a href =\"CreateTimetableEvent\"> Create event </a> </h1>");
             
