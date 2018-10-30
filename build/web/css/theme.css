@@ -270,7 +270,7 @@ td {
     font-weight: bold;
     font-size: 1.5em;
 }
-
+/* Button styling */
 .button {
     background-color: #2F3131; 
     border: none; 
@@ -301,6 +301,8 @@ td {
     padding: 5px;
     text-align: center;
 }
+
+/* button styling ends */
 
  .invisible {
     display: none;

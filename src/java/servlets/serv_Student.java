@@ -39,6 +39,7 @@ public class serv_Student extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("Student", "student-frontpage");
+            out.println("<div style=\"text-align: center;\">");
             
             out.println("<h1> Student operations </h1>");
             
@@ -48,6 +49,7 @@ public class serv_Student extends HttpServlet {
             out.println("<form action=\"getStudent\">");
             out.println("<button class=\"button\">Get all students from database</button>");
             out.println("</form>");
+            out.println("</div>");
             
             site.printEnd();
         }
