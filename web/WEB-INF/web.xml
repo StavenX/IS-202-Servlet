@@ -22,8 +22,8 @@
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
-            <url-pattern>/module.html</url-pattern>
-            <url-pattern>/student.html</url-pattern>
+            <url-pattern>/Module</url-pattern>
+            <url-pattern>/Student</url-pattern>
             <url-pattern>/serv_Calendar</url-pattern>
             <url-pattern>/serv_FileUpload</url-pattern>
             <url-pattern>/serv_GetModule</url-pattern>
