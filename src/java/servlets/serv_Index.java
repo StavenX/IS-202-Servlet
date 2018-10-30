@@ -1,36 +1,26 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package servlets;
 
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
- * @author Staven
+ * @author tobia
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class serv_GetModule extends HttpServlet {
+@WebServlet(name = "serv_Index", urlPatterns = {"/Index"})
+public class serv_Index extends HttpServlet {
 
-    Statement stmt;
-    Login login = new Login();
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -42,34 +32,30 @@ public class serv_GetModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
             HtmlHelper site = new HtmlHelper(out);
-
-            site.printHead("Modules", "bodyy");
+            site.printHead("Home", "home");
             
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
+            out.println("<div class=\"courses-container\">");
+            for (int i = 0; i < 4; i++) {
+                courseBox(out, "Course" + (i+1));
+            }
+            out.println("</div>");
             
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                //is null if first time entering the page, which is handled by a
-                //'default' in a switch in printModules()
-                String orderBy = request.getParameter("orderBy");
-                if (orderBy == null) {
-                    orderBy = "";
-                }
-                String[] orderByList = orderBy.split(" ");
-                
-                ModuleHelper.printModules(out, conn, orderByList);
-                login.close();
-                
-            site.printEnd();
         }
     }
 
+    public void courseBox(PrintWriter out, String courseTitle) {
+        out.println("<form action=\"getCourse\" method=\"get\">");
+        out.println("<button class=\"course-container\">");
+        out.println("<img class=\"course-img\" src=\"http://via.placeholder.com/200x100\">");
+        out.println("<input name=\"course\" type=\"hidden\" value=\"" + courseTitle + "\">");
+        out.println("<h2 name=\"" + courseTitle + "\" class=\"course-title\">" + courseTitle + "</h2>");
+        out.println("<p class=\"course-name\">Lorem ipsum</p>");
+        out.println("</button>");
+        out.println("</form>");
+    } 
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -81,6 +67,7 @@ public class serv_GetModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
     }
 
     /**

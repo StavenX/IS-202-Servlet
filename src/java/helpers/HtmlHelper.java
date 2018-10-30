@@ -5,7 +5,10 @@
  */
 package helpers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
@@ -34,9 +37,10 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
         out.println("<title>" + title + "</title>");            
         out.println("</head>");
+        //out.println(nav());
+        //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
-        //printNav();
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
@@ -70,6 +74,17 @@ public class HtmlHelper {
                 checked += letter;
             }
         return checked;
+    }
+    
+    //only works with absolute path
+    public String nav() {
+        String contents = "heihei";
+        try {
+            contents = new String(Files.readAllBytes(Paths.get("C:\\Users\\tobia\\Documents\\IS-202-Servlet\\web\\nav.html")));
+        } catch (IOException ex) {
+            out.println(ex);
+        }
+        return contents;
     }
     
     public void printNav () {
