@@ -31,6 +31,7 @@
             <url-pattern>/serv_OneModule</url-pattern>
             <url-pattern>/serv_CreateNewUser</url-pattern>
             <url-pattern>/serv_OneStudent</url-pattern>
+            <url-pattern>/servMessage</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>

@@ -3,18 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/errors/serv_ERROR404.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_About.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/css/theme.css</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateStudent.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/index.html</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/images/placeholder_v1.png</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_FileUpload.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/images/Placeholder_v2.png</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Module.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/web/createMessage.html</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/servlets/serv_CreateNewUser.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/helpers/StudentHelper.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/servlets/serv_Messages.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/web/createStudent.html</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/network/Login.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/servlets/serv_CreateStudent.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/helpers/MessageHelper.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/web/theme.css</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/web/META-INF/context.xml</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/src/java/servlets/serv_GetStudent.java</file>
+            <file>file:/C:/Users/frank/Desktop/3.semester/IS_202/IS-202-Servlet/web/index.html</file>
         </group>
     </open-files>
 </project-private>
