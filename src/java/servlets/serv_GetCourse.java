@@ -1,36 +1,26 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+package servlets;
 
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
- * @author Staven
+ * @author tobia
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class serv_GetModule extends HttpServlet {
+@WebServlet(name = "serv_GetCourse", urlPatterns = {"/getCourse"})
+public class serv_GetCourse extends HttpServlet {
 
-    Statement stmt;
-    Login login = new Login();
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -44,28 +34,14 @@ public class serv_GetModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            String courseName = request.getParameter("course");
             
             HtmlHelper site = new HtmlHelper(out);
-
-            site.printHead("Modules", "bodyy");
+            site.printHead(courseName, "single-course");
             
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
+            out.println("You are now viewing course " + courseName);
             
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                //is null if first time entering the page, which is handled by a
-                //'default' in a switch in printModules()
-                String orderBy = request.getParameter("orderBy");
-                if (orderBy == null) {
-                    orderBy = "";
-                }
-                String[] orderByList = orderBy.split(" ");
-                
-                ModuleHelper.printModules(out, conn, orderByList);
-                login.close();
-                
             site.printEnd();
         }
     }
