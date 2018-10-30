@@ -90,9 +90,9 @@ public class ModuleHelper {
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
-     * @param orderBy the column name to order the sql results in
+     * @param orderByList the column name to order the sql results in
      */
-    public static void printModules(PrintWriter out, Connection conn, String orderBy) {
+    public static void printModules(PrintWriter out, Connection conn, String[] orderByList) {
 
             HtmlHelper site = new HtmlHelper(out);
             PreparedStatement getModules; 
@@ -102,9 +102,17 @@ public class ModuleHelper {
             //base string for sql preparedstatement
             String sqlString = "SELECT * FROM module ORDER BY ";
             
+            String orderBy = orderByList[0].toLowerCase();
+            String orderDirection;
+            try {
+                orderDirection = orderByList[1].toLowerCase();
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                orderDirection = "";
+            }
+            
             //based on @param orderBy, something is added to complete the string
             //values received from "sort by" buttons at the top of page
-            switch (orderBy.toLowerCase()) {                            
+            switch (orderBy) {                            
                 case "name":    sqlString += "module_name";
                                 break;
                                 
@@ -113,6 +121,14 @@ public class ModuleHelper {
                 
                 case "id":
                 default:    sqlString += "module_id";
+            }
+            
+            switch (orderDirection) {
+                case "desc":    sqlString += " DESC";
+                                break;
+                               
+                case "asc":
+                default:        sqlString += " ASC";
             }
             
             //preparedstatement is prepared and executed
@@ -125,15 +141,19 @@ public class ModuleHelper {
             
             //"sort by"-buttons (can probably be reduced to one form)
             out.println("<h2>Sort by: </h2>");
+            out.println("<div class=\"sort-by-container\">");
             out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID desc\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name desc\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points desc\">");
             out.println("</form>");
-            out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name\">");
-            out.println("</form>");
-            out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points\">");
-            out.println("</form>");
+            out.println("</div>");
             
             // While there exists more entries (rows?)
             while (rset.next()) {               
