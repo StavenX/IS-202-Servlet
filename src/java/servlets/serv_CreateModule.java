@@ -47,14 +47,13 @@ public class serv_CreateModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New module", "create-module");
             
-            out.println("<a href=\"http://localhost:8084/WEB/\">Go home</a>");  
             out.println("<h1> Create a new module </h1>");  
             out.println("<div class =\"form1\">");  
             out.println("<form action=\"createModule\" method=\"post\">");  
             out.println("<input type=\"text\" name=\"module_name\" placeholder=\"Insert module name\">");  
             out.println("<input type=\"text\" name=\"module_desc\" placeholder=\"Insert module description\">");
             out.println("<input type=\"text\" name=\"module_points\" placeholder=\"Insert module points\">");
-            out.println("<input type=\"Submit\" name=\"get\" value=\"Create\">"); 
+            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">"); 
             out.println("</form>"); 
         }
     }
