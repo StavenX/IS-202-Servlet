@@ -44,7 +44,7 @@ public class serv_CreateStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New student", "create-student");
-            out.println("<form action=\"createStudent\" method=\"post\">");      
+            out.println("<form action=\"createStudent\" method=\"post\">");
             out.println("<input class=\"student-input\" type=\"text\" name=\"student_name\" placeholder=\"Insert name\">");   
             out.println("<input class=\"student-input\" type=\"text\" name=\"student_edu\" placeholder=\"Insert education\">");
             out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");

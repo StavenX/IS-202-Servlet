@@ -48,8 +48,8 @@ public class ModuleHelper {
             out.println("INSERTED"); // debug
             
             out.println(
-                "<form action=\"getModule\" method=\"post\">\n" +
-"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Modules from Database\">   \n" +
+                "<form action=\"getModule\" method=\"get\">\n" +
+"                   <input class=\"button\" type=\"Submit\" value=\"Get all Modules from Database\">   \n" +
 "               </form>");
         }
         catch (SQLException ex) {
@@ -65,11 +65,13 @@ public class ModuleHelper {
         
         try {
             
+            HtmlHelper site = new HtmlHelper(out);
+            
             PreparedStatement prepUpdate = conn.prepareStatement("UPDATE module SET module_name = ?, module_desc = ?, module_points = ? WHERE module_id = ?");
-            prepUpdate.setString(1, name);
-            prepUpdate.setString(2, desc);
-            prepUpdate.setString(3, points);
-            prepUpdate.setString(4, id);
+            prepUpdate.setString(1, site.checkForHtmlTags(name));
+            prepUpdate.setString(2, site.checkForHtmlTags(desc));
+            prepUpdate.setString(3, site.checkForHtmlTags(points));
+            prepUpdate.setString(4, site.checkForHtmlTags(id));
             
             System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
             int countInserted = prepUpdate.executeUpdate();         
@@ -88,9 +90,9 @@ public class ModuleHelper {
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
-     * @param orderBy the column name to order the sql results in
+     * @param orderByList the column name to order the sql results in
      */
-    public static void printModules(PrintWriter out, Connection conn, String orderBy) {
+    public static void printModules(PrintWriter out, Connection conn, String[] orderByList) {
 
             HtmlHelper site = new HtmlHelper(out);
             PreparedStatement getModules; 
@@ -100,9 +102,17 @@ public class ModuleHelper {
             //base string for sql preparedstatement
             String sqlString = "SELECT * FROM module ORDER BY ";
             
+            String orderBy = orderByList[0].toLowerCase();
+            String orderDirection;
+            try {
+                orderDirection = orderByList[1].toLowerCase();
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                orderDirection = "";
+            }
+            
             //based on @param orderBy, something is added to complete the string
             //values received from "sort by" buttons at the top of page
-            switch (orderBy.toLowerCase()) {                            
+            switch (orderBy) {                            
                 case "name":    sqlString += "module_name";
                                 break;
                                 
@@ -111,6 +121,14 @@ public class ModuleHelper {
                 
                 case "id":
                 default:    sqlString += "module_id";
+            }
+            
+            switch (orderDirection) {
+                case "desc":    sqlString += " DESC";
+                                break;
+                               
+                case "asc":
+                default:        sqlString += " ASC";
             }
             
             //preparedstatement is prepared and executed
@@ -123,15 +141,19 @@ public class ModuleHelper {
             
             //"sort by"-buttons (can probably be reduced to one form)
             out.println("<h2>Sort by: </h2>");
+            out.println("<div class=\"sort-by-container\">");
             out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID desc\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name desc\">");
+            
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points asc\">");
+            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points desc\">");
             out.println("</form>");
-            out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name\">");
-            out.println("</form>");
-            out.println("<form action=\"getModule\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points\">");
-            out.println("</form>");
+            out.println("</div>");
             
             // While there exists more entries (rows?)
             while (rset.next()) {               
@@ -143,7 +165,7 @@ public class ModuleHelper {
                 
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
-                out.println("<form action=\"oneModule\" method=\"post\">");
+                out.println("<form action=\"oneModule\" method=\"get\">");
                 out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + module_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"modid\">Module Id:" + module_id + "</div>");
@@ -184,30 +206,39 @@ public class ModuleHelper {
                 String module_name = rset.getString("module_name");
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
+                
                 out.println("<div>");
-                out.println("<form action=\"updateModule\">");
+                out.println("<form action=\"updateModule\" method=\"get\">");
+                
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module ID (can't be changed)</p>");
                 out.println("<input type=\"text\" name=\"module_id\" value=\"" + module_id + "\" disabled>");
                 out.println("</div>");
+                
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module name</p>");
                 out.println("<input type=\"text\" name=\"module_name\" value=\"" + module_name + "\" disabled>");
                 out.println("</div>");
+                
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module description</p>");
                 out.println("<input type=\"text\" name=\"module_desc\" value=\"" + module_desc + "\" disabled>");
                 out.println("</div>");
+                
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module points</p>");
                 out.println("<input type=\"text\" name=\"module_points\" value=\"" + module_points + "\" disabled>");
                 out.println("</div>");
+                
                 out.println("<input class=\"button\" id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
                 out.println("<input class=\"button\" id=\"one-module-save\" type=\"submit\" value=\"Save\">");
+                
                 out.println("</form>");
+                
                 out.println("<form action=\"createDeliverables\">");
                 out.println("<input class=\"button\" type=\"submit\" value=\"Create Deliverables\">");
                 out.println("</form>");
+                
                 out.println("</div>");
                 
             }

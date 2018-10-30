@@ -12,9 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 /**
  *
- * @author Staven
+ * @author Frank
  */
-public class StudentHelper {
+public class MessageHelper {
     
         /**
      * Inserts a student into the student table.
@@ -22,30 +22,32 @@ public class StudentHelper {
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
      * 
-     * @param name The student name
-     * @param edu The student's education
+     * @param senderId who is sending the message (user_id)
+     * @param title title of the message
+     * @param content content of the message
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
+    public static void insertMessage( String senderId, String title, String content, Connection conn, PrintWriter out) {
         
         try {
-            HtmlHelper site = new HtmlHelper(out);
             
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO message (mess_senderId, mess_title, mess_content) values ( ?, ?, ?);");
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, site.checkForHtmlTags(name));
-            prepInsert.setString(2, site.checkForHtmlTags(edu));            
+            prepInsert.setString(1, senderId);
+            prepInsert.setString(2, title);            
+            prepInsert.setString(3, content);            
+            
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
             System.out.println(countInserted + " records inserted.\n");  
             out.println(countInserted + " records inserted.\n");  
             
-            // The button that prints all students
+            // The button that prints all messages
             out.println(
-                "<form action=\"getStudent\" method=\"get\">\n" +
-"                   <input class=\"button\" type=\"Submit\" value=\"Get all Students from Database\">   \n" +
+                "<form action=\"getMessage\" method=\"post\">\n" +
+"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Messages from Database\">   \n" +
 "               </form>");
         }
         catch (SQLException ex) {
@@ -60,16 +62,16 @@ public class StudentHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      */
-    public static void printStudents(PrintWriter out, Connection conn) {
+    public static void printMessages(PrintWriter out, Connection conn) {
 
         HtmlHelper site = new HtmlHelper(out);
-        PreparedStatement getModules; 
+        PreparedStatement getMessage; 
         
         try {
-            getModules = conn.prepareStatement("SELECT * FROM student ORDER BY ?");
-            getModules.setString(1, "student_id");
+            getMessage = conn.prepareStatement("SELECT * FROM messages ORDER BY ?");
+            getMessage.setString(1, "mess_senderId");
                        
-            ResultSet rset = getModules.executeQuery();
+            ResultSet rset = getMessage.executeQuery();
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
@@ -77,40 +79,44 @@ public class StudentHelper {
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
-                
-                String studentID = rset.getString("student_id");
-                String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
+                String mess_id = rset.getString("mess_id");
+                String mess_senderId = rset.getString("mess_senderId");
+                String mess_title = rset.getString("mess_title");
+                String mess_content = rset.getString("mess_content");
+
                 
                 out.println("<div class=\"student-container\">");
                 
                 //form containing student information
                 out.println("<div class=\"student-container-item\">");
                 out.println("<form  action=\"oneStudent\">");
-                out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
+                out.println("<input class=\"invisible\" name=\"stid\" value=\"" + mess_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
-                out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
-                out.println("<div>Name:" + studentName + "</div>");
-                out.println("<div>Education:" + studentEducation + "</div>");
+                out.println("<div name=\"stid\">Student Id:" + mess_id + "</div>");
+                out.println("<div>Name:" + mess_senderId + "</div>");
+                out.println("<div>Education:" + mess_title + "</div>");
+                out.println("<div>Education:" + mess_content + "</div>");
+
                 out.println("</div>");
                 
-                //"more info"-button
+                //more info button
                 out.println("<div class=\"student-container-item\">");
-                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
+                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 out.println("</div>");
                 out.println("</form>");
                 
-                //delete-buttons
+                //delete buttons
                 out.println("<div class=\"student-container-item\">");
-                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\" method=\"get\">");
-                site.printDeleteButton("deleteStudent", "student_id", studentID);
+                
+                out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteStudent\">");
+                site.printDeleteButton("deleteStudent", "student_id", mess_id);
                 out.println("</div>");
+                
                 out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
-            //prints javascript
             site.printJsForDeleteButton();
             
             conn.close();
@@ -129,22 +135,24 @@ public class StudentHelper {
      * @param conn
      * @param stid 
      */
-    public static void printOneStudent(PrintWriter out, Connection conn, String stid) {
-        PreparedStatement getOneStudent;
+    public static void printOneMessage(PrintWriter out, Connection conn, String stid) {
+        PreparedStatement getOneMessage;
         
         try {
             //sql statement
-            getOneStudent = conn.prepareStatement("SELECT * FROM student WHERE student_id = ?");
-            getOneStudent.setString(1, stid);
-            ResultSet rset = getOneStudent.executeQuery();
+            getOneMessage = conn.prepareStatement("SELECT * FROM message WHERE mess_id = ?");
+            getOneMessage.setString(1, stid);
+            ResultSet rset = getOneMessage.executeQuery();
             
             //loop only executes once but is necessary?
             while (rset.next()) {
-                String studentID = rset.getString("student_id");
-                String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
+                String mess_id = rset.getString("mess_id");
+                String mess_senderId = rset.getString("mess_senderId");
+                String mess_title = rset.getString("mess_title");
+                String mess_content = rset.getString("mess_content");
+
                 out.println("<div>");
-                out.println(studentID + studentName + studentEducation);
+                out.println(mess_id + mess_senderId + mess_title + mess_content);
                 out.println("</div>");
                 
             }

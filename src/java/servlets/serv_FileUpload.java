@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import helpers.HtmlHelper;
 
-@WebServlet(name = "serv_FileUpload", urlPatterns = { "/serv_FileUpload" }, loadOnStartup = 1)
+@WebServlet(name = "serv_FileUpload", urlPatterns = { "/FileUpload" }, loadOnStartup = 1)
 @MultipartConfig(
                 fileSizeThreshold = 6291456,    // 6 MB
 		maxFileSize =       10485760L,  // 10 MB

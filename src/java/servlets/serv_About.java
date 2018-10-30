@@ -8,23 +8,18 @@ package servlets;
 import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class serv_DeleteStudent extends HttpServlet {
-    Login login = new Login();
+@WebServlet(name = "serv_About", urlPatterns = {"/About"})
+public class serv_About extends HttpServlet {
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -38,33 +33,19 @@ public class serv_DeleteStudent extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
             HtmlHelper site = new HtmlHelper(out);
-
-            site.printHead("Delete student", "delete-student");
-            
-            out.println("<h1>Deletion page</h1>");
-            
-            Connection conn = login.loginToDB(out);
-            
-            String student_id = request.getParameter("student_id");
-            
-            PreparedStatement deleteStudent;
-            try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
-                
-                int amountDeleted = deleteStudent.executeUpdate();
-                out.println("<div>" + amountDeleted + " students deleted.</div>");
-                out.println("<form action=\"getStudent\" method=\"get\"><button class=\"button\">Back to student list</button></form>");
-
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            
+            site.printHead("About us", "about-page");
+            out.println("<div id=\"about\">");
+            out.println("<h1>Made by:</h1>");
+            out.println("<p>Edvin Myhren</p>");
+            out.println("<p>Tobias Albert</p>");
+            out.println("<p>Adrian Nesvik</p>");
+            out.println("<p>Espen Thorsen Frank</p>");
+            out.println("<p>Tord Vetle Gjertsen</p>");
+            out.println("</div>");
             site.printEnd();
         }
     }

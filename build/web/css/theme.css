@@ -302,7 +302,20 @@ td {
     text-align: center;
 }
 
+#about {
+    text-align: center;
+    font-size: 200%;
+}
+
+.sort-by-container *{
+    display: inline-block;
+}
+
  .invisible {
+    display: none;
+}
+
+#invisible {
     display: none;
 }
 
