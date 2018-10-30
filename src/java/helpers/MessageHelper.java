@@ -44,10 +44,10 @@ public class MessageHelper {
             System.out.println(countInserted + " records inserted.\n");  
             out.println(countInserted + " records inserted.\n");  
             
-            // The button that prints all students
+            // The button that prints all messages
             out.println(
                 "<form action=\"getMessage\" method=\"post\">\n" +
-"                   <input type=\"Submit\" name=\"get\" value=\"Get all Messages from Database\">   \n" +
+"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Messages from Database\">   \n" +
 "               </form>");
         }
         catch (SQLException ex) {

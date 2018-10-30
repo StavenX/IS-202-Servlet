@@ -47,7 +47,7 @@ public class serv_Messages extends HttpServlet {
             site.printHead("Message", "");
             out.println("<h1> Create a new message </h1>");
             out.println("<div class =\"form1\">");
-            out.println("<form action=\"servMessage\" method=\"post\"> ");
+            out.println("<form action=\"Message\" method=\"post\"> ");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert senderId\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_content\" placeholder=\"Insert content\">");
