@@ -82,7 +82,7 @@
     <error-page>
         <!-- Missing resource -->
         <error-code>404</error-code>
-        <location>/serv_ERROR404</location>
+        <location>/ERROR404</location>
     </error-page>
     
     <error-page>
