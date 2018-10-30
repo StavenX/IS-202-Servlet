@@ -24,14 +24,14 @@ body, body * {
  input {
      padding: 15px;
      margin: 10px 0;
-     background: black;
+     background: #f1f1f1;
      border: none;
      border-radius: 5px;
  }
  
  input[type=submit], input[type=button] {
      border: solid 1px black;
-     background-color: orange;
+     background-color: #dddde4;
      font-weight: bold;
  }
  
@@ -112,12 +112,12 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: lightgray;
+    background: #961034;
     max-width: 10%;
     padding: 5px;
 }
  .nav-item {
-    border: 1px solid beige;
+    border: 1px solid black;
     margin: 20px 0;
     width: 100%;
     text-align: center;
@@ -141,7 +141,7 @@ a {
 }
 
 .module-container {
-    border: 1px solid grey;
+    border: 1px solid darkblue;
     margin: 20px 0;
 }
 
