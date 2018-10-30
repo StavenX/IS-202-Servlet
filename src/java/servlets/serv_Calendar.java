@@ -157,25 +157,29 @@ public class serv_Calendar extends HttpServlet {
             
             // Prints time of the day from 08:00 to 18:00
             while (calendar.get(Calendar.HOUR_OF_DAY) <= 18) {
-                if(calendar.get(Calendar.HOUR_OF_DAY) == 10 && calendar.get(Calendar.MINUTE) == 0) {
-                    // test
-                    // Fix printing two tds
-                    out.println("<td>10:00</td>\n" + 
+                out.println("<tr><td class=\"time\">" + hm.format(calendar.getTime()) + "</td>");
+                for(int e = 0; e <= 6; e++) {
+                out.println("<td class=" + dt.format(calendar.getTime()) + "id=" + hm.format(calendar.getTime()) + ">" + dt.format(calendar.getTime()) + " " + hm.format(calendar.getTime()) + "</td>");
+                calendar.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                out.println("</tr>");
+                calendar.add(Calendar.DAY_OF_MONTH,-7);
+                calendar.add(Calendar.MINUTE, 15);
+            }
+            /*out.println("<td>10:00</td>\n" + 
                     "<td class=\" test-events\" rowspan=\"4\">\n" +
                     "<span class=\"clockStart\">10:00</span><br>\n" +
-                    "<span class=\"clockEnd\">13:00</span>\n" +
+                    "<span class=\"clockEnd\">11:30</span>\n" +
                     "<span class=\"title\">test subject</span><br>\n" +
                     "<span class=\"lecturer\">test lecturer</span><br>\n" +
                     "<span class=\"class\">test class 3421</span>\n" +
-                    "</td>");
-                }
-                out.println("<tr><td>" + hm.format(calendar.getTime()) + "</tr></td>");
-                calendar.add(Calendar.MINUTE, 30);
-            }
-            
+                    "</td>");*/
             out.println("</tr>");
             out.println("</tbody>");
             out.println("</table>");
+            
+            out.println("<script>");
+            out.println("</script>");
             
             out.println("<h1> <a href =\"CreateTimetableEvent\"> Create event </a> </h1>");
             
