@@ -19,8 +19,8 @@ import helpers.HtmlHelper;
  *
  * @author Staven
  */
-@WebServlet(name = "serv_ERROR404", urlPatterns = {"/ERROR404"})
-public class serv_ERROR404 extends HttpServlet {
+@WebServlet(name = "serv_ERROR403", urlPatterns = {"/ERROR403"})
+public class serv_ERROR403 extends HttpServlet {
 
 
 
@@ -40,10 +40,9 @@ public class serv_ERROR404 extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
             
-            site.printHead("404", "error-404");
-            out.println("<p>Missing resource</p>");
-            out.println("<h1>ERROR 404: PAGE NOT FOUND.</h1>");
-            out.println("<p>The link is either dead or does not exist, make sure the URL was correct</p>");
+            site.printHead("403", "error-403");
+            out.println("<h1>ERROR 403: UNAUTHORIZED</h1>");
+            out.println("<p>Hansiboi said: you shall not pass.</p>");
             site.printEnd();
         }        
     }

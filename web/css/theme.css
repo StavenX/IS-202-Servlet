@@ -302,6 +302,11 @@ td {
     text-align: center;
 }
 
+#about {
+    text-align: center;
+    font-size: 200%;
+}
+
  .invisible {
     display: none;
 }
