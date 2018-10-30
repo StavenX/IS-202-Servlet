@@ -46,17 +46,18 @@ public class serv_UpdateModule extends HttpServlet {
             
             out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
             
-            String id = request.getParameter("singleMod_id");
-            String name = request.getParameter("mod_name");
-            String desc = request.getParameter("mod_desc");
+            String id = request.getParameter("module_id");
+            String name = request.getParameter("module_name");
+            String desc = request.getParameter("module_desc");
+            String points = request.getParameter("module_points");
             
             Connection conn = login.loginToDB(out);
-            ModuleHelper.updateModule(id, name, desc, conn, out);
+            ModuleHelper.updateModule(id, name, desc, points, conn, out);
             
             //form that takes you back to the module you just edited
             out.println("<form name=\"auto\" action=\"oneModule\">");
-            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
+            out.println("<input name=\"module_id\" type=\"text\" value=\"" + id + "\">");
+            out.println("<input class=\"button\" type=\"submit\">");
             out.println("</form>");
             
             //auto submits the form so the page auto loads

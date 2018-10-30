@@ -7,15 +7,18 @@ and open the template in the editor.
 <html>
     <head>        
         <link rel="stylesheet" type="text/css" href="css/theme.css">
-        <link rel="icon" href="placeholder_v1.png" type="image/png">
+        <link rel="icon" href="images/Placeholder_v2.png" type="image/png">
+        <link rel="stylesheet" href="theme.css" type="text/css"/>
+
         <title>Dashboard</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body class="body">
+        
         <div class="nav-container" id="nav-container">
             <div class="nav-button">
-                <input onclick="hide()" type="button" value="<<" id="nav-button">
+                <input type="button" class="button" onclick="hide()" value="<<" id="nav-button">
             </div>
             <div class="home-nav" id="nav">
                 <div class="nav-item">
@@ -29,7 +32,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="student.html">
+                    <a href="Student">
                         <div class="nav-img">
                             <img src="http://via.placeholder.com/50x50" alt="lol">
                         </div>
@@ -39,7 +42,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="module.html">
+                    <a href="Module">
                         <div class="nav-img">
                             <img src="http://via.placeholder.com/50x50" alt="lol">
                         </div>
@@ -49,7 +52,7 @@ and open the template in the editor.
                     </a>
                 </div>
                 <div class="nav-item">
-                    <a href="about.html">
+                    <a href="About">
                         <div class="nav-img">
                             <img src="http://via.placeholder.com/50x50" alt="lol">
                         </div>
@@ -62,12 +65,12 @@ and open the template in the editor.
         </div>
         <div class="home-page"> 
             <h1></h1>
-            <h1> <a href ="student.html"> Students </a> </h1>
-            <h1> <a href ="module.html"> Modules </a> </h1>
-            <h1> <a href ="serv_Calendar"> Calendar </a> </h1> 
-            <h1> <a href ="serv_FileUpload"> File Upload </a> </h1>
+            <form action="Student"> <button class="button button-default">Students</button> </form>
+            <form action="Module"> <button class="button button-default">Modules</button> </form>
+            <form action="serv_Calendar"> <button class="button button-default">Calendar</button> </form>
+            <form action="serv_FileUpload"> <button class="button button-default">File Upload</button> </form>
+            <form action="313131"> <button class="button button-default">Custom error-page</button> </form>
             <h1> <a href ="servMessage"> Messages </a> </h1> 
-
         </div>
         <script>
             function hide() {
@@ -75,6 +78,7 @@ and open the template in the editor.
                 nav = document.getElementById('nav').style;
                 button = document.getElementById('nav-button');
                 temp = '';
+                temp_button = '';
                     
                 if (nav.display === 'none') {
                     nav.display = 'block';

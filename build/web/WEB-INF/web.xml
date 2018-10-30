@@ -43,6 +43,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
+            <url-pattern>/Module</url-pattern>
+            <url-pattern>/Student</url-pattern>
             <url-pattern>/serv_CreateModule</url-pattern>
             <url-pattern>/serv_CreateNewUser</url-pattern>
             <url-pattern>/serv_CreateStudent</url-pattern>
@@ -74,4 +76,25 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+    
+    
+    <!-- error pages -->
+    <error-page>
+        <!-- Missing resource -->
+        <error-code>404</error-code>
+        <location>/serv_ERROR404</location>
+    </error-page>
+    
+    <error-page>
+        <!-- forbidden content -->
+        <error-code>403</error-code>
+        <location>/ERROR403</location>
+    </error-page>    
+    
+    <error-page>
+        <!-- not logged in -->
+        <error-code>401</error-code>
+        <location>/ERROR401</location>
+    </error-page>
+    
 </web-app>
