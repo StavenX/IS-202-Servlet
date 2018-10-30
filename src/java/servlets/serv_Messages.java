@@ -51,7 +51,7 @@ public class serv_Messages extends HttpServlet {
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert senderId\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_content\" placeholder=\"Insert content\">");
-            out.println("<input type=\"Submit\" name=\"get\" value=\"Create\">");
+            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
             out.println("</form>");
             out.println("</div>");  
             site.printEnd();

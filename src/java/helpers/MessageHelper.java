@@ -22,8 +22,9 @@ public class MessageHelper {
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
      * 
-     * @param name The student name
-     * @param edu The student's education
+     * @param senderId who is sending the message (user_id)
+     * @param title title of the message
+     * @param content content of the message
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
