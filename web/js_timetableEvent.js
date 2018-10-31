@@ -1,2 +1,5 @@
-$('#01110900').html('background-color:white');
-$('.hi').html('bye');
+$(document).ready(function(){
+    $(".hi").click(function () {
+        aler("fsfs");
+    });
+});

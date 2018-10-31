@@ -24,7 +24,7 @@ public class serv_Calendar extends HttpServlet {
     SimpleDateFormat hm = new SimpleDateFormat("HH:mm");
     SimpleDateFormat wd = new SimpleDateFormat("EEEE", Locale.US);
     SimpleDateFormat dt = new SimpleDateFormat("dd.MM");
-    SimpleDateFormat pt = new SimpleDateFormat("ddMMHHmm");
+    SimpleDateFormat pt = new SimpleDateFormat("yyyyddMMHHmm");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
@@ -67,6 +67,7 @@ public class serv_Calendar extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("<script src=\"js_timetableEvent.js\"></script>");
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
@@ -181,9 +182,6 @@ public class serv_Calendar extends HttpServlet {
             
             out.println("<p class=hi>hi</p>");
 
-            out.println("<script src=\"js_timetableEvent.js\"></script>");
-
-            
             out.println("<h1> <a href =\"CreateTimetableEvent\"> Create event </a> </h1>");
             
             out.println("<br><br><br><br><br>");
