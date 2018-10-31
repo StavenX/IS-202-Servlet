@@ -7,10 +7,14 @@ package servlets;
 
 import helpers.HtmlHelper;
 import helpers.StudentHelper;
-import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import helpers.MessageHelper;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,9 +26,10 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "serv_Messages", urlPatterns = {"/servMessage"})
-public class serv_Messages extends HttpServlet {
+@WebServlet(name = "getMessage", urlPatterns = {"/getMessage"})
+public class serv_GetMessage extends HttpServlet {
 
+    Statement stmt;
     Login login = new Login();
     
     /**
@@ -36,7 +41,26 @@ public class serv_Messages extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Message", "bodyy");
+            
+            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
 
+                Connection conn;
+                conn = login.loginToDB(out);
+                
+                MessageHelper.printMessages(out, conn);
+                
+                login.close();
+                
+            site.printEnd();
+        }
+    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -52,26 +76,8 @@ public class serv_Messages extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        
-        try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Hei", "");
-            out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
-            out.println("<h1> Create a new message </h1>");
-            out.println("<div class =\"form1\">");
-            out.println("<form action=\"servMessage\" method=\"post\"> ");
-            //out.println("<input class=\"message-input\" type=\"text\" name=\"mess_id\" placeholder=\"Insert id\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_content\" placeholder=\"Insert content\">");
-            out.println("<input type=\"Submit\" name=\"get\" value=\"Send message\">");
-            out.println("</form>");
-            out.println("</div>");  
-            site.printEnd();
-        }
-        
+        request.setCharacterEncoding("UTF-8");  
+        processRequest(request, response);
     }
 
     /**
@@ -88,30 +94,7 @@ public class serv_Messages extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8"); 
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New Message", "create-message");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                MessageHelper.insertMessage(
-                        
-                        request.getParameter("mess_senderId"),
-                        request.getParameter("mess_recipient"),
-                        request.getParameter("mess_title"),
-                        request.getParameter("mess_content"),
-                        conn, 
-                        out
-                );
-                
-                login.close();
-                
-            site.printEnd();
-        }
+        processRequest(request, response);
     }
 
     /**

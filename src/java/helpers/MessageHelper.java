@@ -27,15 +27,16 @@ public class MessageHelper {
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertMessage( String senderId, String title, String content, Connection conn, PrintWriter out) {
+    public static void insertMessage( String senderId, String recipient, String title, String content, Connection conn, PrintWriter out) {
         
         try {
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO message (mess_senderId, mess_title, mess_content) values ( ?, ?, ?);");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO message (mess_senderId, mess_recipient, mess_title, mess_content) values ( ?, ?, ?, ?);");
             
             prepInsert.setString(1, senderId);
-            prepInsert.setString(2, title);            
-            prepInsert.setString(3, content);            
+            prepInsert.setString(2, recipient);
+            prepInsert.setString(3, title);            
+            prepInsert.setString(4, content);            
             
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
@@ -67,7 +68,7 @@ public class MessageHelper {
         PreparedStatement getMessage; 
         
         try {
-            getMessage = conn.prepareStatement("SELECT * FROM messages ORDER BY ?");
+            getMessage = conn.prepareStatement("SELECT * FROM message ORDER BY ?");
             getMessage.setString(1, "mess_senderId");
                        
             ResultSet rset = getMessage.executeQuery();
@@ -82,33 +83,34 @@ public class MessageHelper {
                 String mess_senderId = rset.getString("mess_senderId");
                 String mess_title = rset.getString("mess_title");
                 String mess_content = rset.getString("mess_content");
-
+                String mess_recipient = rset.getString("mess_recipient");
                 
-                out.println("<div class=\"student-container\">");
+                out.println("<div class=\"message-container\">");
                 
                 //form containing student information
-                out.println("<div class=\"student-container-item\">");
-                out.println("<form  action=\"oneStudent\">");
-                out.println("<input class=\"invisible\" name=\"stid\" value=\"" + mess_id + "\">");
+                out.println("<div class=\"message-container-item\">");
+                out.println("<form  action=\"oneMessage\">");
+                out.println("<input class=\"invisible\" name=\"mess_id\" value=\"" + mess_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
-                out.println("<div name=\"stid\">Student Id:" + mess_id + "</div>");
+                out.println("<div name=\"mess_id\">mess_id:" + mess_id + "</div>");
+                out.println("<div>To:" + mess_recipient + "</div>");
                 out.println("<div>Name:" + mess_senderId + "</div>");
-                out.println("<div>Education:" + mess_title + "</div>");
-                out.println("<div>Education:" + mess_content + "</div>");
+                out.println("<div>Title:" + mess_title + "</div>");
+                out.println("<div>Content:" + mess_content + "</div>");
 
                 out.println("</div>");
                 
                 //more info button
-                out.println("<div class=\"student-container-item\">");
-                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
-                out.println("</div>");
-                out.println("</form>");
+                //out.println("<div class=\"message-container-item\">");
+                //out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                //out.println("</div>");
+                //out.println("</form>");
                 
                 //delete buttons
-                out.println("<div class=\"student-container-item\">");
+                out.println("<div class=\"message-container-item\">");
                 
                 out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteStudent\">");
-                site.printDeleteButton("deleteStudent", "student_id", mess_id);
+                site.printDeleteButton("deleteStudent", "mess_id", mess_id);
                 out.println("</div>");
                 
                 out.println("</div>");
@@ -146,12 +148,13 @@ public class MessageHelper {
             //loop only executes once but is necessary?
             while (rset.next()) {
                 String mess_id = rset.getString("mess_id");
+                String mess_recipient = rset.getString("mess_recipient");
                 String mess_senderId = rset.getString("mess_senderId");
                 String mess_title = rset.getString("mess_title");
                 String mess_content = rset.getString("mess_content");
 
                 out.println("<div>");
-                out.println(mess_id + mess_senderId + mess_title + mess_content);
+                out.println(mess_id + mess_senderId + mess_recipient + mess_title + mess_content);
                 out.println("</div>");
                 
             }
