@@ -10,9 +10,6 @@ import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,37 +28,7 @@ public class serv_GetStudent extends HttpServlet {
     Statement stmt;
     Login login = new Login();
     
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "bodyy");
-            
-            out.println("<h1>Servlet getStudent at " + request.getContextPath() + "</h1>");
 
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                StudentHelper.printStudents(out, conn);
-                
-                login.close();
-                
-            site.printEnd();
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -74,9 +41,22 @@ public class serv_GetStudent extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Students", "bodyy");
+            
+            out.println("<h1>List of students:</h1>");
+
+                Connection conn;
+                conn = login.loginToDB(out);
+                
+                StudentHelper.printStudents(out, conn);
+                
+                login.close();
+                
+            site.printEnd();
+        }
     }
 
     /**
@@ -90,10 +70,6 @@ public class serv_GetStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        processRequest(request, response);
     }
 
     /**

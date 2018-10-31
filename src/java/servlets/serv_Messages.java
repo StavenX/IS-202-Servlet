@@ -6,7 +6,6 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
 import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,21 +21,10 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "serv_Messages", urlPatterns = {"/servMessage"})
+@WebServlet(name = "serv_Messages", urlPatterns = {"/Message"})
 public class serv_Messages extends HttpServlet {
 
     Login login = new Login();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

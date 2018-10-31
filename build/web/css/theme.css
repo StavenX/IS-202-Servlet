@@ -308,7 +308,37 @@ td {
     font-size: 200%;
 }
 
+.sort-by-container *{
+    display: inline-block;
+}
+
+#home {
+    margin: 0;
+    display: flex;
+}
+
+.course-container {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px;
+    background: lightblue;
+    text-align: center;
+}
+
+.course-container:hover {
+    cursor: pointer;
+}
+
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
  .invisible {
+    display: none;
+}
+
+#invisible {
     display: none;
 }
 

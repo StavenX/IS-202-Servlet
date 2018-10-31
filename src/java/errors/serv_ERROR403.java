@@ -17,7 +17,7 @@ import helpers.HtmlHelper;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
 @WebServlet(name = "serv_ERROR403", urlPatterns = {"/ERROR403"})
 public class serv_ERROR403 extends HttpServlet {
@@ -42,7 +42,8 @@ public class serv_ERROR403 extends HttpServlet {
             
             site.printHead("403", "error-403");
             out.println("<h1>ERROR 403: UNAUTHORIZED</h1>");
-            out.println("<p>Hansiboi said: you shall not pass.</p>");
+            out.println("<p>Hansiboi said: you shall not pass!</p>");
+            out.println("<img src=\"images/hansiboi.png\">");
             site.printEnd();
         }        
     }
