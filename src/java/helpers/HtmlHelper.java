@@ -58,7 +58,12 @@ public class HtmlHelper {
         out.println("<script src=\"FirstScripts.js\"></script>");
     }
     
-    public String checkForHtmlTags(String toCheck) {
+    public String checkIfValidText(String toCheck) {
+        //returns null if the string is empty, to prevent empty strings being inserted
+        //into database (columns have 'NOT NULL' property
+        if (toCheck.equals("")) {
+            return null;
+        }
         String checked = "";
         String[] letters = toCheck.split("");
             //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code

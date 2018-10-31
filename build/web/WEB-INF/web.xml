@@ -52,6 +52,7 @@
             <url-pattern>/serv_DeleteStudent</url-pattern>
             <url-pattern>/serv_UpdateModule</url-pattern>
             <url-pattern>/AdminSaveContact</url-pattern>
+            <url-pattern>/403test</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>Lecturer</role-name>

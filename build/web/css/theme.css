@@ -334,6 +334,15 @@ td {
     flex-wrap: wrap;
 }
 
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
+}
+
  .invisible {
     display: none;
 }
