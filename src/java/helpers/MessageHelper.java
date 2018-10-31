@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 /**
  *
  * @author Frank
@@ -23,6 +24,7 @@ public class MessageHelper {
      * prepareStatement() instead
      * 
      * @param senderId who is sending the message (user_id)
+     * @param recipient who is receiving the message
      * @param title title of the message
      * @param content content of the message
      * @param conn The connection object
@@ -32,12 +34,14 @@ public class MessageHelper {
         
         try {
             
+            HtmlHelper site = new HtmlHelper(out);
+            
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO message (mess_senderId, mess_recipient, mess_title, mess_content) values ( ?, ?, ?, ?);");
             
-            prepInsert.setString(1, senderId);
-            prepInsert.setString(2, recipient);
-            prepInsert.setString(3, title);            
-            prepInsert.setString(4, content);            
+            prepInsert.setString(1, site.checkIfValidText(senderId));
+            prepInsert.setString(2, site.checkIfValidText(recipient));
+            prepInsert.setString(3, site.checkIfValidText(title));            
+            prepInsert.setString(4, site.checkIfValidText(content));            
             
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
@@ -51,10 +55,16 @@ public class MessageHelper {
 "                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Messages from Database\">   \n" +
 "               </form>");
         }
+        catch (SQLIntegrityConstraintViolationException ex) {
+            out.println("One or more mandatory fields were empty, please try again");
+            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+        }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
         }
     }
+    
+    
     
     /**
      * Prints all the students located in the student
