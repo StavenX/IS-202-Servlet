@@ -25,6 +25,7 @@ public class serv_Calendar extends HttpServlet {
     SimpleDateFormat wd = new SimpleDateFormat("EEEE", Locale.US);
     SimpleDateFormat dt = new SimpleDateFormat("dd.MM");
     SimpleDateFormat pt = new SimpleDateFormat("yyyyddMMHHmm");
+    SimpleDateFormat hg = new SimpleDateFormat("yyyyddMM");
     
     // Creates calendar object based on host timezone
     Calendar calendar = Calendar.getInstance();
@@ -67,7 +68,9 @@ public class serv_Calendar extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
+            out.println("<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\"></script>");
             out.println("<script src=\"js_timetableEvent.js\"></script>");
+            out.println("<script src=\"js_Calendars.js\"></script>");
             out.println("<title>Servlet Calendar</title>");            
             out.println("</head>");
             out.println("<body>");
@@ -110,17 +113,12 @@ public class serv_Calendar extends HttpServlet {
                 
                 // Prints spacing before first day of month
                 for(int q = 2; q < calendar.get(Calendar.DAY_OF_WEEK); q++) {
-                        out.println("<li class=\"Empty\">" + (lastMonth + q) + "</li>");
+                        out.println("<li class=\"Empty\"></li>");
                 }
 
                 // Prints all days of month
                 while(calendar.get(Calendar.DAY_OF_MONTH) != calendar.getActualMaximum(Calendar.DAY_OF_MONTH)) {
-                    if(calendar.get(Calendar.DAY_OF_MONTH) == dayOfMonth) {
-                        out.println("<li calss=\"thisDay\">" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
-                    }  
-                    else {
-                        out.println("<li>" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
-                    }
+                    out.println("<li class=" + hg.format(calendar.getTime()) + ">" + calendar.get(Calendar.DAY_OF_MONTH) + "</li>");
                     calendar.add(Calendar.DAY_OF_MONTH, +1);
                 }
                 out.println("<li>" + calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
