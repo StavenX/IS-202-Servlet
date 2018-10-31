@@ -5,7 +5,10 @@
  */
 package helpers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
@@ -29,28 +32,64 @@ public class HtmlHelper {
         out.println("<html>");
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
-        out.println("<link rel=\"icon\" href=\"placeholder_v1.png\" type=\"image/png\">");
-        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-        out.println("<title>Servlet getStudent</title>");            
+        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+        out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
+        out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
+        out.println("<title>" + title + "</title>");            
         out.println("</head>");
-        out.println("<body id=\"" + bodyId + "\">");
-        out.println("<a href=\"http://localhost:8084/WEB/\">Go home</a>");
+        //out.println(nav());
         //printNav();
+        out.println("<body id=\"" + bodyId + "\">");
+        out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
                 out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
                 out.println("<input class=\"invisible\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
-                out.println("<input type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\" class=\"makesure-" + entityID + "\" style=\"display: inline-block\">");
+                out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
                 out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
-                out.println("<input type=\"submit\" value=\"Yes\" class=\"invisible makesure-" + entityID + "\">");
-                out.println("<input type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\" class=\"invisible makesure-" + entityID + "\">");
+                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
+                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
                 out.println("</form>");
     }
-    
+        
     public void printJsForDeleteButton() {
         //javascript for handling delete buttons
         out.println("<script src=\"FirstScripts.js\"></script>");
+    }
+    
+    public String checkIfValidText(String toCheck) {
+        //returns null if the string is empty, to prevent empty strings being inserted
+        //into database (columns have 'NOT NULL' property
+        if (toCheck.equals("")) {
+            return null;
+        }
+        String checked = "";
+        String[] letters = toCheck.split("");
+            //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
+            //(prevents images etc being posted instead of text
+            for (String letter : letters) {
+                if (letter.equals("<")) {
+                    letter = "&#x003C";
+                }
+                if (letter.equals(">")) {
+                    letter = "&#x003E";
+                }
+                //adds each letter to a new string to be used later
+                checked += letter;
+            }
+        return checked;
+    }
+    
+    //only works with absolute path
+    public String nav() {
+        String contents = "heihei";
+        try {
+            contents = new String(Files.readAllBytes(Paths.get("C:\\Users\\tobia\\Documents\\IS-202-Servlet\\web\\nav.html")));
+        } catch (IOException ex) {
+            out.println(ex);
+        }
+        return contents;
     }
     
     public void printNav () {

@@ -12,38 +12,26 @@ and open the template in the editor.
 
  * {box-sizing: border-box}
  body {
-    background-color: lightblue;
-    /*font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;*/
+    background-color: #F8F1E5;
 }
 
-/*font type for entire page*/
+/*font type for the page and all items in the page*/
 body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
-
- input {
-     padding: 15px;
+ 
+/* makes typeable input boxes bigger */
+ input[type=text], input[type=password] {
      margin: 10px 0;
-     background: #f1f1f1;
-     border: none;
-     border-radius: 5px;
+     padding: 15px;
  }
  
- input[type=submit], input[type=button] {
-     border: solid 1px black;
-     background-color: #dddde4;
-     font-weight: bold;
- }
- 
- input[type=submit]:hover, input[type=button]:hover {
-     cursor: pointer;
-     background-color: #ccc;
- }
- 
+ /*input boxes changes when clicked on */
  input[type=text]:focus, input[type=password]:focus {
   background-color: #ddd;
   outline: none;
 }
+
  /* Overwrite default styles of hr */
 hr {
   border: 1px solid #f1f1f1;
@@ -51,8 +39,8 @@ hr {
 }
  /* Set a style for the submit/register button */
 .registerbtn {
-  background-color: #4CAF50;
-  color: white;
+  background-color: #2F3131;
+  color: #F8F1E5;
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
@@ -82,9 +70,6 @@ a {
  .form1 input {
     display: list-item;
 }
- .invisible {
-    display: none;
-}
 
  .student-container {
     margin: 30px 0;
@@ -112,12 +97,12 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: #961034;
+    background: #2F3131;
     max-width: 10%;
     padding: 5px;
 }
  .nav-item {
-    border: 1px solid black;
+    border: 1px;
     margin: 20px 0;
     width: 100%;
     text-align: center;
@@ -125,7 +110,7 @@ a {
 
 .nav-item a{
     text-decoration: none;
-    color: white;
+    color: #F8F1E5;
 }
  .body {
     margin: 0;
@@ -137,11 +122,14 @@ a {
 
 #nav-button {
     padding: 5px 15px;
+    background-color: #F8F1E5;
+    color: #2F3131;
     margin: 0 auto;
+    border-radius: 0px;
 }
 
 .module-container {
-    border: 1px solid darkblue;
+    border: 1px solid #2F3131;
     margin: 20px 0;
 }
 
@@ -281,4 +269,88 @@ td {
 .one-module-enabled {
     font-weight: bold;
     font-size: 1.5em;
+}
+
+.button {
+    background-color: #2F3131; 
+    border: none; 
+    color: #F8F1E5; 
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+   
+}
+
+.button-home {
+    padding: 2px;
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+}
+
+.button-default {
+    width: 150px;
+    height: 60px;
+}
+
+.module-edit-input {
+    margin: 0 10px;
+    padding: 5px;
+    text-align: center;
+}
+
+#about {
+    text-align: center;
+    font-size: 200%;
+}
+
+.sort-by-container *{
+    display: inline-block;
+}
+
+#home {
+    margin: 0;
+    display: flex;
+}
+
+.course-container {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px;
+    background: lightblue;
+    text-align: center;
+}
+
+.course-container:hover {
+    cursor: pointer;
+}
+
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
+}
+
+ .invisible {
+    display: none;
+}
+
+#invisible {
+    display: none;
+}
+
+.inline-block {
+    display: inline-block;
 }

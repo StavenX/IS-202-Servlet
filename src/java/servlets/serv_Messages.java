@@ -6,7 +6,7 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
+import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -21,8 +21,8 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "createModule", urlPatterns = {"/createModule"})
-public class serv_CreateModule extends HttpServlet {
+@WebServlet(name = "serv_Messages", urlPatterns = {"/Message"})
+public class serv_Messages extends HttpServlet {
 
     Login login = new Login();
 
@@ -41,21 +41,30 @@ public class serv_CreateModule extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         request.setCharacterEncoding("UTF-8"); 
         
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New module", "create-module");
+            site.printHead("Message", "create-message");
+            out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
+            out.println("<h1> Create a new message </h1>");
+            out.println("<div class =\"form1\">");
+            out.println("<form id=\"messageForm\" action=\"Message\" method=\"post\"> ");
             
-            out.println("<h1> Create a new module </h1>");  
-            out.println("<div class =\"form1\">");  
-            out.println("<form action=\"createModule\" method=\"post\">");  
-            out.println("<input type=\"text\" name=\"module_name\" placeholder=\"Insert module name\">");  
-            out.println("<input type=\"text\" name=\"module_desc\" placeholder=\"Insert module description\">");
-            out.println("<input type=\"text\" name=\"module_points\" placeholder=\"Insert module points\">");
-            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">"); 
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
+            
             out.println("</form>");
+            
+            out.println("<textarea class=\"message-input\" name=\"mess_content\" rows=\"4\" cols=\"50\" form=\"messageForm\" placeholder=\"Insert content\"></textarea>");
+            
+            out.println("<input class=\"button\" type=\"button\" name=\"get\" value=\"Send message\" onclick=\"submit(\'messageForm\')\">");
+            
+            out.println("</div>");
+            out.println("<script src=\"submitform.js\"></script>");
+
+            site.printEnd();
         }
+        
     }
 
     /**
@@ -77,22 +86,23 @@ public class serv_CreateModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New module", "create-module");
+            site.printHead("Message sent", "sent-message");
             
-            Connection conn;
+                Connection conn;
                 conn = login.loginToDB(out);
-                
-                ModuleHelper.insertModule(
-                        request.getParameter("module_name"),
-                        request.getParameter("module_desc"),
-                        request.getParameter("module_points"),
+                MessageHelper.insertMessage(
+                        
+                        request.getParameter("mess_senderId"),
+                        request.getParameter("mess_recipient"),
+                        request.getParameter("mess_title"),
+                        request.getParameter("mess_content"),
                         conn, 
                         out
                 );
                 
                 login.close();
                 
-                site.printEnd();
+            site.printEnd();
         }
     }
 
@@ -104,6 +114,6 @@ public class serv_CreateModule extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
 
 }

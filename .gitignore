@@ -1,3 +1,9 @@
+# Test for our project
+private.xml
+private.properties
+project.properties
+project.xml
+
 # Compiled class file
 *.class
 

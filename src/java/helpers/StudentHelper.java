@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 /**
  *
  * @author Staven
@@ -30,10 +31,12 @@ public class StudentHelper {
     public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
         
         try {
+            HtmlHelper site = new HtmlHelper(out);
+            
             
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, name);
-            prepInsert.setString(2, edu);            
+            prepInsert.setString(1, site.checkIfValidText(name));
+            prepInsert.setString(2, site.checkIfValidText(edu));            
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -42,9 +45,13 @@ public class StudentHelper {
             
             // The button that prints all students
             out.println(
-                "<form action=\"getStudent\" method=\"post\">\n" +
-"                   <input type=\"Submit\" name=\"get\" value=\"Get all Students from Database\">   \n" +
+                "<form action=\"getStudent\" method=\"get\">\n" +
+"                   <input class=\"button\" type=\"Submit\" value=\"Get all Students from Database\">   \n" +
 "               </form>");
+        }
+        catch (SQLIntegrityConstraintViolationException ex) {
+            out.println("One or more mandatory fields were empty, please try again");
+            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
@@ -75,6 +82,7 @@ public class StudentHelper {
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
+                
                 String studentID = rset.getString("student_id");
                 String studentName = rset.getString("student_name");
                 String studentEducation = rset.getString("student_education");
@@ -91,24 +99,23 @@ public class StudentHelper {
                 out.println("<div>Education:" + studentEducation + "</div>");
                 out.println("</div>");
                 
-                //more info button
+                //"more info"-button
                 out.println("<div class=\"student-container-item\">");
-                out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
+                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</div>");
                 out.println("</form>");
                 
-                //delete buttons
+                //delete-buttons
                 out.println("<div class=\"student-container-item\">");
-                
-                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\">");
+                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\" method=\"get\">");
                 site.printDeleteButton("deleteStudent", "student_id", studentID);
                 out.println("</div>");
-                
                 out.println("</div>");
                 rowCount++;
             }
             out.println("Total number of records: " + rowCount);
             
+            //prints javascript
             site.printJsForDeleteButton();
             
             conn.close();

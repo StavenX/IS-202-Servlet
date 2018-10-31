@@ -16,7 +16,7 @@ import java.util.ArrayList;
  *
  * @author adriannesvik
  */
-@WebServlet(name = "serv_Calendar", urlPatterns = {"/serv_Calendar"})
+@WebServlet(name = "serv_Calendar", urlPatterns = {"/Calendar"})
 public class serv_Calendar extends HttpServlet {
     
     // Creates a date formats
