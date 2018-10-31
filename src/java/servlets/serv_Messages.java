@@ -44,14 +44,17 @@ public class serv_Messages extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "");
+            site.printHead("Hei", "");
+            out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
             out.println("<h1> Create a new message </h1>");
             out.println("<div class =\"form1\">");
-            out.println("<form action=\"Message\" method=\"post\"> ");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert senderId\">");
+            out.println("<form action=\"servMessage\" method=\"post\"> ");
+            //out.println("<input class=\"message-input\" type=\"text\" name=\"mess_id\" placeholder=\"Insert id\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_content\" placeholder=\"Insert content\">");
-            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
+            out.println("<input type=\"Submit\" name=\"get\" value=\"Send message\">");
             out.println("</form>");
             out.println("</div>");  
             site.printEnd();
@@ -86,6 +89,7 @@ public class serv_Messages extends HttpServlet {
                 MessageHelper.insertMessage(
                         
                         request.getParameter("mess_senderId"),
+                        request.getParameter("mess_recipient"),
                         request.getParameter("mess_title"),
                         request.getParameter("mess_content"),
                         conn, 
