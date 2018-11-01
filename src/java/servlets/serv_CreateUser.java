@@ -47,10 +47,10 @@ public class serv_CreateUser extends HttpServlet {
             out.println("");
             out.println("<form action=\"createUser\" method=\"post\">");
             out.println("<input class=\"student-input\" type=\"text\" name=\"user_name\" placeholder=\"Insert username\">");   
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_password\" placeholder=\"Insert password\">");   
+            out.println("<input class=\"student-input\" type=\"password\" name=\"user_password\" placeholder=\"Insert password\">");   
             out.println("<input class=\"student-input\" type=\"text\" name=\"user_role\" placeholder=\"Insert role\">");   
             out.println("<input class=\"student-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert first name\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert last name\">");
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_lname\" placeholder=\"Insert last name\">");
             out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
             out.println("</form>");
             site.printEnd();
