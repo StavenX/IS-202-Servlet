@@ -282,6 +282,7 @@ td {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+   
 }
 
 .button-home {
@@ -331,6 +332,15 @@ td {
 .courses-container {
     display: flex;
     flex-wrap: wrap;
+}
+
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
 }
 
  .invisible {

@@ -26,7 +26,6 @@ public class serv_Messages extends HttpServlet {
 
     Login login = new Login();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -44,16 +43,25 @@ public class serv_Messages extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "");
+            site.printHead("Message", "create-message");
+            out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
             out.println("<h1> Create a new message </h1>");
             out.println("<div class =\"form1\">");
-            out.println("<form action=\"Message\" method=\"post\"> ");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert senderId\">");
+            out.println("<form id=\"messageForm\" action=\"Message\" method=\"post\"> ");
+            
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_content\" placeholder=\"Insert content\">");
-            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
+            
             out.println("</form>");
-            out.println("</div>");  
+            
+            out.println("<textarea class=\"message-input\" name=\"mess_content\" rows=\"4\" cols=\"50\" form=\"messageForm\" placeholder=\"Insert content\"></textarea>");
+            
+            out.println("<input class=\"button\" type=\"button\" name=\"get\" value=\"Send message\" onclick=\"submit(\'messageForm\')\">");
+            
+            out.println("</div>");
+            out.println("<script src=\"submitform.js\"></script>");
+
             site.printEnd();
         }
         
@@ -78,14 +86,14 @@ public class serv_Messages extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New Message", "create-message");
+            site.printHead("Message sent", "sent-message");
             
                 Connection conn;
                 conn = login.loginToDB(out);
-                
                 MessageHelper.insertMessage(
                         
                         request.getParameter("mess_senderId"),
+                        request.getParameter("mess_recipient"),
                         request.getParameter("mess_title"),
                         request.getParameter("mess_content"),
                         conn, 

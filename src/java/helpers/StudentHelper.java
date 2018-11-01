@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 /**
  *
  * @author Staven
@@ -34,8 +35,8 @@ public class StudentHelper {
             
             
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, site.checkForHtmlTags(name));
-            prepInsert.setString(2, site.checkForHtmlTags(edu));            
+            prepInsert.setString(1, site.checkIfValidText(name));
+            prepInsert.setString(2, site.checkIfValidText(edu));            
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -47,6 +48,10 @@ public class StudentHelper {
                 "<form action=\"getStudent\" method=\"get\">\n" +
 "                   <input class=\"button\" type=\"Submit\" value=\"Get all Students from Database\">   \n" +
 "               </form>");
+        }
+        catch (SQLIntegrityConstraintViolationException ex) {
+            out.println("One or more mandatory fields were empty, please try again");
+            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);

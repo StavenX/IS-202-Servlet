@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 /**
  *
  * @author Staven
@@ -36,9 +37,9 @@ public class ModuleHelper {
             HtmlHelper site = new HtmlHelper(out);
             
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points) values (?, ?, ?);");
-            prepInsert.setString(1, site.checkForHtmlTags(name));
-            prepInsert.setString(2, site.checkForHtmlTags(desc));
-            prepInsert.setString(3, site.checkForHtmlTags(points));    
+            prepInsert.setString(1, site.checkIfValidText(name));
+            prepInsert.setString(2, site.checkIfValidText(desc));
+            prepInsert.setString(3, site.checkIfValidText(points));    
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -52,11 +53,15 @@ public class ModuleHelper {
 "                   <input class=\"button\" type=\"Submit\" value=\"Get all Modules from Database\">   \n" +
 "               </form>");
         }
+        catch (SQLIntegrityConstraintViolationException ex) {
+            out.println("One or more mandatory fields were empty, please try again");
+            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+        }
         catch (SQLException ex) {
             if (ex.getMessage().contains("Incorrect integer value")) {
                 out.println("Module points must be an integer, try again");
             } else {
-                out.println("SQL error: " + ex.getMessage());
+                out.println("SQL error: " + ex);
             }
         }
     }
@@ -68,10 +73,10 @@ public class ModuleHelper {
             HtmlHelper site = new HtmlHelper(out);
             
             PreparedStatement prepUpdate = conn.prepareStatement("UPDATE module SET module_name = ?, module_desc = ?, module_points = ? WHERE module_id = ?");
-            prepUpdate.setString(1, site.checkForHtmlTags(name));
-            prepUpdate.setString(2, site.checkForHtmlTags(desc));
-            prepUpdate.setString(3, site.checkForHtmlTags(points));
-            prepUpdate.setString(4, site.checkForHtmlTags(id));
+            prepUpdate.setString(1, site.checkIfValidText(name));
+            prepUpdate.setString(2, site.checkIfValidText(desc));
+            prepUpdate.setString(3, site.checkIfValidText(points));
+            prepUpdate.setString(4, site.checkIfValidText(id));
             
             System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
             int countInserted = prepUpdate.executeUpdate();         
