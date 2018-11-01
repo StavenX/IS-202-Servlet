@@ -53,9 +53,7 @@ public class serv_GetStudent extends HttpServlet {
                 
                 StudentHelper.printStudents(out, conn);
                 
-                login.close();
-                
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

@@ -100,9 +100,7 @@ public class serv_Messages extends HttpServlet {
                         out
                 );
                 
-                login.close();
-                
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

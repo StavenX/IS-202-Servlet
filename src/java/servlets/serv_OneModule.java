@@ -27,7 +27,6 @@ public class serv_OneModule extends HttpServlet {
     Statement stmt;
     Login login = new Login();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -81,9 +80,7 @@ public class serv_OneModule extends HttpServlet {
             out.println("   }");
             out.println("</script>");
             
-            
-            site.printEnd();
-            login.close();
+            site.closeAndPrintEnd(login);
         }
     }
 

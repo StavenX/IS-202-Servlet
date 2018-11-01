@@ -10,6 +10,7 @@
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneStudent.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/StudentHelper.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteStudent.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Messages.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/FirstScripts.js</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/css/theme.css</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateStudent.java</file>
@@ -21,6 +22,8 @@
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateModule.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_UpdateModule.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Module.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/MessageHelper.java</file>
         </group>
     </open-files>
 </project-private>

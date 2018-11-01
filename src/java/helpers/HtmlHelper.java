@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Connection;
+import network.Login;
 
 /**
  *
@@ -199,5 +201,14 @@ public class HtmlHelper {
     public void printEnd () {
         out.println("</body>");
         out.println("</html>");
+    }
+    
+    /**
+     * Prints the closing tag of body and html and closes connection
+     * @param login the connection to be closed
+     */
+    public void closeAndPrintEnd(Login login) {
+        login.close();
+        printEnd();
     }
 }

@@ -82,11 +82,8 @@ public class serv_CreateStudent extends HttpServlet {
                         request.getParameter("student_edu"),
                         conn, 
                         out
-                );
-                
-                login.close();
-                
-            site.printEnd();
+                );                
+            site.closeAndPrintEnd(login);
         }
     }
 

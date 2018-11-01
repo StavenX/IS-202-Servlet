@@ -88,11 +88,8 @@ public class serv_CreateModule extends HttpServlet {
                         request.getParameter("module_points"),
                         conn, 
                         out
-                );
-                
-                login.close();
-                
-                site.printEnd();
+                );                
+                site.closeAndPrintEnd(login);
         }
     }
 
