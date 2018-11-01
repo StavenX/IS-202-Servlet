@@ -39,11 +39,14 @@ public class StudentHelper {
             out.println("hei1");
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (user_name, user_password, user_role, user_fname, user_lname) VALUES (?, ?, ?, ?, ?);");
             prepInsert.setString(1, site.checkIfValidText(username));
+            out.println("hei3");
             prepInsert.setString(2, site.checkIfValidText(password));
             prepInsert.setString(3, site.checkIfValidText(role));
             prepInsert.setString(4, site.checkIfValidText(fname));
-            prepInsert.setString(5, site.checkIfValidText(lname));
             
+            out.println("hei3");
+            prepInsert.setString(5, site.checkIfValidText(lname));
+            prepInsert.executeUpdate();
             out.println("hei2");
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
