@@ -59,6 +59,10 @@ public class HtmlHelper {
         out.println("<script src=\"buttons-for-delete.js\"></script>");
     }
     
+    public void useJS(String filename) {
+        out.println("<script src=\"" + filename + "\"></script>");
+    }
+    
     public String checkIfValidText(String toCheck) {
         //returns null if the string is empty, to prevent empty strings being inserted
         //into database (columns have 'NOT NULL' property
