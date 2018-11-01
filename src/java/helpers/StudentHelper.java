@@ -23,20 +23,28 @@ public class StudentHelper {
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
      * 
-     * @param name The student name
-     * @param edu The student's education
+     * @param username The student name
+     * @param password The student's education
+     * @param role
+     * @param fname
+     * @param lname
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
+    public static void insertUser(String username, String password, String role, String fname, String lname, Connection conn, PrintWriter out) {
         
         try {
             HtmlHelper site = new HtmlHelper(out);
             
+            out.println("hei1");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (user_name, user_password, user_role, user_fname, user_lname) VALUES (?, ?, ?, ?, ?);");
+            prepInsert.setString(1, site.checkIfValidText(username));
+            prepInsert.setString(2, site.checkIfValidText(password));
+            prepInsert.setString(3, site.checkIfValidText(role));
+            prepInsert.setString(4, site.checkIfValidText(fname));
+            prepInsert.setString(5, site.checkIfValidText(lname));
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, site.checkIfValidText(name));
-            prepInsert.setString(2, site.checkIfValidText(edu));            
+            out.println("hei2");
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         

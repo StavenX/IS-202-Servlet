@@ -41,11 +41,11 @@ public class serv_Student extends HttpServlet {
             
             out.println("<h1> Student operations </h1>");
             
-            out.println("<form action=\"createStudent\">");
-            out.println("<button class=\"button\">Create student</button>");
+            out.println("<form action=\"createUser\">");
+            out.println("<button class=\"button\">Create user</button>");
             out.println("</form>");
             out.println("<form action=\"getUser\">");
-            out.println("<button class=\"button\">Get all students from database</button>");
+            out.println("<button class=\"button\">Get all users from database</button>");
             out.println("</form>");
             
             site.printEnd();

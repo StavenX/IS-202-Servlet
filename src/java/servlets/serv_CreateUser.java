@@ -21,8 +21,8 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
-public class serv_CreateStudent extends HttpServlet {
+@WebServlet(name = "createUser", urlPatterns = {"/createUser"})
+public class serv_CreateUser extends HttpServlet {
 
     Login login = new Login();
 
@@ -43,10 +43,14 @@ public class serv_CreateStudent extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
-            out.println("<form action=\"createStudent\" method=\"post\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_name\" placeholder=\"Insert name\">");   
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_edu\" placeholder=\"Insert education\">");
+            site.printHead("New user", "create-user");
+            out.println("");
+            out.println("<form action=\"createUser\" method=\"post\">");
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_name\" placeholder=\"Insert username\">");   
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_password\" placeholder=\"Insert password\">");   
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_role\" placeholder=\"Insert role\">");   
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert first name\">");
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert last name\">");
             out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
             out.println("</form>");
             site.printEnd();
@@ -72,14 +76,17 @@ public class serv_CreateStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
+            site.printHead("New user created", "create-user");
             
                 Connection conn;
                 conn = login.loginToDB(out);
                 
-                StudentHelper.insertStudent(
-                        request.getParameter("student_name"),
-                        request.getParameter("student_edu"),
+                StudentHelper.insertUser(
+                        request.getParameter("user_name"),
+                        request.getParameter("user_password"),
+                        request.getParameter("user_role"),
+                        request.getParameter("user_fname"),
+                        request.getParameter("user_lname"),
                         conn, 
                         out
                 );                
