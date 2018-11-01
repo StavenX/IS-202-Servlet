@@ -44,7 +44,7 @@ public class serv_Student extends HttpServlet {
             out.println("<form action=\"createStudent\">");
             out.println("<button class=\"button\">Create student</button>");
             out.println("</form>");
-            out.println("<form action=\"getStudent\">");
+            out.println("<form action=\"getUser\">");
             out.println("<button class=\"button\">Get all students from database</button>");
             out.println("</form>");
             

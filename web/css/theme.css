@@ -343,6 +343,15 @@ td {
     display: list-item;
 }
 
+#about-page {
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
  .invisible {
     display: none;
 }

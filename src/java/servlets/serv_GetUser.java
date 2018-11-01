@@ -5,29 +5,29 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
+import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import helpers.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author Staven
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class serv_OneStudent extends HttpServlet {
-    
+@WebServlet(name = "getUser", urlPatterns = {"/getUser"})
+public class serv_GetUser extends HttpServlet {
+
     Statement stmt;
     Login login = new Login();
-
+    
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -42,19 +42,16 @@ public class serv_OneStudent extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
+            site.printHead("Students", "bodyy");
             
-            String stid = request.getParameter("stid");
-            
-            Connection conn;
-            conn = login.loginToDB(out);
+            out.println("<h1>List of students:</h1>");
 
-            
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
-
+                Connection conn;
+                conn = login.loginToDB(out);
+                StudentHelper.printUsers(out, conn);
+                
             site.closeAndPrintEnd(login);
         }
     }

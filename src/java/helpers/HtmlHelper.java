@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.Connection;
 import network.Login;
 
 /**
@@ -55,9 +54,9 @@ public class HtmlHelper {
                 out.println("</form>");
     }
         
+    //javascript for handling delete buttons
     public void printJsForDeleteButton() {
-        //javascript for handling delete buttons
-        out.println("<script src=\"FirstScripts.js\"></script>");
+        out.println("<script src=\"buttons-for-delete.js\"></script>");
     }
     
     public String checkIfValidText(String toCheck) {
