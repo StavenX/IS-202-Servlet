@@ -36,7 +36,7 @@ public class StudentHelper {
         try {
             HtmlHelper site = new HtmlHelper(out);
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (user_name, user_password, user_role, user_fname, user_lname) VALUES (?, ?, ?, ?, ?);");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (user_username, user_password, user_role, user_fname, user_lname) VALUES (?, ?, ?, ?, ?);");
             prepInsert.setString(1, site.checkIfValidText(username));
             prepInsert.setString(2, site.checkIfValidText(password));
             prepInsert.setString(3, site.checkIfValidText(role));
@@ -88,7 +88,7 @@ public class StudentHelper {
                 // The different columns
                 
                 String user_id = rset.getString("user_id");
-                String user_name = rset.getString("user_name");
+                String user_username = rset.getString("user_username");
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");
                 
@@ -100,7 +100,7 @@ public class StudentHelper {
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div>User Id:" + user_id + "</div>");
-                out.println("<div>Username:" + user_name + "</div>");
+                out.println("<div>Username:" + user_username + "</div>");
                 out.println("<div>First name:" + user_fname + "</div>");
                 out.println("<div>Last name:" + user_lname + "</div>");
                 out.println("</div>");
@@ -152,11 +152,11 @@ public class StudentHelper {
             //loop only executes once but is necessary?
             while (rset.next()) {
                 String user_id = rset.getString("user_id");
-                String user_name = rset.getString("user_name");
+                String user_username = rset.getString("user_username");
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");
                 out.println("<div>");
-                out.println(user_id + user_name + user_fname + user_lname);
+                out.println(user_id + user_username + user_fname + user_lname);
                 out.println("</div>");
                 
             }

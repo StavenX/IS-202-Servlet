@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -16,12 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "serv_Module", urlPatterns = {"/Module"})
-public class serv_Module extends HttpServlet {
+@WebServlet(name = "addToModule", urlPatterns = {"/addToModule"})
+public class serv_addToModule extends HttpServlet {
 
-  
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -35,29 +34,10 @@ public class serv_Module extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Module", "module-frontpage");
+            String module_id = request.getParameter("module_id");
+            String student_id = request.getParameter("student_id");
             
-            out.println("<h1> Module operations </h1>");
-            
-            String usertoken = request.getUserPrincipal().toString();
-            
-            if (usertoken.contains("Lecturer")) {
-                out.println("Lecturer was here</br>");
-            }
-            
-            
-            out.println(request.getUserPrincipal().toString());
-            
-            out.println("<form action=\"createModule\">");
-            out.println("<button class=\"button\">Create module</button>");
-            out.println("</form>");
-            out.println("<form action=\"getModule\">");
-            out.println("<button class=\"button\">Get all modules from database</button>");
-            out.println("</form>");
-            
-            site.printEnd();
+            out.println("im not done yet ok");
         }
     }
 
@@ -72,6 +52,10 @@ public class serv_Module extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+        }
     }
 
     /**
