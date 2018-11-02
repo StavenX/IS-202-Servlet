@@ -9,6 +9,7 @@ import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import helpers.MessageHelper;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -16,14 +17,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author Frank
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class serv_DeleteStudent extends HttpServlet {
+@WebServlet(name = "deleteMessage", urlPatterns = {"/deleteMessage"})
+public class serv_DeleteMessage extends HttpServlet {
     Login login = new Login();
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -42,28 +44,25 @@ public class serv_DeleteStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-
-            site.printHead("Delete student", "delete-student");
+            site.printHead("Delete message", "delete-message");
             
-            out.println("<h1>Deletion page</h1>");
+            out.println("<h1>Servlet deleteMessage at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
             
-            String student_id = request.getParameter("student_id");
+            String mess_id = request.getParameter("mess_id");
             
-            PreparedStatement deleteStudent;
+            PreparedStatement deleteMessage;
             try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
+                deleteMessage = conn.prepareStatement("DELETE FROM message WHERE mess_id = ?;");
+                deleteMessage.setString(1, mess_id);
                 
-                int amountDeleted = deleteStudent.executeUpdate();
-                out.println("<div>" + amountDeleted + " students deleted.</div>");
-                out.println("<form action=\"getStudent\" method=\"get\"><button class=\"button\">Back to student list</button></form>");
-
+                int amountDeleted = deleteMessage.executeUpdate();
+                out.println("<div>" + amountDeleted + " message deleted.</div>");
+                out.println("<form action=\"getMessage\"><button class=\"button\">Back to message list</button></form>");
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }
-            
             
             site.printEnd();
         }

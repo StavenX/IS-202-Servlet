@@ -5,58 +5,30 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import helpers.MessageHelper;
-import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import helpers.*;
+import java.sql.Connection;
+import java.sql.Statement;
 import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getMessage", urlPatterns = {"/getMessage"})
-public class serv_GetMessage extends HttpServlet {
-
+@WebServlet(name = "oneUser", urlPatterns = {"/oneUser"})
+public class serv_OneUser extends HttpServlet {
+    
     Statement stmt;
     Login login = new Login();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "bodyy");
-            
-            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
 
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
-                
-            site.closeAndPrintEnd(login);
-        }
-    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -69,9 +41,22 @@ public class serv_GetMessage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Single user", "one-student-container");
+            
+            String user_id = request.getParameter("user_id");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
+
+            
+            out.println("<h2>Viewing a single user</h2>");
+            StudentHelper.printOneUser(out, conn, user_id);
+
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -85,10 +70,6 @@ public class serv_GetMessage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        processRequest(request, response);
     }
 
     /**

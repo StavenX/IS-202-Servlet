@@ -27,7 +27,6 @@ import network.Login;
 public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -63,7 +62,7 @@ public class serv_DeleteModule extends HttpServlet {
                 out.println("SQL error: " + ex);
             }
             
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

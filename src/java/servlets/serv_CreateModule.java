@@ -77,7 +77,7 @@ public class serv_CreateModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New module", "create-module");
+            site.printHead("New module created", "create-module");
             
             Connection conn;
                 conn = login.loginToDB(out);
@@ -88,11 +88,8 @@ public class serv_CreateModule extends HttpServlet {
                         request.getParameter("module_points"),
                         conn, 
                         out
-                );
-                
-                login.close();
-                
-                site.printEnd();
+                );                
+                site.closeAndPrintEnd(login);
         }
     }
 
