@@ -128,10 +128,18 @@ a {
     border-radius: 0px;
 }
 
-.module-container {
-    border: 1px solid #2F3131;
-    margin: 20px 0;
+.sort-by-container {
+    width:fit-content ;
+    margin: 20px auto;
 }
+
+.module-container {
+    padding: 5px;
+    width: 70%;
+    border: 1px solid #2F3131;
+    margin: 20px auto;
+}
+
 
 .module-student-list {
     margin: 10px auto;
@@ -341,6 +349,15 @@ td {
 
 .message-input {
     display: list-item;
+}
+
+#about-page {
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
  .invisible {

@@ -63,9 +63,8 @@ public class serv_GetModule extends HttpServlet {
                 String[] orderByList = orderBy.split(" ");
                 
                 ModuleHelper.printModules(out, conn, orderByList);
-                login.close();
                 
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

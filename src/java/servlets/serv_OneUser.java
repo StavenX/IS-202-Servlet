@@ -22,14 +22,13 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class serv_OneStudent extends HttpServlet {
+@WebServlet(name = "oneUser", urlPatterns = {"/oneUser"})
+public class serv_OneUser extends HttpServlet {
     
     Statement stmt;
     Login login = new Login();
 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -45,22 +44,18 @@ public class serv_OneStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
+            site.printHead("Single user", "one-student-container");
             
-            String stid = request.getParameter("stid");
+            String user_id = request.getParameter("user_id");
             
             Connection conn;
             conn = login.loginToDB(out);
 
             
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
+            out.println("<h2>Viewing a single user</h2>");
+            StudentHelper.printOneUser(out, conn, user_id);
 
-            
-            login.close();
-            
-            
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 
