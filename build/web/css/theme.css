@@ -282,6 +282,7 @@ td {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+   
 }
 
 .button-home {
@@ -302,9 +303,53 @@ td {
     text-align: center;
 }
 
+#about {
+    text-align: center;
+    font-size: 200%;
+}
+
+.sort-by-container *{
+    display: inline-block;
+}
+
+#home {
+    margin: 0;
+    display: flex;
+}
+
+.course-container {
+    border: 1px solid black;
+    padding: 5px;
+    margin: 10px;
+    background: lightblue;
+    text-align: center;
+}
+
+.course-container:hover {
+    cursor: pointer;
+}
+
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
+}
+
 /* button styling ends */
 
  .invisible {
+    display: none;
+}
+
+#invisible {
     display: none;
 }
 

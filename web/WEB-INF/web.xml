@@ -22,8 +22,8 @@
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
-            <url-pattern>/module.html</url-pattern>
-            <url-pattern>/student.html</url-pattern>
+            <url-pattern>/Module</url-pattern>
+            <url-pattern>/Student</url-pattern>
             <url-pattern>/serv_Calendar</url-pattern>
             <url-pattern>/serv_FileUpload</url-pattern>
             <url-pattern>/serv_GetModule</url-pattern>
@@ -31,6 +31,7 @@
             <url-pattern>/serv_OneModule</url-pattern>
             <url-pattern>/serv_CreateNewUser</url-pattern>
             <url-pattern>/serv_OneStudent</url-pattern>
+            <url-pattern>/Message</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>
@@ -42,8 +43,8 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
-            <url-pattern>/module.html</url-pattern>
-            <url-pattern>/student.html</url-pattern>
+            <url-pattern>/Module</url-pattern>
+            <url-pattern>/Student</url-pattern>
             <url-pattern>/serv_CreateModule</url-pattern>
             <url-pattern>/serv_CreateNewUser</url-pattern>
             <url-pattern>/serv_CreateStudent</url-pattern>
@@ -51,6 +52,7 @@
             <url-pattern>/serv_DeleteStudent</url-pattern>
             <url-pattern>/serv_UpdateModule</url-pattern>
             <url-pattern>/AdminSaveContact</url-pattern>
+            <url-pattern>/403test</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <role-name>Lecturer</role-name>
@@ -76,10 +78,24 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
     
+    
+    <!-- error pages -->
     <error-page>
-    <!-- Missing resource -->
-    <error-code>404</error-code>
-    <location>/serv_ERROR404</location>
+        <!-- Missing resource -->
+        <error-code>404</error-code>
+        <location>/ERROR404</location>
+    </error-page>
+    
+    <error-page>
+        <!-- forbidden content -->
+        <error-code>403</error-code>
+        <location>/ERROR403</location>
+    </error-page>    
+    
+    <error-page>
+        <!-- not logged in -->
+        <error-code>401</error-code>
+        <location>/ERROR401</location>
     </error-page>
     
 </web-app>

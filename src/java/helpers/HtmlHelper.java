@@ -5,7 +5,10 @@
  */
 package helpers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  *
@@ -30,13 +33,14 @@ public class HtmlHelper {
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-        out.println("<link rel=\"icon\" href=\"images/placeholder_v1.png\" type=\"image/png\">");
+        out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
-        out.println("<title>Servlet getStudent</title>");            
+        out.println("<title>" + title + "</title>");            
         out.println("</head>");
+        //out.println(nav());
+        //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
-        //printNav();
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
@@ -54,7 +58,12 @@ public class HtmlHelper {
         out.println("<script src=\"FirstScripts.js\"></script>");
     }
     
-    public String checkForHtmlTags(String toCheck) {
+    public String checkIfValidText(String toCheck) {
+        //returns null if the string is empty, to prevent empty strings being inserted
+        //into database (columns have 'NOT NULL' property
+        if (toCheck.equals("")) {
+            return null;
+        }
         String checked = "";
         String[] letters = toCheck.split("");
             //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
@@ -70,6 +79,17 @@ public class HtmlHelper {
                 checked += letter;
             }
         return checked;
+    }
+    
+    //only works with absolute path
+    public String nav() {
+        String contents = "heihei";
+        try {
+            contents = new String(Files.readAllBytes(Paths.get("C:\\Users\\tobia\\Documents\\IS-202-Servlet\\web\\nav.html")));
+        } catch (IOException ex) {
+            out.println(ex);
+        }
+        return contents;
     }
     
     public void printNav () {
