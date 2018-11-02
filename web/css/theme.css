@@ -15,6 +15,8 @@ and open the template in the editor.
     background-color: #F8F1E5;
 }
 
+
+
 /*font type for the page and all items in the page*/
 body, body * {
     font-family: 'Rubik', sans-serif !important;
@@ -79,6 +81,34 @@ a {
 
 .student-container-item {
     margin: 0px 5px;
+}
+
+.message-container {
+    border: solid 2px black;
+    width: 20%;
+    background-color: beige;
+    text-align: center;
+    color: black;
+    margin: 30px 10px;
+    word-wrap: break-word;
+}
+.message-flex-container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.message-bold-container {
+    font-weight: bold;
+}
+#bodyy {
+    width: 100%;
+    text-align: center;
+}
+
+.message-container-item {
+    margin: 10px 5px;
 }
 
 .student-container input {
@@ -358,6 +388,21 @@ td {
     background-position-x: 50%;
     color: white;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+.module-students-table {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.module-students-table th {
+    background: lightblue;
+    border: 0px solid black;
+}
+
+.module-students-table td {
+    background: white;
+    border: 0;
 }
 
  .invisible {
