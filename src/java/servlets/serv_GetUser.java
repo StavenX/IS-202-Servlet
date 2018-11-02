@@ -6,11 +6,11 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,13 +20,15 @@ import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author Staven
  */
-@WebServlet(name = "deleteStudent", urlPatterns = {"/deleteStudent"})
-public class serv_DeleteStudent extends HttpServlet {
-    Login login = new Login();
+@WebServlet(name = "getUser", urlPatterns = {"/getUser"})
+public class serv_GetUser extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+    Statement stmt;
+    Login login = new Login();
+    
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -42,30 +44,15 @@ public class serv_DeleteStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Students", "bodyy");
+            
+            out.println("<h1>List of students:</h1>");
 
-            site.printHead("Delete student", "delete-student");
-            
-            out.println("<h1>Deletion page</h1>");
-            
-            Connection conn = login.loginToDB(out);
-            
-            String student_id = request.getParameter("student_id");
-            
-            PreparedStatement deleteStudent;
-            try {
-                deleteStudent = conn.prepareStatement("DELETE FROM student WHERE student_id = ?;");
-                deleteStudent.setString(1, student_id);
+                Connection conn;
+                conn = login.loginToDB(out);
+                StudentHelper.printUsers(out, conn);
                 
-                int amountDeleted = deleteStudent.executeUpdate();
-                out.println("<div>" + amountDeleted + " students deleted.</div>");
-                out.println("<form action=\"getStudent\" method=\"get\"><button class=\"button\">Back to student list</button></form>");
-
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

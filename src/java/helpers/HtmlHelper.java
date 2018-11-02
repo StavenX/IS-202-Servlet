@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import network.Login;
 
 /**
  *
@@ -53,12 +54,21 @@ public class HtmlHelper {
                 out.println("</form>");
     }
         
+    //javascript for handling delete buttons
     public void printJsForDeleteButton() {
-        //javascript for handling delete buttons
-        out.println("<script src=\"FirstScripts.js\"></script>");
+        out.println("<script src=\"buttons-for-delete.js\"></script>");
     }
     
-    public String checkForHtmlTags(String toCheck) {
+    public void useJS(String filename) {
+        out.println("<script src=\"" + filename + "\"></script>");
+    }
+    
+    public String checkIfValidText(String toCheck) {
+        //returns null if the string is empty, to prevent empty strings being inserted
+        //into database (columns have 'NOT NULL' property
+        if (toCheck.equals("")) {
+            return null;
+        }
         String checked = "";
         String[] letters = toCheck.split("");
             //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
@@ -194,5 +204,14 @@ public class HtmlHelper {
     public void printEnd () {
         out.println("</body>");
         out.println("</html>");
+    }
+    
+    /**
+     * Prints the closing tag of body and html and closes connection
+     * @param login the connection to be closed
+     */
+    public void closeAndPrintEnd(Login login) {
+        login.close();
+        printEnd();
     }
 }

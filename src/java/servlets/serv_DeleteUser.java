@@ -6,11 +6,11 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,14 +20,11 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getStudent", urlPatterns = {"/getStudent"})
-public class serv_GetStudent extends HttpServlet {
-
-    Statement stmt;
+@WebServlet(name = "deleteUser", urlPatterns = {"/deleteUser"})
+public class serv_DeleteUser extends HttpServlet {
     Login login = new Login();
-    
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -44,18 +41,30 @@ public class serv_GetStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Students", "bodyy");
-            
-            out.println("<h1>List of students:</h1>");
 
-                Connection conn;
-                conn = login.loginToDB(out);
+            site.printHead("Delete user", "delete-user");
+            
+            out.println("<h1>Deletion page</h1>");
+            
+            Connection conn = login.loginToDB(out);
+            
+            String user_id = request.getParameter("user_id");
+            
+            PreparedStatement deleteUser;
+            try {
+                deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
                 
-                StudentHelper.printStudents(out, conn);
-                
-                login.close();
-                
-            site.printEnd();
+                int amountDeleted = deleteUser.executeUpdate();
+                out.println("<div>" + amountDeleted + " users deleted.</div>");
+                out.println("<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>");
+
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
+            
+            
+            site.closeAndPrintEnd(login);
         }
     }
 
