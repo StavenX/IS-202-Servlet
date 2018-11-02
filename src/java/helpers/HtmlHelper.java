@@ -49,6 +49,7 @@ public class HtmlHelper {
         //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        
         String loggedUser;
         try {
             AccessTokenHelper a = new AccessTokenHelper(request);

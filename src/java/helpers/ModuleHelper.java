@@ -26,20 +26,22 @@ public class ModuleHelper {
      * @param name
      * @param desc
      * @param points
+     * @param course_id
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
         
-    public static void insertModule(String name, String desc, String points, Connection conn, PrintWriter out) {
+    public static void insertModule(String name, String desc, String points, String course_id, Connection conn, PrintWriter out) {
         
         try {
             
             HtmlHelper site = new HtmlHelper(out);
             
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points) values (?, ?, ?);");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points, course_id) values (?, ?, ?, ?);");
             prepInsert.setString(1, site.checkIfValidText(name));
             prepInsert.setString(2, site.checkIfValidText(desc));
-            prepInsert.setString(3, site.checkIfValidText(points));    
+            prepInsert.setString(3, site.checkIfValidText(points));
+            prepInsert.setString(4, site.checkIfValidText(course_id));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -168,6 +170,15 @@ public class ModuleHelper {
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
                 
+                PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+                getCourseName.setString(1, rset.getString("course_id"));
+                ResultSet courseResult = getCourseName.executeQuery();
+                String course_name = "";
+                while (courseResult.next()) {
+                    course_name = courseResult.getString("course_name");
+                }
+                
+                
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
                 out.println("<form action=\"oneModule\" method=\"get\">");
@@ -177,6 +188,7 @@ public class ModuleHelper {
                 out.println("<div>Name:" + module_name + "</div>");
                 out.println("<div>Description:" + module_desc + "</div>");
                 out.println("<div>Max points:" + module_points + "</div>");
+                out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
                 site.printDeleteButton("deleteModule", "module_id", module_id);
