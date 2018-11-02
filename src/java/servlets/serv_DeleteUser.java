@@ -9,8 +9,8 @@ import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import helpers.MessageHelper;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,43 +20,12 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getMessage", urlPatterns = {"/getMessage"})
-public class serv_GetMessage extends HttpServlet {
-
-    Statement stmt;
+@WebServlet(name = "deleteUser", urlPatterns = {"/deleteUser"})
+public class serv_DeleteUser extends HttpServlet {
     Login login = new Login();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "bodyy");
-            
-            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
 
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
-                
-            site.closeAndPrintEnd(login);
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -69,9 +38,34 @@ public class serv_GetMessage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out);
+
+            site.printHead("Delete user", "delete-user");
+            
+            out.println("<h1>Deletion page</h1>");
+            
+            Connection conn = login.loginToDB(out);
+            
+            String user_id = request.getParameter("user_id");
+            
+            PreparedStatement deleteUser;
+            try {
+                deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
+                
+                int amountDeleted = deleteUser.executeUpdate();
+                out.println("<div>" + amountDeleted + " users deleted.</div>");
+                out.println("<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>");
+
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
+            
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -85,10 +79,6 @@ public class serv_GetMessage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        processRequest(request, response);
     }
 
     /**

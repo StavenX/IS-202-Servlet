@@ -15,6 +15,8 @@ and open the template in the editor.
     background-color: #F8F1E5;
 }
 
+
+
 /*font type for the page and all items in the page*/
 body, body * {
     font-family: 'Rubik', sans-serif !important;
@@ -81,6 +83,32 @@ a {
     margin: 0px 5px;
 }
 
+.message-container {
+    border: solid 2px black;
+    width: 20%;
+    background-color: beige;
+    text-align: center;
+    color: black;
+    margin: 30px 10px;
+}
+.message-flex-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 130px;
+}
+.message-bold-container {
+    font-weight: bold;
+}
+#bodyy {
+    width: 100%;
+    text-align: center;
+}
+
+.message-container-item {
+    margin: 10px 5px;
+}
+
 .student-container input {
     min-width: 10%;
 }
@@ -128,10 +156,18 @@ a {
     border-radius: 0px;
 }
 
-.module-container {
-    border: 1px solid #2F3131;
-    margin: 20px 0;
+.sort-by-container {
+    width:fit-content ;
+    margin: 20px auto;
 }
+
+.module-container {
+    padding: 5px;
+    width: 70%;
+    border: 1px solid #2F3131;
+    margin: 20px auto;
+}
+
 
 .module-student-list {
     margin: 10px auto;
@@ -343,6 +379,15 @@ td {
 
 .message-input {
     display: list-item;
+}
+
+#about-page {
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
  .invisible {

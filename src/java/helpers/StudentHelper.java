@@ -23,20 +23,25 @@ public class StudentHelper {
      * TODO: Currently prone to SQL injection, needs to use
      * prepareStatement() instead
      * 
-     * @param name The student name
-     * @param edu The student's education
+     * @param username The student name
+     * @param password The student's education
+     * @param role
+     * @param fname
+     * @param lname
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertStudent(String name, String edu, Connection conn, PrintWriter out) {
+    public static void insertUser(String username, String password, String role, String fname, String lname, Connection conn, PrintWriter out) {
         
         try {
             HtmlHelper site = new HtmlHelper(out);
             
-            
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO student (student_name, student_education) values (?, ?);");
-            prepInsert.setString(1, site.checkIfValidText(name));
-            prepInsert.setString(2, site.checkIfValidText(edu));            
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO users (user_name, user_password, user_role, user_fname, user_lname) VALUES (?, ?, ?, ?, ?);");
+            prepInsert.setString(1, site.checkIfValidText(username));
+            prepInsert.setString(2, site.checkIfValidText(password));
+            prepInsert.setString(3, site.checkIfValidText(role));
+            prepInsert.setString(4, site.checkIfValidText(fname));
+            prepInsert.setString(5, site.checkIfValidText(lname));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -45,7 +50,7 @@ public class StudentHelper {
             
             // The button that prints all students
             out.println(
-                "<form action=\"getStudent\" method=\"get\">\n" +
+                "<form action=\"getUser\" method=\"get\">\n" +
 "                   <input class=\"button\" type=\"Submit\" value=\"Get all Students from Database\">   \n" +
 "               </form>");
         }
@@ -65,14 +70,13 @@ public class StudentHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      */
-    public static void printStudents(PrintWriter out, Connection conn) {
+    public static void printUsers(PrintWriter out, Connection conn) {
 
         HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getModules; 
         
         try {
-            getModules = conn.prepareStatement("SELECT * FROM student ORDER BY ?");
-            getModules.setString(1, "student_id");
+            getModules = conn.prepareStatement("SELECT * FROM users ORDER BY user_id");
                        
             ResultSet rset = getModules.executeQuery();
             
@@ -83,20 +87,22 @@ public class StudentHelper {
             while (rset.next()) {               
                 // The different columns
                 
-                String studentID = rset.getString("student_id");
-                String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
+                String user_id = rset.getString("user_id");
+                String user_name = rset.getString("user_name");
+                String user_fname = rset.getString("user_fname");
+                String user_lname = rset.getString("user_lname");
                 
                 out.println("<div class=\"student-container\">");
                 
                 //form containing student information
                 out.println("<div class=\"student-container-item\">");
-                out.println("<form  action=\"oneStudent\">");
-                out.println("<input class=\"invisible\" name=\"stid\" value=\"" + studentID + "\">");
+                out.println("<form action=\"oneUser\">");
+                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
-                out.println("<div name=\"stid\">Student Id:" + studentID + "</div>");
-                out.println("<div>Name:" + studentName + "</div>");
-                out.println("<div>Education:" + studentEducation + "</div>");
+                out.println("<div>User Id:" + user_id + "</div>");
+                out.println("<div>Username:" + user_name + "</div>");
+                out.println("<div>First name:" + user_fname + "</div>");
+                out.println("<div>Last name:" + user_lname + "</div>");
                 out.println("</div>");
                 
                 //"more info"-button
@@ -107,8 +113,8 @@ public class StudentHelper {
                 
                 //delete-buttons
                 out.println("<div class=\"student-container-item\">");
-                out.println("<form name=\"delete-form-" + studentID + "\" action=\"deleteStudent\" method=\"get\">");
-                site.printDeleteButton("deleteStudent", "student_id", studentID);
+                out.println("<form name=\"delete-form-" + user_id + "\" action=\"deleteUser\" method=\"get\">");
+                site.printDeleteButton("deleteUser", "user_id", user_id);
                 out.println("</div>");
                 out.println("</div>");
                 rowCount++;
@@ -132,24 +138,25 @@ public class StudentHelper {
      * Prints more details about one student
      * @param out
      * @param conn
-     * @param stid 
+     * @param userid 
      */
-    public static void printOneStudent(PrintWriter out, Connection conn, String stid) {
-        PreparedStatement getOneStudent;
+    public static void printOneUser(PrintWriter out, Connection conn, String userid) {
+        PreparedStatement getOneUser;
         
         try {
             //sql statement
-            getOneStudent = conn.prepareStatement("SELECT * FROM student WHERE student_id = ?");
-            getOneStudent.setString(1, stid);
-            ResultSet rset = getOneStudent.executeQuery();
+            getOneUser = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
+            getOneUser.setString(1, userid);
+            ResultSet rset = getOneUser.executeQuery();
             
             //loop only executes once but is necessary?
             while (rset.next()) {
-                String studentID = rset.getString("student_id");
-                String studentName = rset.getString("student_name");
-                String studentEducation = rset.getString("student_education");
+                String user_id = rset.getString("user_id");
+                String user_name = rset.getString("user_name");
+                String user_fname = rset.getString("user_fname");
+                String user_lname = rset.getString("user_lname");
                 out.println("<div>");
-                out.println(studentID + studentName + studentEducation);
+                out.println(user_id + user_name + user_fname + user_lname);
                 out.println("</div>");
                 
             }

@@ -5,29 +5,28 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
+import helpers.StudentHelper;
+import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import helpers.*;
-import java.sql.Connection;
-import java.sql.Statement;
 import network.Login;
-
+import helpers.ModuleHelper;
 /**
  *
- * @author Tobias
+ * @author Tobias & Frank
  */
-@WebServlet(name = "oneStudent", urlPatterns = {"/oneStudent"})
-public class serv_OneStudent extends HttpServlet {
-    
+@WebServlet(name = "oneMessage", urlPatterns = {"/oneMessage"})
+public class serv_OneMessage extends HttpServlet {
     Statement stmt;
     Login login = new Login();
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -45,22 +44,27 @@ public class serv_OneStudent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single student", "one-student-container");
+            site.printHead("Single message", "one-message-container");
             
-            String stid = request.getParameter("stid");
+            String singleMess_id = request.getParameter("mess_id");
             
             Connection conn;
             conn = login.loginToDB(out);
 
+            out.println("<h2>Viewing a single message</h2>");
             
-            out.println("<h2>Viewing a single student</h2>");
-            StudentHelper.printOneStudent(out, conn, stid);
-
+            MessageHelper.printOneMessage(out, conn, singleMess_id);
             
-            login.close();
+            //TODO box containing students
+            out.println("<div class=\"message-list\"");
+            out.println("<div class=\"message-list-item\">");
+            out.println("<div>TODO: Table of messages</div>");
+            out.println("</div>");
+            out.println("</div>");
             
             
             site.printEnd();
+            login.close();
         }
     }
 
@@ -75,6 +79,7 @@ public class serv_OneStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.getWriter().println("hei");
     }
 
     /**
