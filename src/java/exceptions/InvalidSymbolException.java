@@ -12,10 +12,12 @@ package exceptions;
 public class InvalidSymbolException extends Exception {
     private String message;
     private String invalidField;
+    private String reason;
     
-    public InvalidSymbolException (String invalidField) {
+    public InvalidSymbolException (String invalidField, String reason) {
         this.invalidField = invalidField;
-        this.message = "Field " + this.invalidField + " contained an invalid character";
+        this.reason = reason;
+        this.message = "Field \"" + this.invalidField + "\" " + this.reason;
     }
     
     

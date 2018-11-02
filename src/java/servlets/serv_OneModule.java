@@ -44,7 +44,7 @@ public class serv_OneModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Single module", "one-module-container");
             
             String module_id = request.getParameter("module_id");

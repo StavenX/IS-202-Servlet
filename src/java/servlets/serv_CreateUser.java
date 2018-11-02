@@ -47,7 +47,7 @@ public class serv_CreateUser extends HttpServlet {
             site.printHead("New user", "create-user");
             out.println("");
             out.println("<form action=\"createUser\" method=\"post\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_name\" placeholder=\"Insert username\">");   
+            out.println("<input class=\"student-input\" type=\"text\" name=\"user_username\" placeholder=\"Insert username\">");   
             out.println("<input class=\"student-input\" type=\"password\" name=\"user_password\" placeholder=\"Insert password\">");
             out.println("<select class=\"student-input\" name=\"user_role\">");
             out.println("<option value=\"Student\">Student</option>");
@@ -103,26 +103,43 @@ public class serv_CreateUser extends HttpServlet {
                         out
                 );
             } catch (InvalidSymbolException ex) {
-                out.println("Field \"" + ex.getInvalidField() + "\" contained an invalid character, try again");
+                out.println("<p>Error, please try again. Reason: " + ex.getMessage() + "</p>");
                 out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
             } 
             site.closeAndPrintEnd(login);
         }
     }
     
+    /**
+     * Checks a string if its valid for use in the system
+     * @param toCheck the string to check
+     * @param fieldName the field it is used for, such as username / password
+     * @throws InvalidSymbolException 
+     */
     public void isValid(String toCheck, String fieldName) throws InvalidSymbolException{
+        //ends j-loop if the character is found to be valid
+        boolean found = false;
+        
+        //ends i-loop if there is an invalid character or words
+        boolean invalid = false;
+        
+        String reason = "";
+        
+        //checks for forbidden words
+        String[] forbiddenWords = {"student", "lecturer", "admin"};
+        for (String forbiddenWord: forbiddenWords) {
+            if (toCheck.toLowerCase().contains(forbiddenWord)){
+                invalid = true;
+                reason = "contained a forbidden word";
+            }
+        }
+        
         //all valid characters in a string
-        String validString = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÆæØøÅå";
+        String validString = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZzÆæØøÅå0123456789";
         //all valid characters as array
         String[] validChars = validString.split("");
         //the characters in the string to check
         String[] charsToCheck = toCheck.split("");
-        
-        //ends j-loop if the character is found to be valid
-        boolean found = false;
-        
-        //ends i-loop if there is an invalid character
-        boolean invalid = false;
         
         //for every letter in the string to check
         for (int i = 0; i < charsToCheck.length && !invalid; i++) {
@@ -139,14 +156,14 @@ public class serv_CreateUser extends HttpServlet {
             //if the character doesn't match any valid ones
             if (!found) {
                 invalid = true;
+                reason = "contained an invalid character";
             }
         }
         
-        //if there is an invalid character
+        //if there is an invalid character or a forbidden word
         if (invalid) {
-            throw new InvalidSymbolException(fieldName);
+            throw new InvalidSymbolException(fieldName, reason);
         }
-        
     }
 
     /**

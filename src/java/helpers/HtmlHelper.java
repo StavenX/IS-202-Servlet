@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.servlet.http.HttpServletRequest;
 import network.Login;
 
 /**
@@ -17,9 +18,15 @@ import network.Login;
  */
 public class HtmlHelper {
     private PrintWriter out;
+    private HttpServletRequest request;
     
     
     public HtmlHelper (PrintWriter out) {
+        this.out = out;
+    }
+    
+    public HtmlHelper (PrintWriter out, HttpServletRequest request) {
+        this.request = request;
         this.out = out;
     }
     
@@ -42,6 +49,14 @@ public class HtmlHelper {
         //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        String loggedUser;
+        try {
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            loggedUser = a.getUsername() + a.getUserRole();
+        } catch (Exception ex) {
+            loggedUser = "Not logged in / not implemented in this servlet | " + ex;
+        }
+        out.println("<p>" + loggedUser + "</p>");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
