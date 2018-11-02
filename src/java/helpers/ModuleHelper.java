@@ -240,10 +240,6 @@ public class ModuleHelper {
                 
                 out.println("</form>");
                 
-                out.println("<form action=\"createDeliverables\">");
-                out.println("<input class=\"button\" type=\"submit\" value=\"Create Deliverables\">");
-                out.println("</form>");
-                
                 out.println("</div>");
                 
             }
