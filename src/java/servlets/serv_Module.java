@@ -36,19 +36,10 @@ public class serv_Module extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Module", "module-frontpage");
             
             out.println("<h1> Module operations </h1>");
-            
-            String usertoken = request.getUserPrincipal().toString();
-            
-            if (usertoken.contains("Lecturer")) {
-                out.println("Lecturer was here</br>");
-            }
-            
-            
-            out.println(request.getUserPrincipal().toString());
             
             out.println("<form action=\"createModule\">");
             out.println("<button class=\"button\">Create module</button>");
