@@ -41,6 +41,15 @@ public class serv_Module extends HttpServlet {
             
             out.println("<h1> Module operations </h1>");
             
+            String usertoken = request.getUserPrincipal().toString();
+            
+            if (usertoken.contains("Lecturer")) {
+                out.println("Lecturer was here</br>");
+            }
+            
+            
+            out.println(request.getUserPrincipal().toString());
+            
             out.println("<form action=\"createModule\">");
             out.println("<button class=\"button\">Create module</button>");
             out.println("</form>");
