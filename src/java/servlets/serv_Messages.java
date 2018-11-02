@@ -19,7 +19,7 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Frank
  */
 @WebServlet(name = "serv_Messages", urlPatterns = {"/Message"})
 public class serv_Messages extends HttpServlet {
@@ -48,7 +48,7 @@ public class serv_Messages extends HttpServlet {
             out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
             out.println("<h1> Create a new message </h1>");
             out.println("<div class =\"form1\">");
-            out.println("<form action=\"servMessage\" method=\"post\"> ");
+            out.println("<form action=\"Message\" method=\"post\"> ");
             //out.println("<input class=\"message-input\" type=\"text\" name=\"mess_id\" placeholder=\"Insert id\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");

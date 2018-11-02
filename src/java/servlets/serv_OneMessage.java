@@ -6,13 +6,11 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.StudentHelper;
+import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import helpers.MessageHelper;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,46 +18,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
-
+import helpers.ModuleHelper;
 /**
  *
- * @author Staven
+ * @author Tobias & Frank
  */
-@WebServlet(name = "getMessage", urlPatterns = {"/getMessage"})
-public class serv_GetMessage extends HttpServlet {
-
+@WebServlet(name = "oneMessage", urlPatterns = {"/oneMessage"})
+public class serv_OneMessage extends HttpServlet {
     Statement stmt;
     Login login = new Login();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "bodyy");
-            
-            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
-
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
-                
-                login.close();
-                
-            site.printEnd();
-        }
-    }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
@@ -74,9 +41,31 @@ public class serv_GetMessage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Single message", "one-message-container");
+            
+            String singleMess_id = request.getParameter("mess_id");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
+
+            out.println("<h2>Viewing a single message</h2>");
+            
+            MessageHelper.printOneMessage(out, conn, singleMess_id);
+            
+            //TODO box containing students
+            out.println("<div class=\"message-list\"");
+            out.println("<div class=\"message-list-item\">");
+            out.println("<div>TODO: Table of messages</div>");
+            out.println("</div>");
+            out.println("</div>");
+            
+            
+            site.printEnd();
+            login.close();
+        }
     }
 
     /**
@@ -90,10 +79,7 @@ public class serv_GetMessage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        processRequest(request, response);
+        response.getWriter().println("hei");
     }
 
     /**
