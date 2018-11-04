@@ -1,25 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel=stylesheet type=text/css href=css/theme.css>
-<script src=\https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js\></script>
-<script src=js_timetableEvent.js></script>
-<script src=js_Calendars.js></script>
-<title>Servlet Calendar</title>            
+    <link rel="stylesheet" href="css/theme.css">
+    <title>Calendar</title>            
 </head>
 <body>
     <div id="boi">
     </div>
-    <div id='boi2'>
+    <script>
         
-    </div>
-    <script>
-        weekdaysName();
+        var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
+        var weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+        // Fills three calendars
+        function fillCalendar(d)
+        {
+            var HTML = ("");
+            for(var q = 0; q < 3; q++)
+            {
+                var month = d.getMonth();
+                var year = d.getFullYear();
+                var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+                var firstDay = new Date(d.getFullYear(), d.getMonth(),1).getDay() || 7;
+                var day = 1;
+
+                // Prints month name
+                HTML += ("<table><tr><td Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "<tr>");
+
+                // Prints weekdays
+                for (var p = 0; p <= 6; p++) {
+                    HTML += ("<td>" + weekdayNames[p] + "</td>");
+                }
+
+                // Prints empty days in calendar
+                HTML += ("</tr><tr>");
+                for (var i = 1; i < firstDay; i++) {
+                    HTML += ("<td>");
+                }
+
+                // Prints first week of month
+                for (var i = firstDay; i < 8; i++){
+                    HTML += ("<td>" + day + "</td>");
+                    day++;
+                }
+
+                // Prints remaining weeks
+                HTML += ("<tr>");
+                while (day <= monthLastDay) {
+                    for (var i = 1; i <= 7 && day <= monthLastDay; i++) {
+                        HTML += ("<td>" + day + "</td>");
+                        day++;
+                    }
+                    HTML += ("</tr><tr>");
+                }
+                HTML += ("</tr></table><br>");
+                console.log(firstDay + " " + month + year)
+                d.setMonth(d.getMonth()+1);
+            }
+            document.getElementById("boi").innerHTML = HTML;
+        }
     </script>
+       
     <script>
-        monthName();
+        
+        // Prints current calendar on page load
+        var currentDate = new Date();
+        fillCalendar(currentDate);
+        
     </script>
+    
     <script>
-        calendar();
+        
+        // Buttons for access next and previous months
+        document.write("<button onclick=\"prevMonths()\">last months boi</button>");
+        document.write("<button onclick=\"nextMonths()\">next months boi</button>");
+        
+        function nextMonths()
+        {
+            currentDate.setMonth(currentDate.getMonth());
+            fillCalendar(currentDate);
+        }
+        
+        function prevMonths()
+        {
+            currentDate.setMonth(currentDate.getMonth()-6);
+            fillCalendar(currentDate);
+        }
+        
     </script>
 </body>
+</html>
