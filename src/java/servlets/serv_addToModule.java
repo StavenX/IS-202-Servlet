@@ -5,27 +5,21 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import network.Login;
-
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
-public class serv_DeleteModule extends HttpServlet {
-    Login login = new Login();
+@WebServlet(name = "addToModule", urlPatterns = {"/addToModule"})
+public class serv_addToModule extends HttpServlet {
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -40,29 +34,10 @@ public class serv_DeleteModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
-            
-            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
-            
-            Connection conn = login.loginToDB(out);
-            
             String module_id = request.getParameter("module_id");
+            String student_id = request.getParameter("student_id");
             
-            PreparedStatement deleteModule;
-            try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-                deleteModule.setString(1, module_id);
-                
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            site.closeAndPrintEnd(login);
+            out.println("im not done yet ok");
         }
     }
 
@@ -77,6 +52,10 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+        }
     }
 
     /**

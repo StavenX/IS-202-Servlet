@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 public class serv_Module extends HttpServlet {
 
   
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,7 +36,7 @@ public class serv_Module extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Module", "module-frontpage");
             
             out.println("<h1> Module operations </h1>");

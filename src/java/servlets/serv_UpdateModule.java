@@ -26,7 +26,6 @@ public class serv_UpdateModule extends HttpServlet {
     Login login = new Login();
 
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -65,7 +64,7 @@ public class serv_UpdateModule extends HttpServlet {
             //auto submits the form so the page auto loads
             out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
             
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

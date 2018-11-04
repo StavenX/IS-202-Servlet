@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.servlet.http.HttpServletRequest;
+import network.Login;
 
 /**
  *
@@ -16,9 +18,15 @@ import java.nio.file.Paths;
  */
 public class HtmlHelper {
     private PrintWriter out;
+    private HttpServletRequest request;
     
     
     public HtmlHelper (PrintWriter out) {
+        this.out = out;
+    }
+    
+    public HtmlHelper (PrintWriter out, HttpServletRequest request) {
+        this.request = request;
         this.out = out;
     }
     
@@ -41,6 +49,15 @@ public class HtmlHelper {
         //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        
+        String loggedUser;
+        try {
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            loggedUser = a.getUsername() + a.getUserRole();
+        } catch (Exception ex) {
+            loggedUser = "Not logged in / not implemented in this servlet | " + ex;
+        }
+        out.println("<p>" + loggedUser + "</p>");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
@@ -53,12 +70,21 @@ public class HtmlHelper {
                 out.println("</form>");
     }
         
+    //javascript for handling delete buttons
     public void printJsForDeleteButton() {
-        //javascript for handling delete buttons
-        out.println("<script src=\"FirstScripts.js\"></script>");
+        out.println("<script src=\"buttons-for-delete.js\"></script>");
     }
     
-    public String checkForHtmlTags(String toCheck) {
+    public void useJS(String filename) {
+        out.println("<script src=\"" + filename + "\"></script>");
+    }
+    
+    public String checkIfValidText(String toCheck) {
+        //returns null if the string is empty, to prevent empty strings being inserted
+        //into database (columns have 'NOT NULL' property
+        if (toCheck.equals("")) {
+            return null;
+        }
         String checked = "";
         String[] letters = toCheck.split("");
             //replaces '<' and '>' with unicode symbols, so the page doesn't treat them as html code
@@ -87,105 +113,12 @@ public class HtmlHelper {
         return contents;
     }
     
-    public void printNav () {
-        out.println("\n" +
-"        <div class=\"nav-container\" id=\"nav-container\">\n" +
-"            <div class=\"nav-button\">\n" +
-"                <input onclick=\"hide()\" type=\"button\" value=\"<<\" id=\"nav-button\">\n" +
-"            </div>\n" +
-"            <div class=\"home-nav\" id=\"nav\">\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"            </div>\n" +
-"        </div>");
+    
+    /**
+     * Prints a button that takes you back one step on the website
+     */
+    public void printBackButton() {
+        out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
     }
     
     /**
@@ -194,5 +127,14 @@ public class HtmlHelper {
     public void printEnd () {
         out.println("</body>");
         out.println("</html>");
+    }
+    
+    /**
+     * Prints the closing tag of body and html and closes connection
+     * @param login the connection to be closed
+     */
+    public void closeAndPrintEnd(Login login) {
+        login.close();
+        printEnd();
     }
 }

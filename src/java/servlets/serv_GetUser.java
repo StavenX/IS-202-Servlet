@@ -10,6 +10,7 @@ import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,10 +22,12 @@ import network.Login;
  *
  * @author Staven
  */
-@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
-public class serv_CreateStudent extends HttpServlet {
+@WebServlet(name = "getUser", urlPatterns = {"/getUser"})
+public class serv_GetUser extends HttpServlet {
 
+    Statement stmt;
     Login login = new Login();
+    
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -38,19 +41,19 @@ public class serv_CreateStudent extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        
         try (PrintWriter out = response.getWriter()) {
+            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
-            out.println("<form action=\"createStudent\" method=\"post\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_name\" placeholder=\"Insert name\">");   
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_edu\" placeholder=\"Insert education\">");
-            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
-            out.println("</form>");
-            site.printEnd();
-        }       
+            site.printHead("Students", "bodyy");
+            
+            out.println("<h1>List of students:</h1>");
+
+                Connection conn;
+                conn = login.loginToDB(out);
+                StudentHelper.printUsers(out, conn);
+                
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -64,30 +67,6 @@ public class serv_CreateStudent extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                StudentHelper.insertStudent(
-                        request.getParameter("student_name"),
-                        request.getParameter("student_edu"),
-                        conn, 
-                        out
-                );
-                
-                login.close();
-                
-            site.printEnd();
-        }
     }
 
     /**
@@ -98,6 +77,6 @@ public class serv_CreateStudent extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
 
 }

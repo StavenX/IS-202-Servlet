@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 /**
  *
  * @author Staven
@@ -25,20 +26,20 @@ public class ModuleHelper {
      * @param name
      * @param desc
      * @param points
+     * @param course_id
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
         
-    public static void insertModule(String name, String desc, String points, Connection conn, PrintWriter out) {
+    public static void insertModule(String name, String desc, String points, String course_id, Connection conn, PrintWriter out) {
         
+        HtmlHelper site = new HtmlHelper(out);
         try {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points) values (?, ?, ?);");
-            prepInsert.setString(1, site.checkForHtmlTags(name));
-            prepInsert.setString(2, site.checkForHtmlTags(desc));
-            prepInsert.setString(3, site.checkForHtmlTags(points));    
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points, course_id) values (?, ?, ?, ?);");
+            prepInsert.setString(1, site.checkIfValidText(name));
+            prepInsert.setString(2, site.checkIfValidText(desc));
+            prepInsert.setString(3, site.checkIfValidText(points));
+            prepInsert.setString(4, site.checkIfValidText(course_id));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -52,11 +53,17 @@ public class ModuleHelper {
 "                   <input class=\"button\" type=\"Submit\" value=\"Get all Modules from Database\">   \n" +
 "               </form>");
         }
+        catch (SQLIntegrityConstraintViolationException ex) {
+            out.println("One or more mandatory fields were empty, please try again");
+            site.printBackButton();
+        }
         catch (SQLException ex) {
             if (ex.getMessage().contains("Incorrect integer value")) {
                 out.println("Module points must be an integer, try again");
+                site.printBackButton();
             } else {
-                out.println("SQL error: " + ex.getMessage());
+                out.println("SQL error: " + ex);
+                site.printBackButton();
             }
         }
     }
@@ -68,10 +75,10 @@ public class ModuleHelper {
             HtmlHelper site = new HtmlHelper(out);
             
             PreparedStatement prepUpdate = conn.prepareStatement("UPDATE module SET module_name = ?, module_desc = ?, module_points = ? WHERE module_id = ?");
-            prepUpdate.setString(1, site.checkForHtmlTags(name));
-            prepUpdate.setString(2, site.checkForHtmlTags(desc));
-            prepUpdate.setString(3, site.checkForHtmlTags(points));
-            prepUpdate.setString(4, site.checkForHtmlTags(id));
+            prepUpdate.setString(1, site.checkIfValidText(name));
+            prepUpdate.setString(2, site.checkIfValidText(desc));
+            prepUpdate.setString(3, site.checkIfValidText(points));
+            prepUpdate.setString(4, site.checkIfValidText(id));
             
             System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
             int countInserted = prepUpdate.executeUpdate();         
@@ -163,6 +170,15 @@ public class ModuleHelper {
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
                 
+                PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+                getCourseName.setString(1, rset.getString("course_id"));
+                ResultSet courseResult = getCourseName.executeQuery();
+                String course_name = "";
+                while (courseResult.next()) {
+                    course_name = courseResult.getString("course_name");
+                }
+                
+                
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
                 out.println("<form action=\"oneModule\" method=\"get\">");
@@ -172,6 +188,7 @@ public class ModuleHelper {
                 out.println("<div>Name:" + module_name + "</div>");
                 out.println("<div>Description:" + module_desc + "</div>");
                 out.println("<div>Max points:" + module_points + "</div>");
+                out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
                 site.printDeleteButton("deleteModule", "module_id", module_id);
@@ -233,10 +250,6 @@ public class ModuleHelper {
                 out.println("<input class=\"button\" id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
                 out.println("<input class=\"button\" id=\"one-module-save\" type=\"submit\" value=\"Save\">");
                 
-                out.println("</form>");
-                
-                out.println("<form action=\"createDeliverables\">");
-                out.println("<input class=\"button\" type=\"submit\" value=\"Create Deliverables\">");
                 out.println("</form>");
                 
                 out.println("</div>");

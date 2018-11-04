@@ -16,15 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import network.Login;
 
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
-public class serv_DeleteModule extends HttpServlet {
+@WebServlet(name = "deleteUser", urlPatterns = {"/deleteUser"})
+public class serv_DeleteUser extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -42,25 +41,28 @@ public class serv_DeleteModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
+
+            site.printHead("Delete user", "delete-user");
             
-            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Deletion page</h1>");
             
             Connection conn = login.loginToDB(out);
             
-            String module_id = request.getParameter("module_id");
+            String user_id = request.getParameter("user_id");
             
-            PreparedStatement deleteModule;
+            PreparedStatement deleteUser;
             try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-                deleteModule.setString(1, module_id);
+                deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
                 
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
+                int amountDeleted = deleteUser.executeUpdate();
+                out.println("<div>" + amountDeleted + " users deleted.</div>");
+                out.println("<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>");
+
             } catch (SQLException ex) {
                 out.println("SQL error: " + ex);
             }
+            
             
             site.closeAndPrintEnd(login);
         }

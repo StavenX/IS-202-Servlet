@@ -5,27 +5,29 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import helpers.*;
+import java.sql.Connection;
+import java.sql.Statement;
 import network.Login;
 
 /**
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
-public class serv_DeleteModule extends HttpServlet {
+@WebServlet(name = "oneUser", urlPatterns = {"/oneUser"})
+public class serv_OneUser extends HttpServlet {
+    
+    Statement stmt;
     Login login = new Login();
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -40,28 +42,19 @@ public class serv_DeleteModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
+            site.printHead("Single user", "one-student-container");
             
-            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
+            String user_id = request.getParameter("user_id");
             
-            Connection conn = login.loginToDB(out);
+            Connection conn;
+            conn = login.loginToDB(out);
+
             
-            String module_id = request.getParameter("module_id");
-            
-            PreparedStatement deleteModule;
-            try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-                deleteModule.setString(1, module_id);
-                
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
+            out.println("<h2>Viewing a single user</h2>");
+            StudentHelper.printOneUser(out, conn, user_id);
+
             site.closeAndPrintEnd(login);
         }
     }
