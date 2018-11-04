@@ -33,10 +33,8 @@ public class ModuleHelper {
         
     public static void insertModule(String name, String desc, String points, String course_id, Connection conn, PrintWriter out) {
         
+        HtmlHelper site = new HtmlHelper(out);
         try {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            
             PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points, course_id) values (?, ?, ?, ?);");
             prepInsert.setString(1, site.checkIfValidText(name));
             prepInsert.setString(2, site.checkIfValidText(desc));
@@ -57,13 +55,15 @@ public class ModuleHelper {
         }
         catch (SQLIntegrityConstraintViolationException ex) {
             out.println("One or more mandatory fields were empty, please try again");
-            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+            site.printBackButton();
         }
         catch (SQLException ex) {
             if (ex.getMessage().contains("Incorrect integer value")) {
                 out.println("Module points must be an integer, try again");
+                site.printBackButton();
             } else {
                 out.println("SQL error: " + ex);
+                site.printBackButton();
             }
         }
     }
