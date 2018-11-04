@@ -7,7 +7,7 @@ package servlets;
 
 import exceptions.InvalidSymbolException;
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -93,7 +93,7 @@ public class serv_CreateUser extends HttpServlet {
                 Connection conn;
                 conn = login.loginToDB(out);
 
-                StudentHelper.insertUser(
+                UserHelper.insertUser(
                         user_username,
                         user_password,
                         request.getParameter("user_role"),
