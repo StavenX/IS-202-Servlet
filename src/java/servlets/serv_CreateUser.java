@@ -104,7 +104,7 @@ public class serv_CreateUser extends HttpServlet {
                 );
             } catch (InvalidSymbolException ex) {
                 out.println("<p>Error, please try again. Reason: " + ex.getMessage() + "</p>");
-                out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+                site.printBackButton();
             } 
             site.closeAndPrintEnd(login);
         }

@@ -67,7 +67,7 @@ public class serv_OneModule extends HttpServlet {
             //TODO box containing students
             out.println("<div class=\"module-student-list\">");
             
-            String sqlString = "SELECT users.user_name, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max points\',\n" +
+            String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max points\',\n" +
             "module_details.module_points AS \'your points\', module_details.module_status \n" +
             "FROM course\n" +
             "INNER JOIN module ON course.course_id = module.course_id\n" +
@@ -91,7 +91,7 @@ public class serv_OneModule extends HttpServlet {
                 
                 
                 while (rset.next()) {
-                    String user_name = rset.getString("user_name");
+                    String user_name = rset.getString("user_username");
                     String course_name = rset.getString("course_name");
                     String module_name = rset.getString("module_name");
                     String module_desc = rset.getString("module_desc");
