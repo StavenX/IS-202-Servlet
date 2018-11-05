@@ -8,6 +8,7 @@
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneModule.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Student.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/StudentHelper.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/submitform.js</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Messages.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_About.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/index.html</file>
@@ -16,15 +17,12 @@
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Module.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetCourse.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/buttons-for-delete.js</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/network/Login.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/css/theme.css</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateUser.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_addToModule.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Index.java</file>
+            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/somebackgrounds.js</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_FileUpload.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/ModuleHelper.java</file>
             <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateModule.java</file>
