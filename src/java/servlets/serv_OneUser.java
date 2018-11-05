@@ -53,7 +53,7 @@ public class serv_OneUser extends HttpServlet {
 
             
             out.println("<h2>Viewing a single user</h2>");
-            StudentHelper.printOneUser(out, conn, user_id);
+            UserHelper.printOneUser(out, conn, user_id);
 
             site.closeAndPrintEnd(login);
         }

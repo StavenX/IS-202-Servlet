@@ -22,16 +22,27 @@
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
-            <url-pattern>/Module</url-pattern>
-            <url-pattern>/Student</url-pattern>
-            <url-pattern>/serv_Calendar</url-pattern>
-            <url-pattern>/serv_FileUpload</url-pattern>
-            <url-pattern>/serv_GetModule</url-pattern>
-            <url-pattern>/serv_GetStudent</url-pattern>
-            <url-pattern>/serv_OneModule</url-pattern>
-            <url-pattern>/serv_CreateNewUser</url-pattern>
-            <url-pattern>/serv_OneStudent</url-pattern>
+            <url-pattern>/Calendar</url-pattern>
+            <url-pattern>/createModule</url-pattern>
+            <url-pattern>/createUser</url-pattern>
+            <url-pattern>/deleteMessage</url-pattern>
+            <url-pattern>/deleteModule</url-pattern>
+            <url-pattern>/deleteUser</url-pattern>
+            <url-pattern>/FileUpload</url-pattern>
+            <url-pattern>/getCourse</url-pattern>
+            <url-pattern>/getMessage</url-pattern>
+            <url-pattern>/getModule</url-pattern>
+            <url-pattern>/getUser</url-pattern>
+            <url-pattern>/Index</url-pattern>
             <url-pattern>/Message</url-pattern>
+            <url-pattern>/Module</url-pattern>
+            <url-pattern>/oneCourse</url-pattern>
+            <url-pattern>/oneMessage</url-pattern>
+            <url-pattern>/oneModule</url-pattern>
+            <url-pattern>/oneUser</url-pattern>
+            <url-pattern>/Student</url-pattern>
+            <url-pattern>/updateModule</url-pattern>
+            <url-pattern>/addToModule</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>

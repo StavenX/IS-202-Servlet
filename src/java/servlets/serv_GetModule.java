@@ -7,6 +7,7 @@ package servlets;
  */
 
 
+import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class serv_GetModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
 
             site.printHead("Modules", "bodyy");
             
@@ -60,9 +61,11 @@ public class serv_GetModule extends HttpServlet {
                 if (orderBy == null) {
                     orderBy = "";
                 }
-                String[] orderByList = orderBy.split(" ");
                 
-                ModuleHelper.printModules(out, conn, orderByList);
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String role = a.getUserRole();
+                
+                ModuleHelper.printModules(out, conn, orderBy, role, "%");
                 
             site.closeAndPrintEnd(login);
         }

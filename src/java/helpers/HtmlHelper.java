@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.servlet.http.HttpServletRequest;
 import network.Login;
 
 /**
@@ -17,9 +18,15 @@ import network.Login;
  */
 public class HtmlHelper {
     private PrintWriter out;
+    private HttpServletRequest request;
     
     
     public HtmlHelper (PrintWriter out) {
+        this.out = out;
+    }
+    
+    public HtmlHelper (PrintWriter out, HttpServletRequest request) {
+        this.request = request;
         this.out = out;
     }
     
@@ -42,6 +49,17 @@ public class HtmlHelper {
         //printNav();
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        
+        String loggedUserName;
+        String loggedUserRole = "";
+        try {
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            loggedUserName = a.getUsername();
+            loggedUserRole = a.getUserRole();
+        } catch (Exception ex) {
+            loggedUserName = "not implemented in this servlet | " + ex;
+        }
+        out.printf("<p>Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
@@ -97,105 +115,12 @@ public class HtmlHelper {
         return contents;
     }
     
-    public void printNav () {
-        out.println("\n" +
-"        <div class=\"nav-container\" id=\"nav-container\">\n" +
-"            <div class=\"nav-button\">\n" +
-"                <input onclick=\"hide()\" type=\"button\" value=\"<<\" id=\"nav-button\">\n" +
-"            </div>\n" +
-"            <div class=\"home-nav\" id=\"nav\">\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"            </div>\n" +
-"        </div>");
+    
+    /**
+     * Prints a button that takes you back one step on the website
+     */
+    public void printBackButton() {
+        out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
     }
     
     /**

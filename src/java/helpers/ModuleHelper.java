@@ -26,20 +26,20 @@ public class ModuleHelper {
      * @param name
      * @param desc
      * @param points
+     * @param course_id
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
         
-    public static void insertModule(String name, String desc, String points, Connection conn, PrintWriter out) {
+    public static void insertModule(String name, String desc, String points, String course_id, Connection conn, PrintWriter out) {
         
+        HtmlHelper site = new HtmlHelper(out);
         try {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            
-            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points) values (?, ?, ?);");
+            PreparedStatement prepInsert = conn.prepareStatement("INSERT INTO module (module_name, module_desc, module_points, course_id) values (?, ?, ?, ?);");
             prepInsert.setString(1, site.checkIfValidText(name));
             prepInsert.setString(2, site.checkIfValidText(desc));
-            prepInsert.setString(3, site.checkIfValidText(points));    
+            prepInsert.setString(3, site.checkIfValidText(points));
+            prepInsert.setString(4, site.checkIfValidText(course_id));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();         
@@ -55,13 +55,15 @@ public class ModuleHelper {
         }
         catch (SQLIntegrityConstraintViolationException ex) {
             out.println("One or more mandatory fields were empty, please try again");
-            out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+            site.printBackButton();
         }
         catch (SQLException ex) {
             if (ex.getMessage().contains("Incorrect integer value")) {
                 out.println("Module points must be an integer, try again");
+                site.printBackButton();
             } else {
                 out.println("SQL error: " + ex);
+                site.printBackButton();
             }
         }
     }
@@ -89,25 +91,19 @@ public class ModuleHelper {
         }
     }
     
-    /**
-     * Prints all the students located in the student
-     * table.
-     * 
-     * @param out The printwriter to write with
-     * @param conn The connection to use
-     * @param orderByList the column name to order the sql results in
-     */
-    public static void printModules(PrintWriter out, Connection conn, String[] orderByList) {
-
-            HtmlHelper site = new HtmlHelper(out);
+    //course_id = "%" for all courses
+    public static ResultSet getModules (PrintWriter out, Connection conn, String orderString, String course_id) {
             PreparedStatement getModules; 
-        
         try {
             
             //base string for sql preparedstatement
-            String sqlString = "SELECT * FROM module ORDER BY ";
+            String sqlString = "SELECT * FROM module WHERE course_id LIKE ? ORDER BY ";
+            
+            String[] orderByList = orderString.split(" ");
+            
             
             String orderBy = orderByList[0].toLowerCase();
+            
             String orderDirection;
             try {
                 orderDirection = orderByList[1].toLowerCase();
@@ -138,8 +134,36 @@ public class ModuleHelper {
             
             //preparedstatement is prepared and executed
             getModules = conn.prepareStatement(sqlString);
+            getModules.setString(1, course_id);
             ResultSet rset = getModules.executeQuery();
+            return rset;
+        }
+        catch (SQLException ex) {
+            out.println("SQL error: " + ex);
+        }
+        catch (Exception e) {
+            out.println("Something wrong happened: " + e);
+        }       
+        return null;
+    }
+    
+    /**
+     * Prints all the students located in the student
+     * table.
+     * 
+     * @param out The printwriter to write with
+     * @param conn The connection to use
+     * @param orderBy the column name to order the sql results in
+     * @param role the role of the user logged in
+     * @param course_id
+     */
+    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id) {
+
+            HtmlHelper site = new HtmlHelper(out);
+        
+        try {
             
+            ResultSet rset = getModules(out, conn, orderBy, course_id);
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
@@ -168,6 +192,15 @@ public class ModuleHelper {
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
                 
+                PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+                getCourseName.setString(1, rset.getString("course_id"));
+                ResultSet courseResult = getCourseName.executeQuery();
+                String course_name = "";
+                while (courseResult.next()) {
+                    course_name = courseResult.getString("course_name");
+                }
+                
+                
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
                 out.println("<form action=\"oneModule\" method=\"get\">");
@@ -177,9 +210,13 @@ public class ModuleHelper {
                 out.println("<div>Name:" + module_name + "</div>");
                 out.println("<div>Description:" + module_desc + "</div>");
                 out.println("<div>Max points:" + module_points + "</div>");
+                out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
-                site.printDeleteButton("deleteModule", "module_id", module_id);
+                
+                if (role.equals("Lecturer")) {
+                    site.printDeleteButton("deleteModule", "module_id", module_id);
+                }
                 out.println("</div>");
                 
                 rowCount++;

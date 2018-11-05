@@ -25,6 +25,6 @@
         
  <Realm className="org.apache.catalina.realm.DataSourceRealm" 
          dataSourceName="jdbc/localhostDS" localDataSource="true"
-         userTable="users"  userNameCol="user_name" userCredCol="user_password"
+         userTable="users"  userNameCol="user_username" userCredCol="user_password"
          userRoleTable="users" roleNameCol="user_role" />                 	  
 </Context>
