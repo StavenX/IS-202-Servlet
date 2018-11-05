@@ -21,7 +21,7 @@ public class AccessTokenHelper {
     public AccessTokenHelper(HttpServletRequest request) {
         this.request = request;
         String[] r = {"Student", "Lecturer", "Admin"};
-        roles = r;
+        this.roles = r;
     }
     
     public String getUsername() {
@@ -44,7 +44,6 @@ public class AccessTokenHelper {
         getUsername();
         return userRole;
     }
-    
     
     public String getToken() {
         return request.getUserPrincipal().toString();
