@@ -33,7 +33,7 @@
             <url-pattern>/getMessage</url-pattern>
             <url-pattern>/getModule</url-pattern>
             <url-pattern>/getUser</url-pattern>
-            <url-pattern>/Index</url-pattern>
+            <url-pattern>/Home</url-pattern>
             <url-pattern>/Message</url-pattern>
             <url-pattern>/Module</url-pattern>
             <url-pattern>/oneCourse</url-pattern>
@@ -86,7 +86,7 @@
     </login-config>
 
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
+        <welcome-file>Index</welcome-file>
     </welcome-file-list>
     
     

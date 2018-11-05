@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.servlet.http.HttpServletRequest;
 import network.Login;
+import servlets.serv_Index;
 
 /**
  *
@@ -37,7 +38,7 @@ public class HtmlHelper {
      */
     public void printHead (String title, String bodyId) {
         out.println("<!DOCTYPE html>");
-        out.println("<html>");
+        out.println("<html lang=\"en\">");
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
@@ -45,10 +46,10 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
         out.println("<title>" + title + "</title>");            
         out.println("</head>");
-        //out.println(nav());
-        //printNav();
-        out.println("<body id=\"" + bodyId + "\">");
-        out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        out.println("<body id=\"" + bodyId + "\" class=\"flex-page\">");
+        printFile("nav.html");
+        out.println("<div class=\"page-container\">");
+        out.println("<form action=\"Home\"> <button class=\"button button-home\">Go home</button> </form>");
         
         String loggedUserName;
         String loggedUserRole = "";
@@ -78,7 +79,7 @@ public class HtmlHelper {
     }
     
     public void useJS(String filename) {
-        out.println("<script src=\"" + filename + "\"></script>");
+        out.println("<script src=\"js\\" + filename + "\"></script>");
     }
     
     public String checkIfValidText(String toCheck) {
@@ -115,6 +116,32 @@ public class HtmlHelper {
         return contents;
     }
     
+    //use on html file to print it
+    public void printFile(String filename) {
+            //gets the path of the programs current location
+            ClassLoader loader = serv_Index.class.getClassLoader();
+            //goes up to directory levels to 'web' dir
+            String path = loader.getResource("..\\..\\").toString();
+            //removes first part of path
+            path = path.replace("file:/", "");
+            
+            //adds filename to the path
+            path += filename;
+            
+            //prints the html file
+            try {
+            out.println(readFile(path));
+            } catch (IOException ex) {
+                out.println("oopsie file couldnt load" + ex);
+            }
+    }
+    
+    
+     public String readFile(String filename) throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get(filename)));
+        return content;
+    }
+    
     
     /**
      * Prints a button that takes you back one step on the website
@@ -127,6 +154,8 @@ public class HtmlHelper {
      * Prints the closing tag of body and html
      */
     public void printEnd () {
+        out.println("</div>");
+        useJS("navhide.js");
         out.println("</body>");
         out.println("</html>");
     }

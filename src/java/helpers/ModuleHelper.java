@@ -252,10 +252,7 @@ public class ModuleHelper {
                 out.println("<div>");
                 out.println("<form action=\"updateModule\" method=\"get\">");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module ID (can't be changed)</p>");
-                out.println("<input type=\"text\" name=\"module_id\" value=\"" + module_id + "\" disabled>");
-                out.println("</div>");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module name</p>");

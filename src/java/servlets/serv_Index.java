@@ -5,28 +5,28 @@
  */
 package servlets;
 
-import helpers.CourseHelper;
 import helpers.HtmlHelper;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
  * @author tobia
  */
-@WebServlet(name = "serv_Index", urlPatterns = {"/Index"})
+@WebServlet(name = "Index", urlPatterns = {"/Index"})
 public class serv_Index extends HttpServlet {
-    Login login = new Login();
-
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -38,43 +38,34 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Home", "home");
             
-            Connection conn = login.loginToDB(out);
+            HtmlHelper site = new HtmlHelper(out);
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<meta charset=\"UTF-8\">");
+            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+            out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
+            out.println("<title>Welcome</title>");            
+            out.println("</head>");
+            out.println("<body id=\"welcome-page\">");
             
-            ResultSet rset = CourseHelper.getCourses(out, conn);
+            out.println("<h1>Welcome to our student learning platform</h1>");
+            out.println("<h2>Click the button to log in</h2>");
             
-            out.println("<div class=\"courses-container\">");
-            try {
-                while (rset.next()) {
-                    String course_id = rset.getString("course_id");
-                    String course_name = rset.getString("course_name");
-                    courseBox(out, course_id, course_name);
-                }
+            out.println("<form action=\"Home\" method=\"get\">");
+            out.println("<button class=\"button\">Log in</button>");
+            out.println("</form>");
+            
+            out.println("</body>");
+            out.println("</html>");
+            
             }
-            catch (SQLException ex) {
-                out.println("Hater å skrive errormeldinger " + ex);
-            }
-            
-            out.println("</div>");
-            
-        }
     }
 
-    public void courseBox(PrintWriter out, String course_id, String course_name) {
-        out.println("<form action=\"oneCourse\" method=\"get\">");
-        out.println("<button class=\"course-container\">");
-        out.println("<img class=\"course-img\" src=\"http://via.placeholder.com/200x100\">");
-        out.println("<input name=\"course_id\" type=\"hidden\" value=\"" + course_id + "\">");
-        out.println("<input name=\"course_name\" type=\"hidden\" value=\"" + course_name + "\">");
-        out.println("<h2 class=\"course-title\">" + course_name + "</h2>");
-        out.println("<p class=\"course-name\">Lorem ipsum</p>");
-        out.println("</button>");
-        out.println("</form>");
-    } 
-    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -86,7 +77,9 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+        }
     }
 
     /**

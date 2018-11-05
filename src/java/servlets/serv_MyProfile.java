@@ -5,27 +5,21 @@
  */
 package servlets;
 
-import helpers.CourseHelper;
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
  * @author tobia
  */
-@WebServlet(name = "getCourse", urlPatterns = {"/getCourse"})
-public class serv_GetCourse extends HttpServlet {
-    Login login = new Login();
-    
-    
+@WebServlet(name = "MyProfile", urlPatterns = {"/MyProfile"})
+public class serv_MyProfile extends HttpServlet {
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,21 +31,7 @@ public class serv_GetCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("", "");
-            
-            
-            
-            Connection conn = login.loginToDB(out);
-            
-            //what is this servlet??
-            
-            //CourseHelper.getCourses(out, conn);
-            
-            site.closeAndPrintEnd(login);
         }
     }
 
@@ -66,10 +46,7 @@ public class serv_GetCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
         }
     }
 

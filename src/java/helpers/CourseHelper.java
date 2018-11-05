@@ -18,17 +18,29 @@ import java.sql.SQLException;
 public class CourseHelper {
     
     
-    public static ResultSet getCourses (PrintWriter out, Connection conn) {
+    public static ResultSet getAllCourses (PrintWriter out, Connection conn) {
+        return getCourses("admin", out, conn);
+    }
+    
+    public static ResultSet getCourses (String user_id, PrintWriter out, Connection conn) {
         
         PreparedStatement getCourses; 
         try {
             
             //base string for sql preparedstatement
-            String sqlString = "SELECT * FROM course ORDER BY course_id";
+            String sqlString = "SELECT * FROM course\n";
             
-            
-            //preparedstatement is prepared and executed
-            getCourses = conn.prepareStatement(sqlString);
+            if (!user_id.equals("admin")) {
+                sqlString += "INNER JOIN course_details ON course.course_id = course_details.course_id\n"
+                + "WHERE course_details.user_id = ?\n";
+                sqlString += "ORDER BY course.course_id";
+                getCourses = conn.prepareStatement(sqlString);
+                getCourses.setString(1, user_id);
+            } else {
+                out.println("hei");
+                sqlString += " ORDER BY course.course_id";
+                getCourses = conn.prepareStatement(sqlString);
+            }
             ResultSet rset = getCourses.executeQuery();
             return rset;
         }
