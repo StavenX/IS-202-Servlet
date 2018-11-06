@@ -150,18 +150,18 @@ a {
 }
 
 /* Calendar styling starts here*/
-.calendarWrapper {
+#calendarWrapper {
     min-width: 1300px;
 }
 
-.Calendars {
+#boi {
     float: left;
     width: 20%;
     margin-right: 1%;
     min-width: 260px;
 }
  
-.schedule {
+#boi2 {
     float:left;
     margin-right: 1%;
     width: 78%;
@@ -222,11 +222,11 @@ a {
 }
 
 /* Timetable styling */
-.timetable .thWeekday {
+#thWeekday {
   width: 14.2857143%;
 }
 
-.timetable {
+#timetable {
   border-collapse: collapse;
 }
 
