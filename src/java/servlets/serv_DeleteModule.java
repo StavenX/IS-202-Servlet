@@ -6,6 +6,7 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class serv_DeleteModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Delete module", "delete-module");
             
             out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
@@ -50,24 +51,8 @@ public class serv_DeleteModule extends HttpServlet {
             
             String module_id = request.getParameter("module_id");
             
-            PreparedStatement deleteModuleDetails;
-            
-            PreparedStatement deleteModule;
-            try {
-                deleteModuleDetails = conn.prepareStatement("DELETE FROM module_details WHERE module_id = ?");
-                deleteModuleDetails.setString(1, module_id);
-                int detailsDeleted = deleteModuleDetails.executeUpdate();
-                
-                
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-                deleteModule.setString(1, module_id);
-                
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted. " + detailsDeleted + " students affected.</div>");
-                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
+            String results = ModuleHelper.deleteModule(module_id, conn);
+            out.println("<p>" + results + "</p>");
             
             site.closeAndPrintEnd(login);
         }

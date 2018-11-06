@@ -17,6 +17,14 @@ import java.sql.SQLException;
  */
 public class CourseHelper {
     
+    
+    public static String invisInputs(String course_id, String course_name, String role) {
+        String str = "<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">";
+        str += "\n<input type=\"hidden\" name=\"course_name\" value=\"" + course_name + "\">";
+        str += "\n<input type=\"hidden\" name=\"role\" value=\"" + role + "\">";
+        return str;
+    }
+    
     /**
      * shortcut method for selecting all courses
      * @param out
@@ -26,6 +34,8 @@ public class CourseHelper {
     public static ResultSet getAllCourses (PrintWriter out, Connection conn) {
         return getCourses("admin", out, conn);
     }
+    
+    
     
     /**
      * gets courses the user is participating in

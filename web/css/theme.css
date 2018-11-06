@@ -362,6 +362,12 @@ td {
     height: 60px;
 }
 
+.back-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
 .module-edit-input {
     margin: 0 10px;
     padding: 5px;

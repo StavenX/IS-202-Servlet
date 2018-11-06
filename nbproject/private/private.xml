@@ -7,6 +7,7 @@
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/css/theme.css</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_GetCourse.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_OneModule.java</file>
+            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/UserHelper.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/nav.html</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_GetUser.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_Student.java</file>
@@ -16,11 +17,14 @@
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_Module.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_Index.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_GetModule.java</file>
+            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_OneCourse.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/META-INF/context.xml</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/AccessTokenHelper.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/CourseHelper.java</file>
+            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_addToCourse.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/web/js/navhide.js</file>
+            <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/network/Login.java</file>
             <file>file:/C:/Users/tobia/Documents/IS-202-Servlet/src/java/servlets/serv_MyProfile.java</file>
         </group>
     </open-files>

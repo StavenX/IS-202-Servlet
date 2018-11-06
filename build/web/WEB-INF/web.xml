@@ -37,6 +37,7 @@
             <url-pattern>/Message</url-pattern>
             <url-pattern>/Module</url-pattern>
             <url-pattern>/oneCourse</url-pattern>
+            <url-pattern>/oneCourseDetails</url-pattern>
             <url-pattern>/oneMessage</url-pattern>
             <url-pattern>/oneModule</url-pattern>
             <url-pattern>/oneUser</url-pattern>

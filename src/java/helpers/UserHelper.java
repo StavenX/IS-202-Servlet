@@ -64,6 +64,23 @@ public class UserHelper {
     }
     
     
+    public static ResultSet getUsers(Connection conn, String course_id) throws SQLException {
+            String sqlString;
+            PreparedStatement getUsers;
+            if (course_id.toLowerCase().equals("%")) {
+                sqlString = "SELECT * FROM users ORDER BY user_id";
+                getUsers = conn.prepareStatement(sqlString);
+            } else {
+                sqlString = "SELECT * FROM users\n"
+                        + "INNER JOIN course_details ON users.user_id = course_details.user_id\n"
+                        + "WHERE course_details.course_id LIKE ?;";
+                getUsers = conn.prepareStatement(sqlString);
+                getUsers.setString(1, course_id);
+            }
+            ResultSet rset = getUsers.executeQuery();
+            return rset;
+    }
+    
     public static void printAllUsers(PrintWriter out, Connection conn) {
         printUsers(out, conn, "%");
     }
@@ -82,18 +99,7 @@ public class UserHelper {
         PreparedStatement getModules; 
         
         try {
-            String sqlString;
-            if (course_id.toLowerCase().equals("%")) {
-                sqlString = "SELECT * FROM users ORDER BY user_id";
-                getModules = conn.prepareStatement(sqlString);
-            } else {
-                sqlString = "SELECT * FROM users\n"
-                        + "INNER JOIN course_details ON users.user_id = course_details.user_id\n"
-                        + "WHERE course_details.course_id LIKE ?;";
-                getModules = conn.prepareStatement(sqlString);
-                getModules.setString(1, course_id);
-            }
-            ResultSet rset = getModules.executeQuery();
+            ResultSet rset = getUsers(conn, course_id);
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
@@ -137,7 +143,7 @@ public class UserHelper {
             out.println("Total number of records: " + rowCount);
             
             //prints javascript
-            site.printJsForDeleteButton();
+            site.useJS("buttons-for-delete.js");
             
             conn.close();
         }
@@ -149,29 +155,33 @@ public class UserHelper {
         }       
     }
     
+    
+    public static ResultSet getOneUser(Connection conn, String user_id) throws SQLException {
+        PreparedStatement getUser;
+        getUser = conn.prepareStatement("SELECT * FROM users WHERE useR_id = ?");
+        getUser.setString(1, user_id);
+
+        ResultSet rset = getUser.executeQuery();
+        return rset;
+    }
+    
     /**
      * Prints more details about one student
      * @param out
      * @param conn
-     * @param userid 
+     * @param user_id 
      */
-    public static void printOneUser(PrintWriter out, Connection conn, String userid) {
-        PreparedStatement getOneUser;
-        
+    public static void printOneUser(PrintWriter out, Connection conn, String user_id) {
         try {
-            //sql statement
-            getOneUser = conn.prepareStatement("SELECT * FROM users WHERE user_id = ?");
-            getOneUser.setString(1, userid);
-            ResultSet rset = getOneUser.executeQuery();
+            ResultSet rset = getOneUser(conn, user_id);
             
-            //loop only executes once but is necessary?
+            //for the result
             while (rset.next()) {
-                String user_id = rset.getString("user_id");
                 String user_username = rset.getString("user_username");
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");
                 out.println("<div>");
-                out.println(user_id + user_username + user_fname + user_lname);
+                out.printf("%s | %s | %s | %s", user_id, user_username, user_fname, user_lname);
                 out.println("</div>");
                 
             }

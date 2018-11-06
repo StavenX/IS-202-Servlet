@@ -50,7 +50,10 @@ public class HtmlHelper {
         printFile("nav.html");
         out.println("<div class=\"page-container\">");
         out.println("<form action=\"Home\"> <button class=\"button button-home\">Go home</button> </form>");
-        
+        printUserDetails();
+    }
+    
+    public void printUserDetails() {
         String loggedUserName;
         String loggedUserRole = "";
         try {
@@ -64,18 +67,13 @@ public class HtmlHelper {
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
-                out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
-                out.println("<input class=\"invisible\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
-                out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
-                out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
-                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
-                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
-                out.println("</form>");
-    }
-        
-    //javascript for handling delete buttons
-    public void printJsForDeleteButton() {
-        out.println("<script src=\"buttons-for-delete.js\"></script>");
+        out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
+        out.println("<input class=\"invisible\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
+        out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
+        out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
+        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
+        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
+        out.println("</form>");
     }
     
     public void useJS(String filename) {
@@ -147,7 +145,7 @@ public class HtmlHelper {
      * Prints a button that takes you back one step on the website
      */
     public void printBackButton() {
-        out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
+        out.println("<button class=\"button back-button\" onclick=\"window.history.back();\"><img src=\"images/back.svg\">Go back</button>");
     }
     
     /**
@@ -165,7 +163,7 @@ public class HtmlHelper {
      * @param login the connection to be closed
      */
     public void closeAndPrintEnd(Login login) {
-        login.close();
+        out.println("<p>Connection is: " + login.close() + " (remove before shipping)</p>");
         printEnd();
     }
 }

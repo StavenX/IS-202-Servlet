@@ -132,7 +132,7 @@ public class MessageHelper {
             out.println("</div>");
             out.println("Total number of records: " + rowCount);
             
-            site.printJsForDeleteButton();
+            site.useJS("buttons-for-delete.js");
             
             conn.close();
         }

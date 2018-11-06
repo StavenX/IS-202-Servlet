@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import helpers.AccessTokenHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
@@ -24,8 +23,8 @@ import network.Login;
  *
  * @author tobia
  */
-@WebServlet(name = "oneCourse", urlPatterns = {"/oneCourse"})
-public class serv_OneCourse extends HttpServlet {
+@WebServlet(name = "oneCourseDetails", urlPatterns = {"/oneCourseDetails"})
+public class serv_OneCourseDetails extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -59,41 +58,38 @@ public class serv_OneCourse extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Details", "one-course");
+            
             String course_id = request.getParameter("course_id");
             String course_name = request.getParameter("course_name");
+            String role = request.getParameter("role");
+            String details = request.getParameter("details").toLowerCase();
             
             
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead(course_name, "single-course");
+            site.printBackButton();
             
-            out.println("You are now viewing course " + course_name);
-            
-            out.println("<form action=\"addToCourse\">");
-            out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
-            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
-            out.println("<button class=\"button\">Add to course</button>");
+            out.println("<form action=\"oneCourse\" method=\"post\">");
+            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println("<button class=\"button\">Back to " + course_name + "</button>");
             out.println("</form>");
             
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            String role = a.getUserRole();
-            
-            
-            
-            out.println("<h3>Modules in this course (sort buttons not working correctly):</h3>");
-            out.println("<form action=\"oneCourseDetails\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
-            out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Modules\">");
-            out.println("</form>");
-            
-            
-            out.println("<h3>Students in this course:</h3>");
-            out.println("<form action=\"oneCourseDetails\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
-            out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Students\">");
-            out.println("</form");
+            Connection conn = login.loginToDB(out);
+            switch(details) {
+                case "modules":
+                    ModuleHelper.printModules(out, conn, "", role, course_id);
+                    break;
+                    
+                case "students":
+                    UserHelper.printUsers(out, conn, course_id);
+                    break;
+                    
+                default:
+                    out.println("you done goofed, Tobias.");
+            }
+            site.closeAndPrintEnd(login);
         }
     }
-    
 
     /**
      * Returns a short description of the servlet.
