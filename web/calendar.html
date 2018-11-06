@@ -17,17 +17,17 @@
         // Fills three calendars
         function fillCalendar(d)
         {
+            var month = d.getMonth();
+            var year = d.getFullYear();
+            var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+            var firstDay = new Date(d.getFullYear(), d.getMonth(),1).getDay() || 7;
+            var day = 1;
             var HTML = ("");
+            
             for(var q = 0; q < 3; q++)
             {
-                var month = d.getMonth();
-                var year = d.getFullYear();
-                var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
-                var firstDay = new Date(d.getFullYear(), d.getMonth(),1).getDay() || 7;
-                var day = 1;
-
                 // Prints month name
-                HTML += ("<table><tr><td Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "<tr>");
+                HTML += ("<table><thead><tr><th Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
 
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
@@ -55,24 +55,17 @@
                     }
                     HTML += ("</tr><tr>");
                 }
-                HTML += ("</tr></table><br>");
-                console.log(firstDay + " " + month + year)
+                HTML += ("</tr></tbody></table><br>");
                 d.setMonth(d.getMonth()+1);
             }
             document.getElementById("boi").innerHTML = HTML;
         }
     </script>
        
-    <script>
-        
-        // Prints current calendar on page load
-        var currentDate = new Date();
-        fillCalendar(currentDate);
-        
-    </script>
+    
     
     <script>
-        
+        /*
         // Buttons for access next and previous months
         document.write("<button onclick=\"prevMonths()\">last months boi</button>");
         document.write("<button onclick=\"nextMonths()\">next months boi</button>");
@@ -88,12 +81,50 @@
             currentDate.setMonth(currentDate.getMonth()-6);
             fillCalendar(currentDate);
         }
+        */
+    </script>
+    
+    <script>
+        var currentDay2 = new Date();
+        currentDay2.setHours(8, 0, 0, 0);
+        
+        function fillTimetable()
+        {
+            
+            var HTML2 = ("");
+            HTML2 += ("<table><thead><tr>");
+            HTML2 += ("<th>&nbsp;</th>");
+            for (var p = 0; p <= 6; p++) {
+                    HTML2 += ("<th>" + weekdayNames[p] + "</th>");
+                }
+            HTML2 += ("</tr></thead><tbody><tr>");
+            
+            for (var o = 0; o < 21; o++) {
+                var minutes = currentDay2.getMinutes();
+                HTML2 += ("<tr><td>" + currentDay2.getHours() + ":" + currentDay2.getMinutes() + "</td>");
+                
+                for (var w = 0; w <= 6; w++) {
+                HTML2 += ("<td>boi</td>");
+                }
+                
+                currentDay2.setMinutes(minutes+30);
+                HTML2 += ("</tr>");
+
+            }
+            HTML2 += ("</tr></tbody></table>");
+            document.getElementById("boi2").innerHTML = HTML2;
+        }
         
     </script>
     
     <script>
         
-        
+        // Prints current calendar on page load
+        /*
+        var currentDate = new Date();
+        fillCalendar(currentDate);
+        */
+        fillTimetable();
     </script>
 </body>
 </html>
