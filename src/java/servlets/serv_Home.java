@@ -54,7 +54,6 @@ public class serv_Home extends HttpServlet {
             if (request.isUserInRole("Lecturer")) {
                 rset = CourseHelper.getAllCourses(out, conn);
             } else {
-
                 try {
                     PreparedStatement getId = conn.prepareStatement("SELECT user_id FROM users WHERE user_username = ?");
                     getId.setString(1, username);
@@ -63,12 +62,10 @@ public class serv_Home extends HttpServlet {
                     while (rset.next()) {
                         user_id = rset.getString("user_id");
                     }
-
-
                 } catch (SQLException ex) {
                     out.println("SQLException: " + ex);
                 }
-                    rset = CourseHelper.getCourses(user_id, out, conn);
+                rset = CourseHelper.getCourses(user_id, out, conn);
             }
             
             out.println("<div class=\"courses-container\">");
@@ -91,7 +88,7 @@ public class serv_Home extends HttpServlet {
     }
 
     public void courseBox(PrintWriter out, String course_id, String course_name) {
-        out.println("<form action=\"oneCourse\" method=\"get\">");
+        out.println("<form action=\"oneCourse\" method=\"post\">");
         out.println("<button class=\"course-container\">");
         out.println("<img class=\"course-img\" src=\"http://via.placeholder.com/200x100\">");
         out.println("<input name=\"course_id\" type=\"hidden\" value=\"" + course_id + "\">");

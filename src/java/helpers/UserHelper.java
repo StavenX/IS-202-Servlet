@@ -63,21 +63,36 @@ public class UserHelper {
         }
     }
     
+    
+    public static void printAllUsers(PrintWriter out, Connection conn) {
+        printUsers(out, conn, "%");
+    }
+    
     /**
      * Prints all the students located in the student
      * table.
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
+     * @param course_id
      */
-    public static void printUsers(PrintWriter out, Connection conn) {
+    public static void printUsers(PrintWriter out, Connection conn, String course_id) {
 
         HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getModules; 
         
         try {
-            getModules = conn.prepareStatement("SELECT * FROM users ORDER BY user_id");
-                       
+            String sqlString;
+            if (course_id.toLowerCase().equals("%")) {
+                sqlString = "SELECT * FROM users ORDER BY user_id";
+                getModules = conn.prepareStatement(sqlString);
+            } else {
+                sqlString = "SELECT * FROM users\n"
+                        + "INNER JOIN course_details ON users.user_id = course_details.user_id\n"
+                        + "WHERE course_details.course_id LIKE ?;";
+                getModules = conn.prepareStatement(sqlString);
+                getModules.setString(1, course_id);
+            }
             ResultSet rset = getModules.executeQuery();
             
             out.println("the records selected are:" + "<br>");
@@ -186,6 +201,13 @@ public class UserHelper {
             }
     }
     
+    /**
+     * adds a user to the specified course, and all tables related
+     * @param course_id id of the course
+     * @param user_id id of the user
+     * @param conn the connection to the db
+     * @param out the web page writer
+     */
     public static void addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
         
         String sqlString = "INSERT INTO course_details (course_id, user_id) VALUES (?, ?);";
@@ -193,20 +215,19 @@ public class UserHelper {
                 PreparedStatement ps = conn.prepareStatement(sqlString);
                 ps.setString(1, course_id);
                 ps.setString(2, user_id);
-                
+                int amount = ps.executeUpdate();
+
+                //gets all modules in the course the user is to be added to
+                //sorted by module_id
                 ResultSet rset = ModuleHelper.getModules(out, conn, "id", course_id);
                 
+                //for each module add the user to the module too
                 while (rset.next()) {
-                    String module_course_id = rset.getString("course_id");
-                    if (module_course_id.equals(course_id)) {
-                        
                         String module_id = rset.getString("module_id");
                         addUserToModule(module_id, user_id, conn, out);
-                    }
                 }
                 
-                
-                int amount = ps.executeUpdate();
+                //executes 
                 out.println(amount + " inserted");
             }
             catch (SQLException ex) {

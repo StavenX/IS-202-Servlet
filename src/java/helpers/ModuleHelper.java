@@ -97,6 +97,7 @@ public class ModuleHelper {
         try {
             
             //base string for sql preparedstatement
+            //'LIKE' instead of '=' to allow usage of '%' to get all
             String sqlString = "SELECT * FROM module WHERE course_id LIKE ? ORDER BY ";
             
             String[] orderByList = orderString.split(" ");
@@ -224,8 +225,6 @@ public class ModuleHelper {
             out.println("Total number of records: " + rowCount);
             
             site.printJsForDeleteButton();
-            
-            conn.close();
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
