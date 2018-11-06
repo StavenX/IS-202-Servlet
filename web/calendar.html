@@ -7,10 +7,12 @@
 <body>
     <div id="boi">
     </div>
+    <div id="boi2"> 
+    </div>
     <script>
         
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
-        var weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
         // Fills three calendars
         function fillCalendar(d)
@@ -29,7 +31,7 @@
 
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
-                    HTML += ("<td>" + weekdayNames[p] + "</td>");
+                    HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
                 }
 
                 // Prints empty days in calendar
@@ -86,6 +88,11 @@
             currentDate.setMonth(currentDate.getMonth()-6);
             fillCalendar(currentDate);
         }
+        
+    </script>
+    
+    <script>
+        
         
     </script>
 </body>
