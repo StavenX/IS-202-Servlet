@@ -6,14 +6,8 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

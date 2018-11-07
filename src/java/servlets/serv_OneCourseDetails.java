@@ -65,7 +65,11 @@ public class serv_OneCourseDetails extends HttpServlet {
             String course_name = request.getParameter("course_name");
             String role = request.getParameter("role");
             String details = request.getParameter("details").toLowerCase();
+            String orderBy = request.getParameter("orderBy");
             
+            if (orderBy == null) {
+                orderBy = "";
+            }
             
             site.printBackButton();
             
@@ -77,7 +81,7 @@ public class serv_OneCourseDetails extends HttpServlet {
             Connection conn = login.loginToDB(out);
             switch(details) {
                 case "modules":
-                    ModuleHelper.printModules(out, conn, "", role, course_id);
+                    ModuleHelper.printModules(out, conn, orderBy, role, course_id, "oneCourseDetails");
                     break;
                     
                 case "students":

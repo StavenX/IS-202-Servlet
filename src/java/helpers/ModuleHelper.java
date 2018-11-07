@@ -173,6 +173,11 @@ public class ModuleHelper {
         return null;
     }
     
+    //returns the correct string for an input for the "orderBy" string value
+    public static String orderByInput(String value) {
+        return "<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"" + value + "\">";
+    }
+    
     /**
      * Prints all the students located in the student
      * table.
@@ -182,8 +187,9 @@ public class ModuleHelper {
      * @param orderBy the column name to order the sql results in
      * @param role the role of the user logged in
      * @param course_id
+     * @param currentServlet
      */
-    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id) {
+    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id, String currentServlet) {
 
             HtmlHelper site = new HtmlHelper(out);
         
@@ -194,19 +200,31 @@ public class ModuleHelper {
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
-            //"sort by"-buttons (can probably be reduced to one form)
+                
+            PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+            getCourseName.setString(1, course_id);
+            ResultSet courseResult = getCourseName.executeQuery();
+            
+            String course_name = "";
+            while (courseResult.next()) {
+                course_name = courseResult.getString("course_name");
+            }
+                
+            //"sort by"-buttons and necessary parameters
             out.println("<h2>Sort by: </h2>");
             out.println("<div class=\"sort-by-container\">");
-            out.println("<form action=\"getModule\">");
+            out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
+            out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<input type=\"hidden\" name=\"course_name\" value=\"" + course_name + "\">");
+            out.println("<input type=\"hidden\" name=\"role\" value=\"" + role + "\">");
+            out.println("<input type=\"hidden\" name=\"details\" value=\"modules\">");
             
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID desc\">");
+            String[] sortingTypes = {"ID asc", "ID desc", "Name asc", "Name desc", "Points asc", "Points desc"};
+            //prints submit buttons for the sorting types
+            for (int i = 0; i < sortingTypes.length; i++) {
+                out.println(orderByInput(sortingTypes[i]));
+            }
             
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name desc\">");
-            
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points desc\">");
             out.println("</form>");
             out.println("</div>");
             
@@ -218,14 +236,13 @@ public class ModuleHelper {
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
                 
-                PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
-                getCourseName.setString(1, rset.getString("course_id"));
-                ResultSet courseResult = getCourseName.executeQuery();
-                String course_name = "";
+                getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+                getCourseName.setString(1, course_id);
+                courseResult = getCourseName.executeQuery();
+
                 while (courseResult.next()) {
                     course_name = courseResult.getString("course_name");
                 }
-                
                 
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
