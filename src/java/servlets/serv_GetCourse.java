@@ -41,10 +41,17 @@ public class serv_GetCourse extends HttpServlet {
         
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("", "");
+            
+            
             
             Connection conn = login.loginToDB(out);
             
-            CourseHelper.getCourses(out, conn);
+            //what is this servlet??
+            
+            //CourseHelper.getCourses(out, conn);
+            
+            site.closeAndPrintEnd(login);
         }
     }
 

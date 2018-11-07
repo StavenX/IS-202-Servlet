@@ -42,11 +42,11 @@ public class ModuleHelper {
             prepInsert.setString(4, site.checkIfValidText(course_id));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
-            int countInserted = prepInsert.executeUpdate();         
-            System.out.println(countInserted + " records inserted.\n");  
-            out.println(countInserted + " records inserted.\n");  
+            int countInserted = prepInsert.executeUpdate();           
+            out.println("<p>" + countInserted + " module created.</p>");  
             
-            out.println("INSERTED"); // debug
+            
+            addStudentsToNewModule(conn, out);
             
             out.println(
                 "<form action=\"getModule\" method=\"get\">\n" +
@@ -67,6 +67,31 @@ public class ModuleHelper {
             }
         }
     }
+    
+    public static void addStudentsToNewModule(Connection conn, PrintWriter out) {
+        PreparedStatement addStudents;
+        try {
+            addStudents = conn.prepareStatement("SELECT module_id, course_id FROM module ORDER BY module_id DESC LIMIT 1");
+            ResultSet rset = addStudents.executeQuery();
+            while (rset.next()) {
+                String module_id = rset.getString("module_id");
+                String course_id = rset.getString("course_id");
+                ResultSet students = UserHelper.getUsers(conn, course_id);
+                
+                int studentsUpdated = 0;
+                while (students.next()) {
+                    String user_id = students.getString("user_id");
+                    UserHelper.addUserToModule(module_id, user_id, conn, out);
+                    studentsUpdated++;
+                }
+                out.println("<p>" + studentsUpdated + " students added to module.</p>");
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+    
     
     public static void updateModule(String id, String name, String desc, String points, Connection conn, PrintWriter out) {
         
@@ -97,6 +122,7 @@ public class ModuleHelper {
         try {
             
             //base string for sql preparedstatement
+            //'LIKE' instead of '=' to allow usage of '%' to get all
             String sqlString = "SELECT * FROM module WHERE course_id LIKE ? ORDER BY ";
             
             String[] orderByList = orderString.split(" ");
@@ -213,8 +239,7 @@ public class ModuleHelper {
                 out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
-                
-                if (role.equals("Lecturer")) {
+                if (role.toLowerCase().equals("lecturer")) {
                     site.printDeleteButton("deleteModule", "module_id", module_id);
                 }
                 out.println("</div>");
@@ -223,9 +248,7 @@ public class ModuleHelper {
             }
             out.println("Total number of records: " + rowCount);
             
-            site.printJsForDeleteButton();
-            
-            conn.close();
+            site.useJS("buttons-for-delete.js");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
@@ -252,10 +275,7 @@ public class ModuleHelper {
                 out.println("<div>");
                 out.println("<form action=\"updateModule\" method=\"get\">");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module ID (can't be changed)</p>");
-                out.println("<input type=\"text\" name=\"module_id\" value=\"" + module_id + "\" disabled>");
-                out.println("</div>");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module name</p>");
@@ -286,6 +306,29 @@ public class ModuleHelper {
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
         }
+    }
+    
+    public static String deleteModule(String module_id, Connection conn) {
+        
+        String results = "";
+
+        try {
+            PreparedStatement deleteModuleDetails = conn.prepareStatement("DELETE FROM module_details WHERE module_id = ?");
+            deleteModuleDetails.setString(1, module_id);
+            int detailsDeleted = deleteModuleDetails.executeUpdate();
+
+
+            PreparedStatement deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
+            deleteModule.setString(1, module_id);
+            int modulesDeleted = deleteModule.executeUpdate();
+            
+            results += modulesDeleted + " modules deleted. " + detailsDeleted + " students affected";
+        } catch (SQLException ex) {
+            results += "SQL error: " + ex;
+            return results;
+        }
+        
+        return results;
     }
     
 }

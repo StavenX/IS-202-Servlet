@@ -24,14 +24,16 @@ public class Login
     /**
      * Closes the connection to the database
      */
-    public void close() {
+    public String close() {
          
         try {
             conn.close();
         }
         catch (SQLException ex) {
             System.out.println("Cannot close connection: " + ex);
+            return "not closed";
         }
+        return "closed";
     } 
 
     /*

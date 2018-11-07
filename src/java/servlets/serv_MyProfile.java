@@ -5,26 +5,20 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
-import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import network.Login;
 
 /**
  *
- * @author Tobias
+ * @author tobia
  */
-@WebServlet(name = "addToCourse", urlPatterns = {"/addToCourse"})
-public class serv_addToCourse extends HttpServlet {
-    Login login = new Login();
-
+@WebServlet(name = "MyProfile", urlPatterns = {"/MyProfile"})
+public class serv_MyProfile extends HttpServlet {
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -37,28 +31,10 @@ public class serv_addToCourse extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Added to course", "");
-            
-            String course_id = request.getParameter("course_id");
-            String student_id = request.getParameter("student_id");
-            
-            Connection conn = login.loginToDB(out);
-            
-            //adds user to the course
-            UserHelper.addUserToCourse(course_id, student_id, conn, out);
-            
-            out.println("<form action=\"oneCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
-            out.println("<button class=\"button\">Go to course</button></form>");
-            
-            
-            site.closeAndPrintEnd(login);
         }
     }
-    
+
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -70,9 +46,7 @@ public class serv_addToCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
         }
     }
 
