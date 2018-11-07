@@ -19,13 +19,18 @@
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
+        today.setMilliseconds(0);
+        
         // Fills three calendars
         function fillCalendar(d)
         {
+            d.setMilliseconds(0);
             var HTML = ("");
             
+            console.log(today.getTime(), d.getTime());
             for(var q = 0; q < 3; q++)
             {
+                
                 var month = d.getMonth();
                 var year = d.getFullYear();
                 var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
@@ -38,14 +43,14 @@
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
                     // Needs optimization and testing
-                    if (d.getDay()-1 == p && q == 0 && today.getDay() == d.getDay()) {
+                    if (d.getDay()-1 == p && q == 0 && today.getTime() === d.getTime()) {
                         HTML += ("<td class=\"currentWD\">" + weekdayNames[p].substr(0, 3) + "</td>");
                     }
                     else { 
                         HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
                     }
                 }
-
+                
                 // Prints empty days in calendar
                 HTML += ("</tr><tr>");
                 for (var i = 1; i < firstDay; i++) {
@@ -78,8 +83,8 @@
         function fillTimetable(n)
         {
             // Needs optimization and testing
-            var thisDayBoi = new Date(n.getDate());
-            thisDayBoi = thisDayBoi.getDay()-1;
+            var thisDayBoi = new Date();
+            thisDayBoi.setMilliseconds(0);
             
             n.setDate(n.getDate() - n.getDay()+1);
             n.setHours(8, 0, 0, 0);
@@ -89,14 +94,14 @@
             
             for (var p = 0; p <= 6; p++) {
                 // Needs optimization and testing
-                if (n.getDay()+1 == p && today.getDay() == thisDayBoi) {
+                if (n.getDay()+1 == p && today.getTime() == thisDayBoi.getTime()) {
                     HTML2 += ("<th class =\"currentWD\">" + weekdayNames[p] + "</th>");
                 }
                 else {
                     HTML2 += ("<th>" + weekdayNames[p] + "</th>");
                 }
             }
-                console.log(thisDayBoi, today.getDay());
+                console.log(thisDayBoi.getTime(), today.getTime());
             HTML2 += ("</tr></thead><tbody><tr>");
             
             for (var o = 0; o < 21; o++) {
