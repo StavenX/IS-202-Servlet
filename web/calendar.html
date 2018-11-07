@@ -7,6 +7,8 @@
 <body>
     <div id="buttons">
     </div>
+    <div id="buttons2">
+    </div>
     <div id="calendarWrapper">
     <div id="boi">
     </div>
@@ -16,11 +18,10 @@
     <script>
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-
+        var today = new Date();
         // Fills three calendars
         function fillCalendar(d)
         {
-            
             var HTML = ("");
             
             for(var q = 0; q < 3; q++)
@@ -32,11 +33,17 @@
                 var day = 1;
     
                 // Prints month name
-                HTML += ("<table id=\"calendarTable\"><thead><tr><th Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
+                HTML += ("<table class=\"calendarTable\"><thead><tr><th COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
 
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
-                    HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
+                    // Needs optimization and testing
+                    if (d.getDay()-1 == p && q == 0 && today.getDay() == d.getDay()) {
+                        HTML += ("<td class=\"currentWD\">" + weekdayNames[p].substr(0, 3) + "</td>");
+                    }
+                    else { 
+                        HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
+                    }
                 }
 
                 // Prints empty days in calendar
@@ -67,7 +74,47 @@
             document.getElementById("boi").innerHTML = HTML;
         }
     </script>
-
+    <script>
+        function fillTimetable(n)
+        {
+            // Needs optimization and testing
+            var thisDayBoi = new Date(n.getDate());
+            thisDayBoi = thisDayBoi.getDay()-1;
+            
+            n.setDate(n.getDate() - n.getDay()+1);
+            n.setHours(8, 0, 0, 0);
+            var HTML2 = ("");
+            HTML2 += ("<table id =\"timetable\"><thead><tr>");
+            HTML2 += ("<th>&nbsp;</th>");
+            
+            for (var p = 0; p <= 6; p++) {
+                // Needs optimization and testing
+                if (n.getDay()+1 == p && today.getDay() == thisDayBoi) {
+                    HTML2 += ("<th class =\"currentWD\">" + weekdayNames[p] + "</th>");
+                }
+                else {
+                    HTML2 += ("<th>" + weekdayNames[p] + "</th>");
+                }
+            }
+                console.log(thisDayBoi, today.getDay());
+            HTML2 += ("</tr></thead><tbody><tr>");
+            
+            for (var o = 0; o < 21; o++) {
+                var minutes = n.getMinutes();
+                HTML2 += ("<tr><td class=\"timeStamp\">" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                
+                for (var w = 0; w <= 6; w++) {
+                HTML2 += ("<td>" + n + "</td>");
+                n.setDate(n.getDate()+1);
+                }
+                n.setDate(n.getDate()-7);
+                n.setMinutes(minutes+30);
+                HTML2 += ("</tr>");
+            }
+            HTML2 += ("</tr></tbody></table>");
+            document.getElementById("boi2").innerHTML = HTML2;
+        }
+    </script>
     <script>
         // Buttons for access next and previous months
         document.write("<button onclick=\"prevMonths()\">last months boi</button>");
@@ -85,47 +132,12 @@
             fillCalendar(currentDate);
         }
     </script>
-    
-    <script>
-        var currentDay2 = new Date();
-        currentDay2.setDate(20);
-        currentDay2.setDate(currentDay2.getDate() - currentDay2.getDay());
-        currentDay2.setHours(8, 0, 0, 0);
-        
-        function fillTimetable()
-        {
-            var HTML2 = ("");
-            HTML2 += ("<table id =\"timetable\"><thead><tr>");
-            HTML2 += ("<th>&nbsp;</th>");
-            
-            for (var p = 0; p <= 6; p++) {
-                    HTML2 += ("<th id =\"thWeekday\">" + weekdayNames[p] + "</th>");
-            }
-                
-            HTML2 += ("</tr></thead><tbody><tr>");
-            
-            for (var o = 0; o < 21; o++) {
-                var minutes = currentDay2.getMinutes();
-                HTML2 += ("<tr><td>" + currentDay2.getHours() + ":" + currentDay2.getMinutes() + "</td>");
-                
-                for (var w = 0; w <= 6; w++) {
-                HTML2 += ("<td>" + currentDay2 + "</td>");
-                currentDay2.setDate(currentDay2.getDate()+1);
-                }
-                currentDay2.setDate(currentDay2.getDate()-7);
-                currentDay2.setMinutes(minutes+30);
-                HTML2 += ("</tr>");
-            }
-            HTML2 += ("</tr></tbody></table>");
-            document.getElementById("boi2").innerHTML = HTML2;
-        }
-    </script>
-    
     <script>
         // Prints current calendar on page load
         var currentDate = new Date();
+        var currentDate2 = new Date();
         fillCalendar(currentDate);
-        fillTimetable();
+        fillTimetable(currentDate2);
     </script>
 </body>
 </html>
