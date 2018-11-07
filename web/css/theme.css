@@ -168,6 +168,12 @@ a {
     min-width: 870px;
 }
 
+#calendarTable {
+    border-collapse: collapse;
+    border: solid black;
+    
+}
+
 .month {
     width: 100%;
     padding: 3px;
@@ -186,7 +192,6 @@ a {
 }
 
 .weekdays li {
-
     display: table-cell;
     width: auto;
     text-align: center;

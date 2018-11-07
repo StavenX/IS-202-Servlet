@@ -5,10 +5,12 @@
     <title>Calendar</title>            
 </head>
 <body>
+    <div id="buttons">
+    </div>
     <div id="calendarWrapper">
     <div id="boi">
     </div>
-    <div id="boi2"> 
+    <div id="boi2">
     </div>
     </div>
     <script>
@@ -30,7 +32,7 @@
                 var day = 1;
     
                 // Prints month name
-                HTML += ("<table><thead><tr><th Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
+                HTML += ("<table id=\"calendarTable\"><thead><tr><th Align=center COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
 
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
@@ -86,8 +88,9 @@
     
     <script>
         var currentDay2 = new Date();
+        currentDay2.setDate(20);
+        currentDay2.setDate(currentDay2.getDate() - currentDay2.getDay());
         currentDay2.setHours(8, 0, 0, 0);
-        currentDay2.setDate(1);
         
         function fillTimetable()
         {
