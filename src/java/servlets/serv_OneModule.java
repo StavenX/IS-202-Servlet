@@ -18,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
 import helpers.ModuleHelper;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author Tobias
@@ -27,66 +30,6 @@ public class serv_OneModule extends HttpServlet {
     Statement stmt;
     Login login = new Login();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Single module", "one-module-container");
-            
-            String singleMod_id = request.getParameter("singleMod_id");
-            
-            Connection conn;
-            conn = login.loginToDB(out);
-
-            out.println("<h2>Viewing a single module</h2>");
-            
-            ModuleHelper.printOneModule(out, conn, singleMod_id);
-            
-            //TODO box containing students
-            out.println("<div class=\"module-student-list\"");
-            out.println("<div class=\"module-student-list-item\">");
-            out.println("<div>TODO: Table of students</div>");
-            out.println("</div>");
-            out.println("</div>");
-            
-            
-            //javascript that enables you to edit the input fields (and thus the module)
-            out.println("<script>");
-            out.println("   function enable() {");
-            //gets all input fields
-            out.println("       var inputs = document.getElementsByTagName(\'input\');");
-            out.println("       for (var i = 0; i < inputs.length; i++) {");
-            //checks if they're type 'text'
-            out.println("           if (inputs[i].type == 'text') {");
-            //turns off disabled, and changes their class to give them another look through css
-            out.println("               inputs[i].disabled = false;");
-            out.println("               inputs[i].setAttribute(\'class\',\'one-module-enabled\');");
-            out.println("           }");
-            out.println("       }");
-            //swaps the visibilities of the edit and save buttons
-            out.println("       document.getElementById(\'one-module-edit\').style.display = \'none\';");
-            out.println("       document.getElementById(\'one-module-save\').style.display = \'block\';");
-            out.println("   }");
-            out.println("</script>");
-            
-            
-            site.printEnd();
-            login.close();
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -98,7 +41,92 @@ public class serv_OneModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Single module", "one-module-container");
+            
+            String module_id = request.getParameter("module_id");
+            
+            Connection conn;
+            conn = login.loginToDB(out);
+
+            out.println("<h2>Viewing a single module</h2>");
+            
+            ModuleHelper.printOneModule(out, conn, module_id);
+            
+            
+            out.println("<form action=\"addToModule\">");
+            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"Student id\">");
+            out.println("<button class=\"button\">Give access to module</button>");
+            out.println("</form>");
+            
+            
+            //TODO box containing students
+            out.println("<div class=\"module-student-list\">");
+            
+            String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max points\',\n" +
+            "module_details.module_points AS \'your points\', module_details.module_status \n" +
+            "FROM course\n" +
+            "INNER JOIN module ON course.course_id = module.course_id\n" +
+            "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
+            "INNER JOIN users ON module_details.student_id = users.user_id WHERE module.module_id = ?\n" +
+            "ORDER BY FIELD(module_status, \'Not delivered\', \'Pending\', \'Completed\');";
+            
+            
+            try {
+                PreparedStatement getPeople = conn.prepareStatement(sqlString);
+                getPeople.setString(1, module_id);
+                
+                ResultSet rset = getPeople.executeQuery();
+                
+                out.println("<table class=\"module-students-table\">");
+                out.println("<tr>");
+                out.println("<th>Name</th>");
+                out.println("<th>Your points</th>");
+                out.println("<th>Status</th>");
+                out.println("</tr>");
+                
+                
+                while (rset.next()) {
+                    String user_name = rset.getString("user_username");
+                    String course_name = rset.getString("course_name");
+                    String module_name = rset.getString("module_name");
+                    String module_desc = rset.getString("module_desc");
+                    String max_points = rset.getString("max points");
+                    String your_points = rset.getString("your points");
+                    String status = rset.getString("module_status");
+                    
+                    if (your_points == null) {
+                        your_points = "LUL 0 POINTS";
+                    }
+                    
+                    out.println("<tr>");
+                    out.println("<td>" + user_name + "</td>");
+                    out.println("<td>" + your_points + "</td>");
+                    out.println("<td class=\"module_status\">" + status + "</td>");
+                    out.println("</tr>");
+                    
+                }
+                
+                out.println("</table>");
+                
+                
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
+            
+            
+            out.println("</div>");
+            out.println("</div>");
+            
+            site.useJS("editmodule.js");
+            site.useJS("somebackgrounds.js");
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -112,7 +140,7 @@ public class serv_OneModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.getWriter().println("hei");
     }
 
     /**

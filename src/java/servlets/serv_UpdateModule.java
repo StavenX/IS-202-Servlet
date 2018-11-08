@@ -25,48 +25,7 @@ import network.Login;
 public class serv_UpdateModule extends HttpServlet {
     Login login = new Login();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
-            
-            //body class 'invisible' makes no content on the page visible, and it should auto load
-            //due to javascript 
-            site.printHead("Updating module...", "invisible");
-            
-            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
-            
-            String id = request.getParameter("singleMod_id");
-            String name = request.getParameter("mod_name");
-            String desc = request.getParameter("mod_desc");
-            
-            Connection conn = login.loginToDB(out);
-            ModuleHelper.updateModule(id, name, desc, conn, out);
-            
-            //form that takes you back to the module you just edited
-            out.println("<form name=\"auto\" action=\"oneModule\">");
-            out.println("<input name=\"singleMod_id\" type=\"text\" value=\"" + id + "\">");
-            out.println("<input type=\"submit\">");
-            out.println("</form>");
-            
-            //auto submits the form so the page auto loads
-            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
-            
-            site.printEnd();
-        }
-    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -78,7 +37,35 @@ public class serv_UpdateModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            HtmlHelper site = new HtmlHelper(out);
+            
+            //body id 'invisible' makes no content on the page visible, and it should auto load
+            //due to javascript 
+            site.printHead("Updating module...", "");
+            
+            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
+            
+            String id = request.getParameter("module_id");
+            String name = request.getParameter("module_name");
+            String desc = request.getParameter("module_desc");
+            String points = request.getParameter("module_points");
+            
+            Connection conn = login.loginToDB(out);
+            ModuleHelper.updateModule(id, name, desc, points, conn, out);
+            
+            //form that takes you back to the module you just edited
+            out.println("<form name=\"auto\" action=\"oneModule\" method=\"get\">");
+            out.println("<input name=\"module_id\" type=\"text\" value=\"" + id + "\">");
+            out.println("<input class=\"button\" type=\"submit\">");
+            out.println("</form>");
+            
+            //auto submits the form so the page auto loads
+            out.println("<script>window.onload=document.forms[\'auto\'].submit();</script>");
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -92,7 +79,6 @@ public class serv_UpdateModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**

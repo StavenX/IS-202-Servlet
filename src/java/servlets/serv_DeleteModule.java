@@ -28,46 +28,6 @@ public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Delete module", "delete-module");
-            
-            out.println("<h1>Servlet deleteStudent at " + request.getContextPath() + "</h1>");
-            
-            Connection conn = login.loginToDB(out);
-            
-            String module_id = request.getParameter("module_id");
-            
-            PreparedStatement deleteModule;
-            try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE mod_id = ?;");
-                deleteModule.setString(1, module_id);
-                
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<a href=\"getModule\">Back to module list</a>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
-            
-            site.printEnd();
-        }
-    }
-
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
      * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
@@ -78,7 +38,32 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("Delete module", "delete-module");
+            
+            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
+            
+            Connection conn = login.loginToDB(out);
+            
+            String module_id = request.getParameter("module_id");
+            
+            PreparedStatement deleteModule;
+            try {
+                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
+                deleteModule.setString(1, module_id);
+                
+                int amountDeleted = deleteModule.executeUpdate();
+                out.println("<div>" + amountDeleted + " modules deleted.</div>");
+                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
+            }
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -92,7 +77,6 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
     }
 
     /**
