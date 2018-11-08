@@ -48,6 +48,7 @@ public class serv_addToCourse extends HttpServlet {
             
             Connection conn = login.loginToDB(out);
             
+            //adds user to the course
             UserHelper.addUserToCourse(course_id, student_id, conn, out);
             
             out.println("<form action=\"oneCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
