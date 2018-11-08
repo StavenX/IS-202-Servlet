@@ -15,7 +15,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
  *
  * @author Staven
  */
-public class StudentHelper {
+public class UserHelper {
     
         /**
      * Inserts a student into the student table.
@@ -166,5 +166,51 @@ public class StudentHelper {
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
         }
+    }
+    
+    public static void addUserToModule(String module_id, String student_id, Connection conn, PrintWriter out) {
+        
+            String sqlString = "INSERT INTO module_details (student_id, module_id) VALUES (?, ?);";
+            
+            
+            try {
+                PreparedStatement ps = conn.prepareStatement(sqlString);
+                ps.setString(1, student_id);
+                ps.setString(2, module_id);
+                
+                int amount = ps.executeUpdate();
+                out.println(amount + " inserted");
+            }
+            catch (SQLException ex) {
+                out.println("SQL ERROR: " + ex);
+            }
+    }
+    
+    public static void addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
+        
+        String sqlString = "INSERT INTO course_details (course_id, user_id) VALUES (?, ?);";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sqlString);
+                ps.setString(1, course_id);
+                ps.setString(2, user_id);
+                
+                ResultSet rset = ModuleHelper.getModules(out, conn, "id", course_id);
+                
+                while (rset.next()) {
+                    String module_course_id = rset.getString("course_id");
+                    if (module_course_id.equals(course_id)) {
+                        
+                        String module_id = rset.getString("module_id");
+                        addUserToModule(module_id, user_id, conn, out);
+                    }
+                }
+                
+                
+                int amount = ps.executeUpdate();
+                out.println(amount + " inserted");
+            }
+            catch (SQLException ex) {
+                out.println("SQL ERROR: " + ex);
+            }
     }
 }

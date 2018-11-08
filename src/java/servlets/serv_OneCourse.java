@@ -5,8 +5,9 @@
  */
 package servlets;
 
-import helpers.CourseHelper;
+import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -21,11 +22,10 @@ import network.Login;
  *
  * @author tobia
  */
-@WebServlet(name = "getCourse", urlPatterns = {"/getCourse"})
-public class serv_GetCourse extends HttpServlet {
+@WebServlet(name = "oneCourse", urlPatterns = {"/oneCourse"})
+public class serv_OneCourse extends HttpServlet {
     Login login = new Login();
-    
-    
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -38,13 +38,29 @@ public class serv_GetCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
         try (PrintWriter out = response.getWriter()) {
+            
+            String course_id = request.getParameter("course_id");
+            String course_name = request.getParameter("course_name");
+            
             HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead(course_name, "single-course");
+            
+            out.println("You are now viewing course " + course_name);
+            
+            out.println("<form action=\"addToCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
+            out.println("<button class=\"button\">Add to course</button>");
+            out.println("</form>");
+            
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String role = a.getUserRole();
             
             Connection conn = login.loginToDB(out);
             
-            CourseHelper.getCourses(out, conn);
+            ModuleHelper.printModules(out, conn, "", role, course_id);
+            
+            site.printEnd();
         }
     }
 
@@ -59,11 +75,6 @@ public class serv_GetCourse extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
-        try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
-        }
     }
 
     /**
