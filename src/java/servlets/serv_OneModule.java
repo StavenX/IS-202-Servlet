@@ -59,6 +59,9 @@ public class serv_OneModule extends HttpServlet {
             
             AccessTokenHelper a = new AccessTokenHelper(request);
             String role = a.getUserRole();
+            
+            
+            
             if (role.equals("Lecturer")) {
                 String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max_points\',\n" +
                 "module_details.module_points AS \'your_points\', module_details.module_status \n" +
@@ -80,6 +83,7 @@ public class serv_OneModule extends HttpServlet {
                         out.println("<th>Name</th>");
                         out.println("<th>Your points</th>");
                         out.println("<th>Status</th>");
+                        out.println("<th>lol</th>");
                         out.println("</tr>");
 
                         while (rset.next()) {
@@ -99,6 +103,7 @@ public class serv_OneModule extends HttpServlet {
                             out.println("<td>" + user_name + "</td>");
                             out.println("<td>" + your_points + "</td>");
                             out.println("<td class=\"module_status\">" + status + "</td>");
+                            out.println("<td><button class=\"button\">Correct</button></td>");
                             out.println("</tr>");
                         }
                         out.println("</table>");

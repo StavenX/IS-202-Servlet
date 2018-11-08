@@ -256,6 +256,7 @@ public class ModuleHelper {
                 out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
+                //button(s) for deletion of a module
                 if (role.toLowerCase().equals("lecturer")) {
                     site.printDeleteButton("deleteModule", "module_id", module_id);
                 }
