@@ -16,8 +16,15 @@ and open the template in the editor.
 }
 
  * {box-sizing: border-box}
+ 
  body {
     background-color: var(--background);
+    height: 100%;
+}
+
+.flex-page {
+    margin: 0;
+    display: flex;
 }
 
 /*font type for the page and all items in the page*/
@@ -25,6 +32,16 @@ body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
  
+.nav-container {
+    flex: 20%;
+    min-width: 80px !important;
+    max-width: 100px !important;
+}
+
+.page-container {
+    flex: 80%;
+}
+
 /* makes typeable input boxes bigger */
  input[type=text], input[type=password] {
      margin: 10px 0;
@@ -42,6 +59,12 @@ hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
+
+#welcome-page {
+    text-align: center;
+    margin-top: 10%;
+}
+
  /* Set a style for the submit/register button */
 .registerbtn {
   background-color: var(--almostblack);
@@ -117,6 +140,7 @@ a {
  .student-container div {
     /*display: inline;*/
 }
+
  #nav {
     display:block;
 }
@@ -147,6 +171,9 @@ a {
 }
  .nav-img {
     display: block;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
 }
 
 #nav-button {
@@ -335,6 +362,12 @@ td {
     height: 60px;
 }
 
+.back-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
 .module-edit-input {
     margin: 0 10px;
     padding: 5px;
@@ -350,11 +383,6 @@ td {
 
 .sort-by-container *{
     display: inline-block;
-}
-
-#home {
-    margin: 0;
-    display: flex;
 }
 
 .course-container {
@@ -406,6 +434,15 @@ td {
     background: white;
     border: 0;
 }
+
+.deliver-status {
+    text-align: center;
+}
+
+.deliver-status *{
+    display: inline;
+}
+
 
  .invisible {
     display: none;

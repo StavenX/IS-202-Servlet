@@ -42,7 +42,7 @@ public class serv_FileUpload extends HttpServlet {
                         out.println("STUDENT_ACCESS");
                     }
                        
-                    out.append("<form method=\"POST\" action=\"serv_FileUpload\" ")
+                    out.append("<form method=\"POST\" action=\"FileUpload\" ")
                     .append("enctype=\"multipart/form-data\">\r\n");
                     out.append("<input class=\"button\" type=\"file\" name=\"fileName1\"/><br/><br/>\r\n");
                     //writer.append("<input type=\"file\" name=\"fileName2\"/><br/><br/>\r\n");
@@ -72,26 +72,29 @@ public class serv_FileUpload extends HttpServlet {
                 
 		PrintWriter writer = response.getWriter();
                 
-		// write all files in upload folder / location
-		for (Part part : request.getParts()) {
-			if (part != null && part.getSize() > 0) {
-				String fileName = part.getSubmittedFileName();
-				String contentType = part.getContentType();
-				
-				// allows only JPEG files to be uploaded, might
-                                // be useful later
-				/*if (!contentType.equalsIgnoreCase("image/jpeg")) {
-					continue;
-				}*/
-				
-				part.write(uploadFilePath + File.separator + fileName);
-				
-				writer.append("File successfully uploaded to " 
-						+ uploadFolder.getAbsolutePath() 
-						+ File.separator
-						+ fileName
-						+ "<br>\r\n");
-			}
-		}            
+                // write all files in upload folder / location
+                for (Part part : request.getParts()) {
+                    if (part != null && part.getSize() > 0) {
+                        String fileName = part.getSubmittedFileName();
+                        String contentType = part.getContentType();
+
+                        // allows only JPEG files to be uploaded, might
+                                        // be useful later
+                        /*if (!contentType.equalsIgnoreCase("image/jpeg")) {
+                            continue;
+                        }*/
+
+                                        // To fix Microsoft Edge handling filenames
+                                        String[] fileNameSplit = fileName.split("\\\\");
+                        fileName = fileNameSplit[fileNameSplit.length - 1];
+                        part.write(uploadFilePath + File.separator + fileName);
+
+                        writer.append("File successfully uploaded to "
+                                + uploadFolder.getAbsolutePath()
+                                + File.separator
+                                + fileName
+                                + "<br>\r\n");
+                    }
+                }     
 	}
 }
