@@ -5,8 +5,8 @@
  */
 package servlets;
 
+import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -64,64 +64,60 @@ public class serv_OneModule extends HttpServlet {
             out.println("</form>");
             
             
+            
             //TODO box containing students
             out.println("<div class=\"module-student-list\">");
             
-            String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max points\',\n" +
-            "module_details.module_points AS \'your points\', module_details.module_status \n" +
-            "FROM course\n" +
-            "INNER JOIN module ON course.course_id = module.course_id\n" +
-            "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
-            "INNER JOIN users ON module_details.student_id = users.user_id WHERE module.module_id = ?\n" +
-            "ORDER BY FIELD(module_status, \'Not delivered\', \'Pending\', \'Completed\');";
-            
-            
-            try {
-                PreparedStatement getPeople = conn.prepareStatement(sqlString);
-                getPeople.setString(1, module_id);
-                
-                ResultSet rset = getPeople.executeQuery();
-                
-                out.println("<table class=\"module-students-table\">");
-                out.println("<tr>");
-                out.println("<th>Name</th>");
-                out.println("<th>Your points</th>");
-                out.println("<th>Status</th>");
-                out.println("</tr>");
-                
-                
-                while (rset.next()) {
-                    String user_name = rset.getString("user_username");
-                    String course_name = rset.getString("course_name");
-                    String module_name = rset.getString("module_name");
-                    String module_desc = rset.getString("module_desc");
-                    String max_points = rset.getString("max points");
-                    String your_points = rset.getString("your points");
-                    String status = rset.getString("module_status");
-                    
-                    if (your_points == null) {
-                        your_points = "LUL 0 POINTS";
-                    }
-                    
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String role = a.getUserRole();
+            if (role.equals("Lecturer")) {
+                String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max_points\',\n" +
+                "module_details.module_points AS \'your_points\', module_details.module_status \n" +
+                "FROM course\n" +
+                "INNER JOIN module ON course.course_id = module.course_id\n" +
+                "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
+                "INNER JOIN users ON module_details.student_id = users.user_id WHERE module.module_id = ?\n" +
+                "ORDER BY FIELD(module_status, \'Not delivered\', \'Pending\', \'Completed\');";
+
+                try {
+                    PreparedStatement getPeople = conn.prepareStatement(sqlString);
+                    getPeople.setString(1, module_id);
+
+                    ResultSet rset = getPeople.executeQuery();
+
+                    out.println("<table class=\"module-students-table\">");
                     out.println("<tr>");
-                    out.println("<td>" + user_name + "</td>");
-                    out.println("<td>" + your_points + "</td>");
-                    out.println("<td class=\"module_status\">" + status + "</td>");
+                    out.println("<th>Name</th>");
+                    out.println("<th>Your points</th>");
+                    out.println("<th>Status</th>");
                     out.println("</tr>");
-                    
+
+                    while (rset.next()) {
+                        String user_name = rset.getString("user_username");
+                        String course_name = rset.getString("course_name");
+                        String module_name = rset.getString("module_name");
+                        String module_desc = rset.getString("module_desc");
+                        String max_points = rset.getString("max_points");
+                        String your_points = rset.getString("your_points");
+                        String status = rset.getString("module_status");
+
+                        if (your_points == null) {
+                            your_points = "N/A";
+                        }
+
+                        out.println("<tr>");
+                        out.println("<td>" + user_name + "</td>");
+                        out.println("<td>" + your_points + "</td>");
+                        out.println("<td class=\"module_status\">" + status + "</td>");
+                        out.println("</tr>");
+                    }
+                    out.println("</table>");
+
+                } catch (SQLException ex) {
+                    out.println("SQL error: " + ex);
                 }
-                
-                out.println("</table>");
-                
-                
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
             }
-            
-            
             out.println("</div>");
-            out.println("</div>");
-            
             site.useJS("editmodule.js");
             site.useJS("somebackgrounds.js");
             

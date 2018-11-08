@@ -6,7 +6,7 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -43,14 +43,14 @@ public class serv_GetUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Students", "bodyy");
             
             out.println("<h1>List of students:</h1>");
 
                 Connection conn;
                 conn = login.loginToDB(out);
-                StudentHelper.printUsers(out, conn);
+                UserHelper.printUsers(out, conn);
                 
             site.closeAndPrintEnd(login);
         }

@@ -36,7 +36,7 @@ public class serv_Student extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Student", "student-frontpage");
             
             out.println("<h1> Student operations </h1>");

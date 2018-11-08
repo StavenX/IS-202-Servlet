@@ -5,13 +5,19 @@
  */
 package servlets;
 
+import helpers.HtmlHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
@@ -19,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "addToModule", urlPatterns = {"/addToModule"})
 public class serv_addToModule extends HttpServlet {
+    Login login = new Login();
 
 
     /**
@@ -34,13 +41,25 @@ public class serv_addToModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Added to module", "");
+            
             String module_id = request.getParameter("module_id");
             String student_id = request.getParameter("student_id");
             
-            out.println("im not done yet ok");
+            Connection conn = login.loginToDB(out);
+            
+            UserHelper.addUserToModule(module_id, student_id, conn, out);
+            
+            out.println("<form action=\"oneModule\"><input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+            out.println("<button class=\"button\">Go to module</button></form>");
+            
+            
+            site.closeAndPrintEnd(login);
         }
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *

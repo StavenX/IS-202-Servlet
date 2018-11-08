@@ -50,14 +50,16 @@ public class HtmlHelper {
         out.println("<body id=\"" + bodyId + "\">");
         out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
         
-        String loggedUser;
+        String loggedUserName;
+        String loggedUserRole = "";
         try {
             AccessTokenHelper a = new AccessTokenHelper(request);
-            loggedUser = a.getUsername() + a.getUserRole();
+            loggedUserName = a.getUsername();
+            loggedUserRole = a.getUserRole();
         } catch (Exception ex) {
-            loggedUser = "Not logged in / not implemented in this servlet | " + ex;
+            loggedUserName = "not implemented in this servlet | " + ex;
         }
-        out.println("<p>" + loggedUser + "</p>");
+        out.printf("<p>Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
