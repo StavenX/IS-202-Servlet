@@ -35,8 +35,8 @@ public class serv_Module extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Module", "module-frontpage");
             
             out.println("<div style=\"text-align: center;\">");

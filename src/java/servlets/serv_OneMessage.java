@@ -6,7 +6,7 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.UserHelper;
 import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;

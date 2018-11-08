@@ -5,14 +5,19 @@
  */
 package servlets;
 
+import helpers.CourseHelper;
 import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
@@ -20,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "serv_Index", urlPatterns = {"/Index"})
 public class serv_Index extends HttpServlet {
+    Login login = new Login();
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -33,24 +39,37 @@ public class serv_Index extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Home", "home");
             
+            Connection conn = login.loginToDB(out);
+            
+            ResultSet rset = CourseHelper.getCourses(out, conn);
+            
             out.println("<div class=\"courses-container\">");
-            for (int i = 0; i < 4; i++) {
-                courseBox(out, "Course" + (i+1));
+            try {
+                while (rset.next()) {
+                    String course_id = rset.getString("course_id");
+                    String course_name = rset.getString("course_name");
+                    courseBox(out, course_id, course_name);
+                }
             }
+            catch (SQLException ex) {
+                out.println("Hater å skrive errormeldinger " + ex);
+            }
+            
             out.println("</div>");
             
         }
     }
 
-    public void courseBox(PrintWriter out, String courseTitle) {
-        out.println("<form action=\"getCourse\" method=\"get\">");
+    public void courseBox(PrintWriter out, String course_id, String course_name) {
+        out.println("<form action=\"oneCourse\" method=\"get\">");
         out.println("<button class=\"course-container\">");
         out.println("<img class=\"course-img\" src=\"http://via.placeholder.com/200x100\">");
-        out.println("<input name=\"course\" type=\"hidden\" value=\"" + courseTitle + "\">");
-        out.println("<h2 name=\"" + courseTitle + "\" class=\"course-title\">" + courseTitle + "</h2>");
+        out.println("<input name=\"course_id\" type=\"hidden\" value=\"" + course_id + "\">");
+        out.println("<input name=\"course_name\" type=\"hidden\" value=\"" + course_name + "\">");
+        out.println("<h2 class=\"course-title\">" + course_name + "</h2>");
         out.println("<p class=\"course-name\">Lorem ipsum</p>");
         out.println("</button>");
         out.println("</form>");

@@ -6,22 +6,26 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "serv_Student", urlPatterns = {"/Student"})
-public class serv_Student extends HttpServlet {
+@WebServlet(name = "addToCourse", urlPatterns = {"/addToCourse"})
+public class serv_addToCourse extends HttpServlet {
+    Login login = new Login();
 
-  
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -35,25 +39,25 @@ public class serv_Student extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
             HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Student", "student-frontpage");
-            out.println("<div style=\"text-align: center;\">");
+            site.printHead("Added to course", "");
             
-            out.println("<h1> Student operations </h1>");
+            String course_id = request.getParameter("course_id");
+            String student_id = request.getParameter("student_id");
             
-            out.println("<form action=\"createUser\">");
-            out.println("<button class=\"button\">Create user</button>");
-            out.println("</form>");
-            out.println("<form action=\"getUser\">");
-            out.println("<button class=\"button\">Get all users from database</button>");
-            out.println("</form>");
-            out.println("</div>");
+            Connection conn = login.loginToDB(out);
             
-            site.printEnd();
+            UserHelper.addUserToCourse(course_id, student_id, conn, out);
+            
+            out.println("<form action=\"oneCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<button class=\"button\">Go to course</button></form>");
+            
+            
+            site.closeAndPrintEnd(login);
         }
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -65,6 +69,10 @@ public class serv_Student extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+        }
     }
 
     /**

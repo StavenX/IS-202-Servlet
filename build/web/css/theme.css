@@ -10,12 +10,15 @@ and open the template in the editor.
 
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
- * {box-sizing: border-box}
- body {
-    background-color: #F8F1E5;
+:root {
+    --background: #F8F1E5;
+    --almostblack: #2F3131;
 }
 
-
+ * {box-sizing: border-box}
+ body {
+    background-color: var(--background);
+}
 
 /*font type for the page and all items in the page*/
 body, body * {
@@ -41,8 +44,8 @@ hr {
 }
  /* Set a style for the submit/register button */
 .registerbtn {
-  background-color: #2F3131;
-  color: #F8F1E5;
+  background-color: var(--almostblack);
+  color: var(--background);
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
@@ -90,19 +93,17 @@ a {
     text-align: center;
     color: black;
     margin: 30px 10px;
+    word-wrap: break-word;
 }
 .message-flex-container {
-    width: 100%;
+    width: 90%;
     display: flex;
     flex-wrap: wrap;
-    margin-left: 130px;
+    margin: 0 auto;
+    border: 1px solid black;
 }
 .message-bold-container {
     font-weight: bold;
-}
-#bodyy {
-    width: 100%;
-    text-align: center;
 }
 
 .message-container-item {
@@ -125,7 +126,7 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: #2F3131;
+    background: var(--almostblack);
     max-width: 10%;
     padding: 5px;
 }
@@ -138,7 +139,7 @@ a {
 
 .nav-item a{
     text-decoration: none;
-    color: #F8F1E5;
+    color: var(--background);
 }
  .body {
     margin: 0;
@@ -150,8 +151,8 @@ a {
 
 #nav-button {
     padding: 5px 15px;
-    background-color: #F8F1E5;
-    color: #2F3131;
+    background-color: var(--background);
+    color: var(--almostblack);
     margin: 0 auto;
     border-radius: 0px;
 }
@@ -164,8 +165,9 @@ a {
 .module-container {
     padding: 5px;
     width: 70%;
-    border: 1px solid #2F3131;
+    border: 1px solid var(--almostblack);
     margin: 20px auto;
+    word-break: break-all;
 }
 
 
@@ -308,9 +310,9 @@ td {
 }
 /* Button styling */
 .button {
-    background-color: #2F3131; 
+    background-color: var(--almostblack); 
     border: none; 
-    color: #F8F1E5; 
+    color: var(--background); 
     padding: 20px;
     text-align: center;
     text-decoration: none;
@@ -386,6 +388,21 @@ td {
     background-position-x: 50%;
     color: white;
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+.module-students-table {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.module-students-table th {
+    background: lightblue;
+    border: 0px solid black;
+}
+
+.module-students-table td {
+    background: white;
+    border: 0;
 }
 
  .invisible {

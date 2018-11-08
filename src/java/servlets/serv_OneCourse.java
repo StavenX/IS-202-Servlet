@@ -5,23 +5,27 @@
  */
 package servlets;
 
+import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
  * @author tobia
  */
-@WebServlet(name = "serv_Student", urlPatterns = {"/Student"})
-public class serv_Student extends HttpServlet {
+@WebServlet(name = "oneCourse", urlPatterns = {"/oneCourse"})
+public class serv_OneCourse extends HttpServlet {
+    Login login = new Login();
 
-  
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -35,20 +39,26 @@ public class serv_Student extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+            
+            String course_id = request.getParameter("course_id");
+            String course_name = request.getParameter("course_name");
+            
             HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Student", "student-frontpage");
-            out.println("<div style=\"text-align: center;\">");
+            site.printHead(course_name, "single-course");
             
-            out.println("<h1> Student operations </h1>");
+            out.println("You are now viewing course " + course_name);
             
-            out.println("<form action=\"createUser\">");
-            out.println("<button class=\"button\">Create user</button>");
+            out.println("<form action=\"addToCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
+            out.println("<button class=\"button\">Add to course</button>");
             out.println("</form>");
-            out.println("<form action=\"getUser\">");
-            out.println("<button class=\"button\">Get all users from database</button>");
-            out.println("</form>");
-            out.println("</div>");
+            
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String role = a.getUserRole();
+            
+            Connection conn = login.loginToDB(out);
+            
+            ModuleHelper.printModules(out, conn, "", role, course_id);
             
             site.printEnd();
         }
