@@ -56,19 +56,22 @@
                 for (var i = 1; i < firstDay; i++) {
                     HTML += ("<td>");
                 }
+                d.setDate(1);
 
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++){
-                    HTML += ("<td>" + day + "</td>");
-                    day++;
+                    HTML += ("<td id =" + d.getTime() + ">" + d.getDate() + "</td>");
+                    d.setDate(d.getDate()+1);
                 }
-
+                console.log(d.getDate(), monthLastDay);
                 // Prints remaining weeks
                 HTML += ("<tr>");
-                while (day <= monthLastDay) {
-                    for (var i = 1; i <= 7 && day <= monthLastDay; i++) {
-                        HTML += ("<td>" + day + "</td>");
-                        day++;
+                while (d.getDate() < monthLastDay) {
+                    for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) {
+                        HTML += ("<td id=" + d.getTime() + ">" + d.getDate() + "</td>");
+                        document.getElementById(d).addEventListener("click", fillTimetable(d));
+                        d.setDate(d.getDate()+1);
+                        console.log(d.getDate(), monthLastDay);
                     }
                     HTML += ("</tr><tr>");
                 }
@@ -79,6 +82,7 @@
             document.getElementById("boi").innerHTML = HTML;
         }
     </script>
+    
     <script>
         function fillTimetable(n)
         {
@@ -101,7 +105,6 @@
                     HTML2 += ("<th>" + weekdayNames[p] + "</th>");
                 }
             }
-                console.log(thisDayBoi.getTime(), today.getTime());
             HTML2 += ("</tr></thead><tbody><tr>");
             
             for (var o = 0; o < 21; o++) {
