@@ -42,7 +42,7 @@ public class serv_FileUpload extends HttpServlet {
                         out.println("STUDENT_ACCESS");
                     }
                        
-                    out.append("<form method=\"POST\" action=\"serv_FileUpload\" ")
+                    out.append("<form method=\"POST\" action=\"FileUpload\" ")
                     .append("enctype=\"multipart/form-data\">\r\n");
                     out.append("<input class=\"button\" type=\"file\" name=\"fileName1\"/><br/><br/>\r\n");
                     //writer.append("<input type=\"file\" name=\"fileName2\"/><br/><br/>\r\n");

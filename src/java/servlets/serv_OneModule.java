@@ -83,7 +83,6 @@ public class serv_OneModule extends HttpServlet {
                         out.println("<th>Name</th>");
                         out.println("<th>Your points</th>");
                         out.println("<th>Status</th>");
-                        out.println("<th>lol</th>");
                         out.println("</tr>");
 
                         while (rset.next()) {
@@ -102,8 +101,7 @@ public class serv_OneModule extends HttpServlet {
                             out.println("<tr>");
                             out.println("<td>" + user_name + "</td>");
                             out.println("<td>" + your_points + "</td>");
-                            out.println("<td class=\"module_status\">" + status + "</td>");
-                            out.println("<td><button class=\"button\">Correct</button></td>");
+                            out.println("<td class=\"deliver-status\"><div class=\"module-status\">" + status + "</div><button class=\"button\">Grade</button></td>");
                             out.println("</tr>");
                         }
                         out.println("</table>");

@@ -433,6 +433,15 @@ td {
     border: 0;
 }
 
+.deliver-status {
+    text-align: center;
+}
+
+.deliver-status *{
+    display: inline;
+}
+
+
  .invisible {
     display: none;
 }

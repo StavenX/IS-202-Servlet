@@ -91,6 +91,8 @@ public class serv_OneCourse extends HttpServlet {
             out.println(CourseHelper.invisInputs(course_id, course_name, role));
             out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Students\">");
             out.println("</form");
+            
+            site.printEnd();
         }
     }
     

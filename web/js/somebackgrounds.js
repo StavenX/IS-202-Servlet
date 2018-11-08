@@ -1,22 +1,26 @@
-window.onload = changeColors();
+changeColors();
 
 function changeColors() {
-    elements = document.getElementsByClassName('module_status');
-    for (i = 0; i < elements.length; i++) {
-        e = elements[i];
-        ei = e.innerHTML;
-        console.log(ei);
-        switch(ei) {
-            case 'Not delivered':   e.style.background = 'darksalmon';
-                                    break;
-                                    
-            case 'Pending':   e.style.background = 'khaki';
-                                    break;
-                                    
-            case 'Completed':       e.style.background = 'darkseagreen';
-                                    break;
-                                    
-            default:                e.style.background = 'dodgeblue';
+    statusFields = document.getElementsByClassName('module-status');
+    for (i = 0; i < statusFields.length; i++) {
+        statusField = statusFields[i];
+        
+        statusText = statusField.innerHTML;
+        parent = statusField.parentElement;
+        for (j = 0; j < 1; j++) {
+            
+            switch(statusText) {
+                case 'Not delivered':   parent.style.background = 'darksalmon';
+                                        break;
+
+                case 'Pending':   parent.style.background = 'khaki';
+                                        break;
+
+                case 'Completed':       parent.style.background = 'darkseagreen';
+                                        break;
+
+                default:                parent.style.background = 'dodgeblue';
+            }
         }
     }
 }

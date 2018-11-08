@@ -48,6 +48,7 @@ public class HtmlHelper {
         out.println("</head>");
         out.println("<body id=\"" + bodyId + "\" class=\"flex-page\">");
         printFile("nav.html");
+        //useJS("navhide.js");
         out.println("<div class=\"page-container\">");
         out.println("<form action=\"Home\"> <button class=\"button button-home\">Go home</button> </form>");
         printUserDetails();

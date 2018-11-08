@@ -109,5 +109,10 @@
         <error-code>401</error-code>
         <location>/ERROR401</location>
     </error-page>
+    <error-page>
+        <!-- not logged in -->
+        <error-code>405</error-code>
+        <location>/ERROR401</location>
+    </error-page>
     
 </web-app>
