@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -14,13 +13,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import helpers.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import network.Login;
+
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "Index", urlPatterns = {"/Index"})
-public class serv_Index extends HttpServlet {
+@WebServlet(name = "oneUser", urlPatterns = {"/oneUser"})
+public class serv_OneUser extends HttpServlet {
     
+    Statement stmt;
+    Login login = new Login();
+
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -34,30 +42,21 @@ public class serv_Index extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
-            out.println("<title>Welcome</title>");            
-            out.println("</head>");
-            out.println("<body id=\"welcome-page\">");
+            site.printHead("Single user", "one-student-container");
             
-            out.println("<h1>Welcome to our student learning platform</h1>");
-            out.println("<h2>Click the button to log in</h2>");
+            String user_id = request.getParameter("user_id");
             
-            out.println("<form action=\"Home\" method=\"get\">");
-            out.println("<button class=\"button\">Log in</button>");
-            out.println("</form>");
+            Connection conn;
+            conn = login.loginToDB(out);
+
             
-            out.println("</body>");
-            out.println("</html>");
-            
-            }
+            out.println("<h2>Viewing a single user</h2>");
+            UserHelper.printOneUser(out, conn, user_id);
+
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -71,9 +70,6 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        }
     }
 
     /**

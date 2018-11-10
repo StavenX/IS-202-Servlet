@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "serv_About", urlPatterns = {"/About"})
 public class serv_About extends HttpServlet {
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

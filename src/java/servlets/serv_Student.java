@@ -22,7 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 public class serv_Student extends HttpServlet {
 
   
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -37,16 +36,16 @@ public class serv_Student extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Student", "student-frontpage");
             
             out.println("<h1> Student operations </h1>");
             
-            out.println("<form action=\"createStudent\">");
-            out.println("<button class=\"button\">Create student</button>");
+            out.println("<form action=\"createUser\">");
+            out.println("<button class=\"button\">Create user</button>");
             out.println("</form>");
-            out.println("<form action=\"getStudent\">");
-            out.println("<button class=\"button\">Get all students from database</button>");
+            out.println("<form action=\"getUser\">");
+            out.println("<button class=\"button\">Get all users from database</button>");
             out.println("</form>");
             
             site.printEnd();

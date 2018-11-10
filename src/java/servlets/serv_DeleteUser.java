@@ -8,19 +8,24 @@ package servlets;
 import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "Index", urlPatterns = {"/Index"})
-public class serv_Index extends HttpServlet {
-    
+@WebServlet(name = "deleteUser", urlPatterns = {"/deleteUser"})
+public class serv_DeleteUser extends HttpServlet {
+    Login login = new Login();
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -36,28 +41,31 @@ public class serv_Index extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
-            out.println("<title>Welcome</title>");            
-            out.println("</head>");
-            out.println("<body id=\"welcome-page\">");
+
+            site.printHead("Delete user", "delete-user");
             
-            out.println("<h1>Welcome to our student learning platform</h1>");
-            out.println("<h2>Click the button to log in</h2>");
+            out.println("<h1>Deletion page</h1>");
             
-            out.println("<form action=\"Home\" method=\"get\">");
-            out.println("<button class=\"button\">Log in</button>");
-            out.println("</form>");
+            Connection conn = login.loginToDB(out);
             
-            out.println("</body>");
-            out.println("</html>");
+            String user_id = request.getParameter("user_id");
             
+            PreparedStatement deleteUser;
+            try {
+                deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
+                
+                int amountDeleted = deleteUser.executeUpdate();
+                out.println("<div>" + amountDeleted + " users deleted.</div>");
+                out.println("<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>");
+
+            } catch (SQLException ex) {
+                out.println("SQL error: " + ex);
             }
+            
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**
@@ -71,9 +79,6 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        }
     }
 
     /**

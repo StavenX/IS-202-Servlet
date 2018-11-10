@@ -10,9 +10,21 @@ and open the template in the editor.
 
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
+:root {
+    --background: #F8F1E5;
+    --almostblack: #2F3131;
+}
+
  * {box-sizing: border-box}
+ 
  body {
-    background-color: #F8F1E5;
+    background-color: var(--background);
+    height: 100%;
+}
+
+.flex-page {
+    margin: 0;
+    display: flex;
 }
 
 /*font type for the page and all items in the page*/
@@ -20,6 +32,16 @@ body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
  
+.nav-container {
+    flex: 20%;
+    min-width: 80px !important;
+    max-width: 100px !important;
+}
+
+.page-container {
+    flex: 80%;
+}
+
 /* makes typeable input boxes bigger */
  input[type=text], input[type=password] {
      margin: 10px 0;
@@ -37,10 +59,16 @@ hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
 }
+
+#welcome-page {
+    text-align: center;
+    margin-top: 10%;
+}
+
  /* Set a style for the submit/register button */
 .registerbtn {
-  background-color: #2F3131;
-  color: #F8F1E5;
+  background-color: var(--almostblack);
+  color: var(--background);
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
@@ -81,6 +109,30 @@ a {
     margin: 0px 5px;
 }
 
+.message-container {
+    border: solid 2px black;
+    width: 20%;
+    background-color: beige;
+    text-align: center;
+    color: black;
+    margin: 30px 10px;
+    word-wrap: break-word;
+}
+.message-flex-container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.message-bold-container {
+    font-weight: bold;
+}
+
+.message-container-item {
+    margin: 10px 5px;
+}
+
 .student-container input {
     min-width: 10%;
 }
@@ -88,6 +140,7 @@ a {
  .student-container div {
     /*display: inline;*/
 }
+
  #nav {
     display:block;
 }
@@ -97,7 +150,7 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: #2F3131;
+    background: var(--almostblack);
     max-width: 10%;
     padding: 5px;
 }
@@ -110,7 +163,7 @@ a {
 
 .nav-item a{
     text-decoration: none;
-    color: #F8F1E5;
+    color: var(--background);
 }
  .body {
     margin: 0;
@@ -118,20 +171,32 @@ a {
 }
  .nav-img {
     display: block;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
 }
 
 #nav-button {
     padding: 5px 15px;
-    background-color: #F8F1E5;
-    color: #2F3131;
+    background-color: var(--background);
+    color: var(--almostblack);
     margin: 0 auto;
     border-radius: 0px;
 }
 
-.module-container {
-    border: 1px solid #2F3131;
-    margin: 20px 0;
+.sort-by-container {
+    width:fit-content ;
+    margin: 20px auto;
 }
+
+.module-container {
+    padding: 5px;
+    width: 70%;
+    border: 1px solid var(--almostblack);
+    margin: 20px auto;
+    word-break: break-all;
+}
+
 
 .module-student-list {
     margin: 10px auto;
@@ -272,9 +337,9 @@ td {
 }
 
 .button {
-    background-color: #2F3131; 
+    background-color: var(--almostblack); 
     border: none; 
-    color: #F8F1E5; 
+    color: var(--background); 
     padding: 20px;
     text-align: center;
     text-decoration: none;
@@ -297,6 +362,12 @@ td {
     height: 60px;
 }
 
+.back-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
 .module-edit-input {
     margin: 0 10px;
     padding: 5px;
@@ -310,11 +381,6 @@ td {
 
 .sort-by-container *{
     display: inline-block;
-}
-
-#home {
-    margin: 0;
-    display: flex;
 }
 
 .course-container {
@@ -342,6 +408,39 @@ td {
 .message-input {
     display: list-item;
 }
+
+#about-page {
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+.module-students-table {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.module-students-table th {
+    background: lightblue;
+    border: 0px solid black;
+}
+
+.module-students-table td {
+    background: white;
+    border: 0;
+}
+
+.deliver-status {
+    text-align: center;
+}
+
+.deliver-status *{
+    display: inline;
+}
+
 
  .invisible {
     display: none;

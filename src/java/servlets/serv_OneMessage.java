@@ -6,21 +6,29 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.UserHelper;
+import helpers.MessageHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import network.Login;
+import helpers.ModuleHelper;
 /**
  *
- * @author tobia
+ * @author Tobias & Frank
  */
-@WebServlet(name = "Index", urlPatterns = {"/Index"})
-public class serv_Index extends HttpServlet {
-    
+@WebServlet(name = "oneMessage", urlPatterns = {"/oneMessage"})
+public class serv_OneMessage extends HttpServlet {
+    Statement stmt;
+    Login login = new Login();
+
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -34,30 +42,30 @@ public class serv_Index extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out);
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<meta charset=\"UTF-8\">");
-            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
-            out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
-            out.println("<title>Welcome</title>");            
-            out.println("</head>");
-            out.println("<body id=\"welcome-page\">");
+            site.printHead("Single message", "one-message-container");
             
-            out.println("<h1>Welcome to our student learning platform</h1>");
-            out.println("<h2>Click the button to log in</h2>");
+            String singleMess_id = request.getParameter("mess_id");
             
-            out.println("<form action=\"Home\" method=\"get\">");
-            out.println("<button class=\"button\">Log in</button>");
-            out.println("</form>");
+            Connection conn;
+            conn = login.loginToDB(out);
+
+            out.println("<h2>Viewing a single message</h2>");
             
-            out.println("</body>");
-            out.println("</html>");
+            MessageHelper.printOneMessage(out, conn, singleMess_id);
             
-            }
+            //TODO box containing students
+            out.println("<div class=\"message-list\"");
+            out.println("<div class=\"message-list-item\">");
+            out.println("<div>TODO: Table of messages</div>");
+            out.println("</div>");
+            out.println("</div>");
+            
+            
+            site.printEnd();
+            login.close();
+        }
     }
 
     /**
@@ -71,9 +79,7 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-        }
+        response.getWriter().println("hei");
     }
 
     /**

@@ -30,7 +30,7 @@ public class MessageHelper {
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-    public static void insertMessage( String senderId, String recipient, String title, String content, Connection conn, PrintWriter out) {
+    public static void insertMessage(String senderId, String recipient, String title, String content, Connection conn, PrintWriter out) {
         
         try {
             
@@ -88,6 +88,7 @@ public class MessageHelper {
             int rowCount = 0; 
             
             // While there exists more entries (rows?)
+            out.println("<div class=\"message-flex-container\">");
             while (rset.next()) {               
                 // The different columns
                 String mess_id = rset.getString("mess_id");
@@ -97,39 +98,41 @@ public class MessageHelper {
                 String mess_recipient = rset.getString("mess_recipient");
                 
                 out.println("<div class=\"message-container\">");
-                
+                //out.println("<div class=\"message-bold-container\">");
+
                 //form containing student information
                 out.println("<div class=\"message-container-item\">");
                 out.println("<form  action=\"oneMessage\">");
                 out.println("<input class=\"invisible\" name=\"mess_id\" value=\"" + mess_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
-                out.println("<div name=\"mess_id\">mess_id:" + mess_id + "</div>");
-                out.println("<div>To:" + mess_recipient + "</div>");
-                out.println("<div>Name:" + mess_senderId + "</div>");
-                out.println("<div>Title:" + mess_title + "</div>");
-                out.println("<div>Content:" + mess_content + "</div>");
+                out.println("<div name=\"mess_id\"><b>mess_id:  " + "</b>" + mess_id + "</div>");
+                out.println("<div><b>To:  " + "</b>" + mess_recipient + "</div>");
+                out.println("<div><b>Name:  " + "</b>" + mess_senderId + "</div>");
+                out.println("<div><b>Title:  " +  "</b>" + mess_title + "</div>");
+                out.println("<div><b>Content:  " + "</b>"+ mess_content + "</div>");
 
-                out.println("</div>");
-                
+                //out.println("</div>");
+                                out.println("</div>");
+
                 //more info button
                 //out.println("<div class=\"message-container-item\">");
                 //out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
                 //out.println("</div>");
-                //out.println("</form>");
+                out.println("</form>");
                 
                 //delete buttons
-                out.println("<div class=\"message-container-item\">");
-                
-                out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteStudent\">");
-                site.printDeleteButton("deleteStudent", "mess_id", mess_id);
+                out.println("<div class=\"message-container-item\">");                
+                out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteMessage\">");
+                site.printDeleteButton("deleteMessage", "mess_id", mess_id);
                 out.println("</div>");
                 
                 out.println("</div>");
                 rowCount++;
             }
+            out.println("</div>");
             out.println("Total number of records: " + rowCount);
             
-            site.printJsForDeleteButton();
+            site.useJS("buttons-for-delete.js");
             
             conn.close();
         }

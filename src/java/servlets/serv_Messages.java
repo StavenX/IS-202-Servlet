@@ -19,7 +19,7 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Frank
  */
 @WebServlet(name = "serv_Messages", urlPatterns = {"/Message"})
 public class serv_Messages extends HttpServlet {
@@ -100,9 +100,7 @@ public class serv_Messages extends HttpServlet {
                         out
                 );
                 
-                login.close();
-                
-            site.printEnd();
+            site.closeAndPrintEnd(login);
         }
     }
 

@@ -5,8 +5,11 @@
  */
 package servlets;
 
+import helpers.AccessTokenHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -21,11 +24,10 @@ import network.Login;
  *
  * @author tobia
  */
-@WebServlet(name = "getCourse", urlPatterns = {"/getCourse"})
-public class serv_GetCourse extends HttpServlet {
+@WebServlet(name = "oneCourse", urlPatterns = {"/oneCourse"})
+public class serv_OneCourse extends HttpServlet {
     Login login = new Login();
-    
-    
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -38,20 +40,8 @@ public class serv_GetCourse extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("", "");
             
-            
-            
-            Connection conn = login.loginToDB(out);
-            
-            //what is this servlet??
-            
-            //CourseHelper.getCourses(out, conn);
-            
-            site.closeAndPrintEnd(login);
         }
     }
 
@@ -67,11 +57,45 @@ public class serv_GetCourse extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
         try (PrintWriter out = response.getWriter()) {
+            
+            String course_id = request.getParameter("course_id");
+            String course_name = request.getParameter("course_name");
+            
+            
             HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead(course_name, "single-course");
+            
+            out.println("You are now viewing course " + course_name);
+            
+            out.println("<form action=\"addToCourse\">");
+            out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
+            out.println("<button class=\"button\">Add to course</button>");
+            out.println("</form>");
+            
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String role = a.getUserRole();
+            
+            
+            
+            out.println("<h3>Modules in this course (sort buttons not working correctly):</h3>");
+            out.println("<form action=\"oneCourseDetails\" method=\"post\">");
+            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Modules\">");
+            out.println("</form>");
+            
+            
+            out.println("<h3>Students in this course:</h3>");
+            out.println("<form action=\"oneCourseDetails\" method=\"post\">");
+            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Students\">");
+            out.println("</form");
+            
+            site.printEnd();
         }
     }
+    
 
     /**
      * Returns a short description of the servlet.

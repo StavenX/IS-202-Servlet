@@ -6,10 +6,12 @@
 package servlets;
 
 import helpers.HtmlHelper;
-import helpers.StudentHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -19,12 +21,12 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "createStudent", urlPatterns = {"/createStudent"})
-public class serv_CreateStudent extends HttpServlet {
-
+@WebServlet(name = "addToModule", urlPatterns = {"/addToModule"})
+public class serv_addToModule extends HttpServlet {
     Login login = new Login();
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -38,21 +40,26 @@ public class serv_CreateStudent extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
-            out.println("<form action=\"createStudent\" method=\"post\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_name\" placeholder=\"Insert name\">");   
-            out.println("<input class=\"student-input\" type=\"text\" name=\"student_edu\" placeholder=\"Insert education\">");
-            out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
-            out.println("</form>");
-            site.printEnd();
-        }       
+            
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Added to module", "");
+            
+            String module_id = request.getParameter("module_id");
+            String student_id = request.getParameter("student_id");
+            
+            Connection conn = login.loginToDB(out);
+            
+            UserHelper.addUserToModule(module_id, student_id, conn, out);
+            
+            out.println("<form action=\"oneModule\"><input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+            out.println("<button class=\"button\">Go to module</button></form>");
+            
+            
+            site.closeAndPrintEnd(login);
+        }
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -65,28 +72,8 @@ public class serv_CreateStudent extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        
-        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("New student", "create-student");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                StudentHelper.insertStudent(
-                        request.getParameter("student_name"),
-                        request.getParameter("student_edu"),
-                        conn, 
-                        out
-                );
-                
-                login.close();
-                
-            site.printEnd();
         }
     }
 
@@ -98,6 +85,6 @@ public class serv_CreateStudent extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }
+    }// </editor-fold>
 
 }

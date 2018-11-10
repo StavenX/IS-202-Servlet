@@ -15,5 +15,10 @@ Datasource for my computer (edvin)
 	<Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
             username="master" password="admin" driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://206.189.99.1:3306/malware">
-	</Resource>			  
+	</Resource>		
+        
+ <Realm className="org.apache.catalina.realm.DataSourceRealm" 
+         dataSourceName="jdbc/localhostDS" localDataSource="true"
+         userTable="users"  userNameCol="user_username" userCredCol="user_password"
+         userRoleTable="users" roleNameCol="user_role" />                 	  
 </Context>
