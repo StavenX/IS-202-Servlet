@@ -22,29 +22,28 @@
         today.setMilliseconds(0);
         
         // Fills three calendars
-        function fillCalendar(d)
+        function fillCalendar(l)
         {
+            var d = new Date (l);
             d.setMilliseconds(0);
             var HTML = ("");
-            
-            console.log(today.getTime(), d.getTime());
             for(var q = 0; q < 3; q++)
             {
-                
+
                 var month = d.getMonth();
                 var year = d.getFullYear();
                 var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
-                var firstDay = new Date(d.getFullYear(), d.getMonth(),1).getDay() || 7;
-                var day = 1;
-    
+                var firstDay = new Date(d.getFullYear(), d.getMonth()).getDay() || 7;
+
                 // Prints month name
                 HTML += ("<table class=\"calendarTable\"><thead><tr><th COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
 
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) {
                     // Needs optimization and testing
-                    if (d.getDay()-1 == p && q == 0 && today.getTime() === d.getTime()) {
+                    if (d.getDay()-1 == p && q == 0  && today.getMonth() === d.getMonth() && today.getFullYear() === d.getFullYear()) {
                         HTML += ("<td class=\"currentWD\">" + weekdayNames[p].substr(0, 3) + "</td>");
+                        
                     }
                     else { 
                         HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
@@ -63,20 +62,29 @@
                     HTML += ("<td id =" + d.getTime() + ">" + d.getDate() + "</td>");
                     d.setDate(d.getDate()+1);
                 }
-                console.log(d.getDate(), monthLastDay);
                 // Prints remaining weeks
                 HTML += ("<tr>");
+
                 while (d.getDate() < monthLastDay) {
                     for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) {
-                        HTML += ("<td id=" + d.getTime() + ">" + d.getDate() + "</td>");
-                        document.getElementById(d).addEventListener("click", fillTimetable(d));
+                        HTML += ("<td id=" + d.getTime() + " onclick = fillTimetable(this.id)>" + d.getDate() + "</td>");
+                        console.log(d, "my man");
                         d.setDate(d.getDate()+1);
-                        console.log(d.getDate(), monthLastDay);
+                            if(d.getDate() == monthLastDay){
+                                if (i == 7) {
+                                    HTML += ("</tr><tr><td>" + monthLastDay + "</td>");
+                                }
+                                else { 
+                                    HTML += ("<td>" + monthLastDay + "</td>");
+                                }
+                            }
                     }
+                    
                     HTML += ("</tr><tr>");
                 }
+                
                 HTML += ("</tr>");
-                d.setMonth(d.getMonth()+1); 
+                d.setDate(d.getDate()+1);
             }
             HTML += ("</tbody></table><br>");
             document.getElementById("boi").innerHTML = HTML;
@@ -84,12 +92,15 @@
     </script>
     
     <script>
-        function fillTimetable(n)
+        function fillTimetable(c)
         {
             // Needs optimization and testing
+            var n = new Date (c);
+            console.log(n, "fdsf");
+            
             var thisDayBoi = new Date();
             thisDayBoi.setMilliseconds(0);
-            
+            console.log(n, "dawg");
             n.setDate(n.getDate() - n.getDay()+1);
             n.setHours(8, 0, 0, 0);
             var HTML2 = ("");
@@ -97,8 +108,9 @@
             HTML2 += ("<th>&nbsp;</th>");
             
             for (var p = 0; p <= 6; p++) {
+                console.log(today.getTime(), thisDayBoi.getTime(), n.getDay());
                 // Needs optimization and testing
-                if (n.getDay()+1 == p && today.getTime() == thisDayBoi.getTime()) {
+                if (thisDayBoi.getDay()-1 == p && today.getTime() == thisDayBoi.getTime()) {
                     HTML2 += ("<th class =\"currentWD\">" + weekdayNames[p] + "</th>");
                 }
                 else {
@@ -146,6 +158,12 @@
         var currentDate2 = new Date();
         fillCalendar(currentDate);
         fillTimetable(currentDate2);
+    </script>
+    <script>
+        function dsa ()
+        {
+            alert("its ya boi");
+        }
     </script>
 </body>
 </html>
