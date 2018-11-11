@@ -79,7 +79,7 @@ public class serv_CreateUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New user created", "create-user");
             
             String user_username = request.getParameter("user_username");

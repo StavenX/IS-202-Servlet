@@ -221,8 +221,8 @@ public class ModuleHelper {
             
             String[] sortingTypes = {"ID asc", "ID desc", "Name asc", "Name desc", "Points asc", "Points desc"};
             //prints submit buttons for the sorting types
-            for (int i = 0; i < sortingTypes.length; i++) {
-                out.println(orderByInput(sortingTypes[i]));
+            for (String sortingType : sortingTypes) {
+                out.println(orderByInput(sortingType));
             }
             
             out.println("</form>");
@@ -235,8 +235,10 @@ public class ModuleHelper {
                 String module_name = rset.getString("module_name");
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
+                course_id = rset.getString("course_id");
                 
-                getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+                
+                getCourseName = conn.prepareStatement("SELECT * FROM course WHERE course_id LIKE ?");
                 getCourseName.setString(1, course_id);
                 courseResult = getCourseName.executeQuery();
 

@@ -221,6 +221,10 @@ a {
     font-size: 1.5em;
 }
 
+.one-module-sort {
+    text-align: center;
+}
+
 /* Calendar styling starts here*/
 .calendarWrapper {
     min-width: 1300px;
@@ -453,10 +457,17 @@ td {
     text-align: center;
 }
 
-.deliver-status *{
+.deliver-status div{
     display: inline;
+    margin: 0 10px;
 }
 
+.one-module-comment {
+    margin: 20px 10px;
+    padding: 5px;
+    border: 1px solid black;
+    
+}
 
  .invisible {
     display: none;
