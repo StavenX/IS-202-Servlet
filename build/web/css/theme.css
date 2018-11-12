@@ -469,6 +469,15 @@ td {
     
 }
 
+.profile-pic-medium {
+    max-height: 200px;
+    max-width: 200px;
+}
+
+.pointer-hover:hover {
+    cursor: pointer;
+}
+
  .invisible {
     display: none;
 }

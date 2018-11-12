@@ -7,6 +7,7 @@ package servlets;
 
 import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -46,6 +47,8 @@ public class serv_MyProfile extends HttpServlet {
             AccessTokenHelper a = new AccessTokenHelper(request);
             String username = a.getUsername();
             
+            String orderBy = request.getParameter("orderBy");
+            orderBy = (orderBy == null) ? "" : orderBy;
             
             Connection conn = login.loginToDB(out);
             
@@ -57,10 +60,17 @@ public class serv_MyProfile extends HttpServlet {
                 ResultSet rset = getUser.executeQuery();
                 
                 while (rset.next()) {
+                    String user_id = rset.getString("user_id");
                     String fname = rset.getString("user_fname");
                     String lname = rset.getString("user_lname");
+                    String pic_url = "images/profiles/" + rset.getString("user_pic_url");
                     
                     out.println("<p> Name: " + fname + " " + lname + "</p>");
+                    out.println("<img class=\"profile-pic-medium\" src=\"" + pic_url + "\" alt=\"Profile picture for " + fname + "\">");
+                    
+                    out.println("<h2>My modules: </h2>");
+                    
+                    ModuleHelper.printStudentsModules(out, conn, orderBy, user_id);
                 }
                 
             } catch (SQLException ex) {
@@ -68,7 +78,8 @@ public class serv_MyProfile extends HttpServlet {
             }
             
             
-            
+            site.useJS("somebackgrounds.js");
+            site.useJS("submitform.js");
             site.closeAndPrintEnd(login);
         }
     }
