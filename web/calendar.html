@@ -14,6 +14,9 @@
     </div>
     <div id="boi2">
     </div>
+        <div id="test">
+            
+        </div>
     </div>
     <script>
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
@@ -131,14 +134,12 @@
         document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months boi</button>");
         document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months boi</button>");
         
-        function nextMonths()
-        {
+        function nextMonths() {
             currentDate.setMonth(currentDate.getMonth());
             fillCalendar(currentDate);
         }
         
-        function prevMonths()
-        {
+        function prevMonths() {
             currentDate.setMonth(currentDate.getMonth()-6);
             fillCalendar(currentDate);
         }
@@ -151,16 +152,28 @@
         fillCalendar(currentDate);
     </script>
     <script>
-        function displayCurrentDay ()
-        {
+        function displayCurrentDay () {
             document.getElementById(today).innerHTML = "<td class= \"currentWD\" id=" + today + ">" + today.getDate() + "</td>";
         }
     </script>
     <script>
-        function newTT (k)
-        {
+        function newTT (k) {
             var s = new Date(parseInt(k));
             fillTimetable(s);
+        }
+    </script>
+    <script>
+        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
+        function loadEvents() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4) {
+                    var response = xhttp.responseText;
+                    alert(response);
+                }
+            };
+            xhttp.open("GET", "Calendar", true);
+            xhttp.send();
         }
     </script>
 </body>
