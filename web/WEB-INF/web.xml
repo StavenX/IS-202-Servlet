@@ -22,6 +22,7 @@
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
+            <url-pattern>/About</url-pattern>
             <url-pattern>/Calendar</url-pattern>
             <url-pattern>/createModule</url-pattern>
             <url-pattern>/createUser</url-pattern>
@@ -36,10 +37,12 @@
             <url-pattern>/Home</url-pattern>
             <url-pattern>/Message</url-pattern>
             <url-pattern>/Module</url-pattern>
+            <url-pattern>/myProfile</url-pattern>
             <url-pattern>/oneCourse</url-pattern>
             <url-pattern>/oneCourseDetails</url-pattern>
             <url-pattern>/oneMessage</url-pattern>
             <url-pattern>/oneModule</url-pattern>
+            <url-pattern>/oneStudentModule</url-pattern>
             <url-pattern>/oneUser</url-pattern>
             <url-pattern>/Student</url-pattern>
             <url-pattern>/updateModule</url-pattern>
