@@ -50,7 +50,7 @@ public class serv_GetUser extends HttpServlet {
 
                 Connection conn;
                 conn = login.loginToDB(out);
-                UserHelper.printUsers(out, conn);
+                UserHelper.printAllUsers(out, conn);
                 
             site.closeAndPrintEnd(login);
         }

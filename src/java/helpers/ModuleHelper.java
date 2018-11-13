@@ -42,11 +42,11 @@ public class ModuleHelper {
             prepInsert.setString(4, site.checkIfValidText(course_id));
             
             System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
-            int countInserted = prepInsert.executeUpdate();         
-            System.out.println(countInserted + " records inserted.\n");  
-            out.println(countInserted + " records inserted.\n");  
+            int countInserted = prepInsert.executeUpdate();           
+            out.println("<p>" + countInserted + " module created.</p>");  
             
-            out.println("INSERTED"); // debug
+            
+            addStudentsToNewModule(conn, out);
             
             out.println(
                 "<form action=\"getModule\" method=\"get\">\n" +
@@ -67,6 +67,31 @@ public class ModuleHelper {
             }
         }
     }
+    
+    public static void addStudentsToNewModule(Connection conn, PrintWriter out) {
+        PreparedStatement addStudents;
+        try {
+            addStudents = conn.prepareStatement("SELECT module_id, course_id FROM module ORDER BY module_id DESC LIMIT 1");
+            ResultSet rset = addStudents.executeQuery();
+            while (rset.next()) {
+                String module_id = rset.getString("module_id");
+                String course_id = rset.getString("course_id");
+                ResultSet students = UserHelper.getUsers(conn, course_id);
+                
+                int studentsUpdated = 0;
+                while (students.next()) {
+                    String user_id = students.getString("user_id");
+                    UserHelper.addUserToModule(module_id, user_id, conn, out);
+                    studentsUpdated++;
+                }
+                out.println("<p>" + studentsUpdated + " students added to module.</p>");
+            }
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+    
     
     public static void updateModule(String id, String name, String desc, String points, Connection conn, PrintWriter out) {
         
@@ -91,46 +116,72 @@ public class ModuleHelper {
         }
     }
     
+    /**
+     * takes a string and converts it to the proper SQL field names
+     * @param orderString the base string that is taken from the web page buttons
+     * @return completed string that works for our SQL table
+     */
+    public static String handleOrder(String orderString) {
+        //initalize the return value, add to it in switches
+        String handledOrder = "";
+        
+        //what to order by
+        String[] orderByList = orderString.split(" ");
+        String orderBy = orderByList[0].toLowerCase();
+
+        switch (orderBy) {                    
+            case "course":
+                handledOrder += "course.course_name";
+                break;
+                
+            case "name":    
+                handledOrder += "module.module_name";
+                break;
+
+            case "points":  
+                handledOrder += "module.module_points";                            
+                break;
+                
+            case "score":
+                handledOrder += "module_details.module_points";
+                break;
+
+            case "id":
+            default:    
+                handledOrder += "module.module_id";
+        }
+
+        //which direction is the order
+        String orderDirection;
+        try {
+            orderDirection = orderByList[1].toLowerCase();
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            orderDirection = "";
+        }
+        
+        switch (orderDirection) {
+            case "desc":    
+                handledOrder += " DESC;";
+                break;
+
+            case "asc":
+            default:        
+                handledOrder += " ASC;";
+        }
+        
+        return handledOrder;
+    }
+    
     //course_id = "%" for all courses
     public static ResultSet getModules (PrintWriter out, Connection conn, String orderString, String course_id) {
             PreparedStatement getModules; 
         try {
             
             //base string for sql preparedstatement
+            //'LIKE' instead of '=' to allow usage of '%' to get all
             String sqlString = "SELECT * FROM module WHERE course_id LIKE ? ORDER BY ";
             
-            String[] orderByList = orderString.split(" ");
-            
-            
-            String orderBy = orderByList[0].toLowerCase();
-            
-            String orderDirection;
-            try {
-                orderDirection = orderByList[1].toLowerCase();
-            } catch (ArrayIndexOutOfBoundsException ex) {
-                orderDirection = "";
-            }
-            
-            //based on @param orderBy, something is added to complete the string
-            //values received from "sort by" buttons at the top of page
-            switch (orderBy) {                            
-                case "name":    sqlString += "module_name";
-                                break;
-                                
-                case "points":  sqlString += "module_points";
-                                break;
-                
-                case "id":
-                default:    sqlString += "module_id";
-            }
-            
-            switch (orderDirection) {
-                case "desc":    sqlString += " DESC";
-                                break;
-                               
-                case "asc":
-                default:        sqlString += " ASC";
-            }
+            sqlString += handleOrder(orderString);
             
             //preparedstatement is prepared and executed
             getModules = conn.prepareStatement(sqlString);
@@ -147,6 +198,96 @@ public class ModuleHelper {
         return null;
     }
     
+    public static ResultSet getStudentsModules(PrintWriter out, Connection conn, String orderString, String user_id) {
+        try {
+            
+            String sqlString = "SELECT * FROM module\n" +
+                            "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
+                            "INNER JOIN course ON module.course_id = course.course_id\n" +
+                            "WHERE module_details.student_id = ?\n" +
+                            "ORDER BY ";
+            
+            sqlString += handleOrder(orderString);
+            PreparedStatement getStudentsModules = conn.prepareStatement(sqlString);
+            getStudentsModules.setString(1, user_id);
+            ResultSet rset = getStudentsModules.executeQuery();
+            
+            return rset;
+            
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+        
+        
+        return null;
+    }
+    
+    public static void printStudentsModules(PrintWriter out, Connection conn, String orderString, String user_id) {
+        ResultSet rset = getStudentsModules(out, conn, orderString, user_id);
+        try {
+            
+            
+            out.println("<div class=\"sort-by-container\">");
+            out.println("<form action=\"myProfile\" method=\"get\">");
+            
+            String[] sortingTypes = {"Course asc", "Course desc", "Name asc", "Name desc", "Points asc", "Points desc", "Score asc", "Score desc"};
+            //prints submit buttons for the sorting types
+            for (String sortingType : sortingTypes) {
+                out.println(orderByInput(sortingType));
+            }
+            
+            out.println("</form>");
+            out.println("</div>");
+            
+            out.println("<table class=\"module-students-table\">");
+            out.println("<tr>");
+            out.println("<th>Course</th>");
+            out.println("<th>Name</th>");
+            out.println("<th>Description</th>");
+            out.println("<th>Max points</th>");
+            out.println("<th>Your points</th>");
+            out.println("<th>Status</th>");
+            out.println("</tr>");
+            
+            
+            boolean lastRowEven = false;
+            while (rset.next()) {
+                String module_id = rset.getString("module.module_id");
+                String course_name = rset.getString("course_name");
+                String module_name = rset.getString("module_name");
+                String module_desc = rset.getString("module_desc");
+                String max_points = rset.getString("module.module_points");
+                String your_points = rset.getString("module_details.module_points");
+                String status = rset.getString("module_status");
+                
+                String rowClassName = (lastRowEven) ? "even-row" : "odd-row";
+                lastRowEven = !(lastRowEven);
+                
+                String formName = "oneModule-" + module_id;
+                
+                out.println("<form name=\"" + formName + "\" action=\"oneModule\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<tr class=\"pointer-hover " + rowClassName + "\" onclick=\"submit(\'" + formName + "\')\">");
+                out.println("<td>" + course_name + "</td>");
+                out.println("<td>" + module_name + "</td>");
+                out.println("<td>" + module_desc + "</td>");
+                out.println("<td>" + max_points + "</td>");
+                out.println("<td>" + your_points + "</td>");
+                out.println("<td><div class=\"module-status\">" + status + "</div></td>");
+                out.println("</tr>");
+                out.println("</form>");
+            }
+            out.println("</table>");
+        } catch (SQLException ex) {
+            out.println("hei" + ex);
+        }
+    }
+    
+    //returns the correct string for an input for the "orderBy" string value
+    public static String orderByInput(String value) {
+        return "<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"" + value + "\">";
+    }
+    
     /**
      * Prints all the students located in the student
      * table.
@@ -156,8 +297,9 @@ public class ModuleHelper {
      * @param orderBy the column name to order the sql results in
      * @param role the role of the user logged in
      * @param course_id
+     * @param currentServlet
      */
-    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id) {
+    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id, String currentServlet) {
 
             HtmlHelper site = new HtmlHelper(out);
         
@@ -168,19 +310,31 @@ public class ModuleHelper {
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
-            //"sort by"-buttons (can probably be reduced to one form)
+                
+            PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
+            getCourseName.setString(1, course_id);
+            ResultSet courseResult = getCourseName.executeQuery();
+            
+            String course_name = "";
+            while (courseResult.next()) {
+                course_name = courseResult.getString("course_name");
+            }
+                
+            //"sort by"-buttons and necessary parameters
             out.println("<h2>Sort by: </h2>");
             out.println("<div class=\"sort-by-container\">");
-            out.println("<form action=\"getModule\">");
+            out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
+            out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<input type=\"hidden\" name=\"course_name\" value=\"" + course_name + "\">");
+            out.println("<input type=\"hidden\" name=\"role\" value=\"" + role + "\">");
+            out.println("<input type=\"hidden\" name=\"details\" value=\"modules\">");
             
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"ID desc\">");
+            String[] sortingTypes = {"ID asc", "ID desc", "Name asc", "Name desc", "Points asc", "Points desc"};
+            //prints submit buttons for the sorting types
+            for (String sortingType : sortingTypes) {
+                out.println(orderByInput(sortingType));
+            }
             
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Name desc\">");
-            
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points asc\">");
-            out.println("<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"Points desc\">");
             out.println("</form>");
             out.println("</div>");
             
@@ -191,15 +345,16 @@ public class ModuleHelper {
                 String module_name = rset.getString("module_name");
                 String module_desc = rset.getString("module_desc");
                 String module_points = rset.getString("module_points");
+                course_id = rset.getString("course_id");
                 
-                PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
-                getCourseName.setString(1, rset.getString("course_id"));
-                ResultSet courseResult = getCourseName.executeQuery();
-                String course_name = "";
+                
+                getCourseName = conn.prepareStatement("SELECT * FROM course WHERE course_id LIKE ?");
+                getCourseName.setString(1, course_id);
+                courseResult = getCourseName.executeQuery();
+
                 while (courseResult.next()) {
                     course_name = courseResult.getString("course_name");
                 }
-                
                 
                 //the module info in a container
                 out.println("<div class=\"module-container\">");
@@ -213,8 +368,8 @@ public class ModuleHelper {
                 out.println("<div>Course: " + course_name + "</div>");
                 out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
                 out.println("</form>");
-                
-                if (role.equals("Lecturer")) {
+                //button(s) for deletion of a module
+                if (role.toLowerCase().equals("lecturer")) {
                     site.printDeleteButton("deleteModule", "module_id", module_id);
                 }
                 out.println("</div>");
@@ -223,9 +378,7 @@ public class ModuleHelper {
             }
             out.println("Total number of records: " + rowCount);
             
-            site.printJsForDeleteButton();
-            
-            conn.close();
+            site.useJS("buttons-for-delete.js");
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
@@ -252,10 +405,7 @@ public class ModuleHelper {
                 out.println("<div>");
                 out.println("<form action=\"updateModule\" method=\"get\">");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module ID (can't be changed)</p>");
-                out.println("<input type=\"text\" name=\"module_id\" value=\"" + module_id + "\" disabled>");
-                out.println("</div>");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 
                 out.println("<div class=\"inline-block module-edit-input\">");
                 out.println("<p>Module name</p>");
@@ -286,6 +436,29 @@ public class ModuleHelper {
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
         }
+    }
+    
+    public static String deleteModule(String module_id, Connection conn) {
+        
+        String results = "";
+
+        try {
+            PreparedStatement deleteModuleDetails = conn.prepareStatement("DELETE FROM module_details WHERE module_id = ?");
+            deleteModuleDetails.setString(1, module_id);
+            int detailsDeleted = deleteModuleDetails.executeUpdate();
+
+
+            PreparedStatement deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
+            deleteModule.setString(1, module_id);
+            int modulesDeleted = deleteModule.executeUpdate();
+            
+            results += modulesDeleted + " modules deleted. " + detailsDeleted + " students affected";
+        } catch (SQLException ex) {
+            results += "SQL error: " + ex;
+            return results;
+        }
+        
+        return results;
     }
     
 }
