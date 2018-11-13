@@ -35,7 +35,7 @@ public class serv_About extends HttpServlet {
         
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("About us", "about-page");
             out.println("<div id=\"about\">");
             out.println("<h1>Made by:</h1>");

@@ -55,7 +55,13 @@ public class UserHelper {
 "               </form>");
         }
         catch (SQLIntegrityConstraintViolationException ex) {
-            out.println("One or more mandatory fields were empty, please try again");
+            String error = "";
+            if (ex.getMessage().contains("Duplicate entry")) {
+                error = "Username already taken, try another";
+            } else {
+                error = "One or more mandatory fields were empty, please try again";
+            }
+            out.println("<p>" + error + "</p>");
             out.println("<button class=\"button\" onclick=\"window.history.back();\">Go back</button>");
         }
         catch (SQLException ex) {

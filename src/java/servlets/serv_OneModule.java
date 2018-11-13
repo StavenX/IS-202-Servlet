@@ -48,6 +48,11 @@ public class serv_OneModule extends HttpServlet {
             site.printHead("Single module", "one-module-container");
             
             String module_id = request.getParameter("module_id");
+            String orderBy = request.getParameter("orderBy");
+            if (orderBy == null) {
+                orderBy = "";
+            }
+            
             
             Connection conn;
             conn = login.loginToDB(out);
@@ -64,12 +69,36 @@ public class serv_OneModule extends HttpServlet {
             
             if (role.equals("Lecturer")) {
                 String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max_points\',\n" +
-                "module_details.module_points AS \'your_points\', module_details.module_status \n" +
+                "module_details.module_points AS \'your_points\', module_details.student_id, module_details.module_status \n" +
                 "FROM course\n" +
                 "INNER JOIN module ON course.course_id = module.course_id\n" +
                 "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
-                "INNER JOIN users ON module_details.student_id = users.user_id WHERE module.module_id = ?\n" +
-                "ORDER BY FIELD(module_status, \'Not delivered\', \'Pending\', \'Completed\');";
+                "INNER JOIN users ON module_details.student_id = users.user_id\n" +
+                "WHERE module.module_id = ?\n" +
+                "AND module_details.student_id LIKE '%'\n" + 
+                "ORDER BY FIELD(module_status, ";
+                
+                switch(orderBy) {
+                    case "Not delivered":
+                        sqlString += "\'Not delivered\', \'Pending\', \'Completed\');";
+                        break;
+                        
+                    case "Completed":
+                        sqlString += "\'Completed\', \'Pending\', \'Not Delivered\');";
+                        break;
+                        
+                    case "Pending":
+                    default: sqlString += "\'Pending\', \'Not Delivered\', \'Completed\');";
+                }
+                
+                out.println("<form action=\"oneModule\" method=\"get\" class=\"one-module-sort\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
+                out.println("<h2>Order module deliveries by:</h2>");
+                out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Not delivered\">");
+                out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Pending\">");
+                out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Completed\">");
+                out.println("</form>");
+                
                 try {
                     PreparedStatement getPeople = conn.prepareStatement(sqlString);
                     getPeople.setString(1, module_id);
@@ -87,6 +116,7 @@ public class serv_OneModule extends HttpServlet {
 
                         while (rset.next()) {
                             String user_name = rset.getString("user_username");
+                            String user_id = rset.getString("student_id");
                             String course_name = rset.getString("course_name");
                             String module_name = rset.getString("module_name");
                             String module_desc = rset.getString("module_desc");
@@ -98,11 +128,15 @@ public class serv_OneModule extends HttpServlet {
                                 your_points = "N/A";
                             }
 
+                            out.println("<form action=\"oneStudentModule\" method=\"post\">");
+                            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
+                            out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
                             out.println("<tr>");
                             out.println("<td>" + user_name + "</td>");
                             out.println("<td>" + your_points + "</td>");
                             out.println("<td class=\"deliver-status\"><div class=\"module-status\">" + status + "</div><button class=\"button\">Grade</button></td>");
                             out.println("</tr>");
+                            out.println("</form>");
                         }
                         out.println("</table>");
                     } else {

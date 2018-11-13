@@ -9,11 +9,12 @@ function hide() {
         nav.display = 'block';
         button.setAttribute('value', '<<');
         cont.background = temp;
+       document.getElementsByClassName('page-container')[0].style.marginLeft = '100px';        
     } else {
        nav.display = 'none';
        button.setAttribute('value', '>>');
        temp = cont.background;
        cont.background = 'rgba(0,0,0,0)';
-       document.getElementsByClassName('page-container')[0].style.width = '100%';
+       document.getElementsByClassName('page-container')[0].style.marginLeft = '75px';
     }
 }
