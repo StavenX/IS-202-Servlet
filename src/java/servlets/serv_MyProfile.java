@@ -30,7 +30,7 @@ public class serv_MyProfile extends HttpServlet {
     Login login = new Login();
 
     /**
-     * Handles the HTTP <code>GET</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -38,7 +38,7 @@ public class serv_MyProfile extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out, request);
@@ -49,6 +49,9 @@ public class serv_MyProfile extends HttpServlet {
             
             String orderBy = request.getParameter("orderBy");
             orderBy = (orderBy == null) ? "" : orderBy;
+            
+            String orderDirection = request.getParameter("orderDirection");
+            orderDirection = (orderDirection == null) ? "" : orderDirection;
             
             Connection conn = login.loginToDB(out);
             
@@ -70,7 +73,7 @@ public class serv_MyProfile extends HttpServlet {
                     
                     out.println("<h2>My modules: </h2>");
                     
-                    ModuleHelper.printStudentsModules(out, conn, orderBy, user_id);
+                    ModuleHelper.printStudentsModules(out, conn, orderBy, orderDirection, user_id);
                 }
                 
             } catch (SQLException ex) {
@@ -85,7 +88,7 @@ public class serv_MyProfile extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP <code>POST</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -93,9 +96,10 @@ public class serv_MyProfile extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
+            doPost(request, response);
         }
     }
 

@@ -45,7 +45,6 @@ public class serv_CreateUser extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New user", "create-user");
-            out.println("");
             out.println("<form action=\"createUser\" method=\"post\">");
             out.println("<input class=\"student-input\" type=\"text\" name=\"user_username\" placeholder=\"Insert username\">");   
             out.println("<input class=\"student-input\" type=\"password\" name=\"user_password\" placeholder=\"Insert password\">");

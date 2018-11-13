@@ -118,18 +118,16 @@ public class ModuleHelper {
     
     /**
      * takes a string and converts it to the proper SQL field names
-     * @param orderString the base string that is taken from the web page buttons
+     * @param orderBy the base string that is taken from the web page buttons
+     * @param direction
      * @return completed string that works for our SQL table
      */
-    public static String handleOrder(String orderString) {
+    public static String handleOrder(String orderBy, String direction) {
         //initalize the return value, add to it in switches
         String handledOrder = "";
         
         //what to order by
-        String[] orderByList = orderString.split(" ");
-        String orderBy = orderByList[0].toLowerCase();
-
-        switch (orderBy) {                    
+        switch (orderBy.toLowerCase()) {                    
             case "course":
                 handledOrder += "course.course_name";
                 break;
@@ -150,21 +148,14 @@ public class ModuleHelper {
             default:    
                 handledOrder += "module.module_id";
         }
-
-        //which direction is the order
-        String orderDirection;
-        try {
-            orderDirection = orderByList[1].toLowerCase();
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            orderDirection = "";
-        }
         
-        switch (orderDirection) {
-            case "desc":    
+        //what direction the order is in
+        switch (direction.toLowerCase()) {
+            case "^":    
                 handledOrder += " DESC;";
                 break;
 
-            case "asc":
+            case "v":
             default:        
                 handledOrder += " ASC;";
         }
@@ -173,7 +164,7 @@ public class ModuleHelper {
     }
     
     //course_id = "%" for all courses
-    public static ResultSet getModules (PrintWriter out, Connection conn, String orderString, String course_id) {
+    public static ResultSet getModules (PrintWriter out, Connection conn, String orderBy, String direction, String course_id) {
             PreparedStatement getModules; 
         try {
             
@@ -181,7 +172,7 @@ public class ModuleHelper {
             //'LIKE' instead of '=' to allow usage of '%' to get all
             String sqlString = "SELECT * FROM module WHERE course_id LIKE ? ORDER BY ";
             
-            sqlString += handleOrder(orderString);
+            sqlString += handleOrder(orderBy, direction);
             
             //preparedstatement is prepared and executed
             getModules = conn.prepareStatement(sqlString);
@@ -198,7 +189,7 @@ public class ModuleHelper {
         return null;
     }
     
-    public static ResultSet getStudentsModules(PrintWriter out, Connection conn, String orderString, String user_id) {
+    public static ResultSet getStudentsModules(PrintWriter out, Connection conn, String orderBy, String direction, String user_id) {
         try {
             
             String sqlString = "SELECT * FROM module\n" +
@@ -207,7 +198,7 @@ public class ModuleHelper {
                             "WHERE module_details.student_id = ?\n" +
                             "ORDER BY ";
             
-            sqlString += handleOrder(orderString);
+            sqlString += handleOrder(orderBy, direction);
             PreparedStatement getStudentsModules = conn.prepareStatement(sqlString);
             getStudentsModules.setString(1, user_id);
             ResultSet rset = getStudentsModules.executeQuery();
@@ -222,20 +213,16 @@ public class ModuleHelper {
         return null;
     }
     
-    public static void printStudentsModules(PrintWriter out, Connection conn, String orderString, String user_id) {
-        ResultSet rset = getStudentsModules(out, conn, orderString, user_id);
+    public static void printStudentsModules(PrintWriter out, Connection conn, String orderBy, String direction, String user_id) {
+        ResultSet rset = getStudentsModules(out, conn, orderBy, direction, user_id);
         try {
             
             
             out.println("<div class=\"sort-by-container\">");
-            out.println("<form action=\"myProfile\" method=\"get\">");
+            String[] sortingTypes = {"Course", "Name", "Points", "Score"};
             
-            String[] sortingTypes = {"Course asc", "Course desc", "Name asc", "Name desc", "Points asc", "Points desc", "Score asc", "Score desc"};
-            //prints submit buttons for the sorting types
-            for (String sortingType : sortingTypes) {
-                out.println(orderByInput(sortingType));
-            }
-            
+            out.println("<form action=\"myProfile\" method=\"post\">");
+            printOrderBy(out, orderBy, sortingTypes);
             out.println("</form>");
             out.println("</div>");
             
@@ -283,11 +270,34 @@ public class ModuleHelper {
         }
     }
     
-    //returns the correct string for an input for the "orderBy" string value
-    public static String orderByInput(String value) {
-        return "<input class=\"button\" type=\"submit\" name=\"orderBy\" value=\"" + value + "\">";
+    public static void printOrderBy(PrintWriter out, String currentOrder, String[] options) {
+        out.println("<select name=\"orderBy\">");
+        for (String option : options) {
+            if (option.equals(currentOrder)) {
+                out.println("<option selected>" + option + "</option>");
+            } else {
+                out.println("<option>" + option + "</option>");
+            }
+        }
+        out.println("</select>");
+        out.println("<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
+        out.println("<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
     }
     
+    /* Old version, use select with options instead
+    //returns the correct string for an input for the "orderBy" string value
+    public static String orderByInput(String value, String formAction, String extraInputs) {
+        return "<form action=\"" + formAction + "\" method=\"post\">"
+                + "<div class=\"orderby-container\">"
+                + extraInputs
+                + "<input type=\"hidden\" name=\"orderBy\" value=\"" + value + "\">"
+                + "<p>" + value + "</p>"
+                + "<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"V\">"
+                + "<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"^\">"
+                + "</div>"
+                + "</form>";
+    }
+    */
     /**
      * Prints all the students located in the student
      * table.
@@ -295,17 +305,18 @@ public class ModuleHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      * @param orderBy the column name to order the sql results in
+     * @param direction
      * @param role the role of the user logged in
      * @param course_id
      * @param currentServlet
      */
-    public static void printModules(PrintWriter out, Connection conn, String orderBy, String role, String course_id, String currentServlet) {
+    public static void printModules(PrintWriter out, Connection conn, String orderBy, String direction, String role, String course_id, String currentServlet) {
 
             HtmlHelper site = new HtmlHelper(out);
         
         try {
             
-            ResultSet rset = getModules(out, conn, orderBy, course_id);
+            ResultSet rset = getModules(out, conn, orderBy, direction, course_id);
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
@@ -323,18 +334,17 @@ public class ModuleHelper {
             //"sort by"-buttons and necessary parameters
             out.println("<h2>Sort by: </h2>");
             out.println("<div class=\"sort-by-container\">");
+            //out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
+            
             out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
+            
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
             out.println("<input type=\"hidden\" name=\"course_name\" value=\"" + course_name + "\">");
             out.println("<input type=\"hidden\" name=\"role\" value=\"" + role + "\">");
             out.println("<input type=\"hidden\" name=\"details\" value=\"modules\">");
             
-            String[] sortingTypes = {"ID asc", "ID desc", "Name asc", "Name desc", "Points asc", "Points desc"};
-            //prints submit buttons for the sorting types
-            for (String sortingType : sortingTypes) {
-                out.println(orderByInput(sortingType));
-            }
-            
+            String[] sortingTypes = {"ID", "Name", "Points"};
+            printOrderBy(out, orderBy, sortingTypes);
             out.println("</form>");
             out.println("</div>");
             

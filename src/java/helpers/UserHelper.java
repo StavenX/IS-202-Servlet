@@ -235,7 +235,7 @@ public class UserHelper {
 
                 //gets all modules in the course the user is to be added to
                 //sorted by module_id
-                ResultSet rset = ModuleHelper.getModules(out, conn, "id", course_id);
+                ResultSet rset = ModuleHelper.getModules(out, conn, "id", "v", course_id);
                 
                 //for each module add the user to the module too
                 while (rset.next()) {

@@ -66,11 +66,10 @@ public class serv_OneCourseDetails extends HttpServlet {
             String role = request.getParameter("role");
             String details = request.getParameter("details").toLowerCase();
             String orderBy = request.getParameter("orderBy");
+            String direction = request.getParameter("orderDirection");
             
-            if (orderBy == null) {
-                orderBy = "";
-            }
-            
+            orderBy = (orderBy == null) ? "" : orderBy;
+            direction = (direction == null) ? "" : direction;
             site.printBackButton();
             
             out.println("<form action=\"oneCourse\" method=\"post\">");
@@ -81,7 +80,7 @@ public class serv_OneCourseDetails extends HttpServlet {
             Connection conn = login.loginToDB(out);
             switch(details) {
                 case "modules":
-                    ModuleHelper.printModules(out, conn, orderBy, role, course_id, "oneCourseDetails");
+                    ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");
                     break;
                     
                 case "students":
