@@ -50,11 +50,11 @@ public class HtmlHelper {
         printFile("nav.html");
         //useJS("navhide.js");
         out.println("<div class=\"page-container\">");
-        out.println("<div class=\"top-bar\"><form action=\"Home\"> <button class=\"button button-home\">Go home</button> </form>");
         printUserDetails();
     }
     
     public void printUserDetails() {
+        out.println("<div class=\"top-bar\">");
         String loggedUserName;
         String loggedUserRole = "";
         try {
@@ -64,7 +64,8 @@ public class HtmlHelper {
         } catch (Exception ex) {
             loggedUserName = "not implemented in this servlet | " + ex;
         }
-        out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p></div>\n", loggedUserName, loggedUserRole);
+        out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
+        out.println("</div>");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {

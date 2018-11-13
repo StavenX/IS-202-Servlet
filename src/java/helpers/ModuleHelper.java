@@ -271,7 +271,7 @@ public class ModuleHelper {
     }
     
     public static void printOrderBy(PrintWriter out, String currentOrder, String[] options) {
-        out.println("<select name=\"orderBy\">");
+        out.println("<select name=\"orderBy\" class=\"button\">");
         for (String option : options) {
             if (option.equals(currentOrder)) {
                 out.println("<option selected>" + option + "</option>");
@@ -280,24 +280,12 @@ public class ModuleHelper {
             }
         }
         out.println("</select>");
-        out.println("<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
-        out.println("<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
+        out.println("<div class=\"direction-container\">");
+        out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
+        out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
+        out.println("</div>");
     }
     
-    /* Old version, use select with options instead
-    //returns the correct string for an input for the "orderBy" string value
-    public static String orderByInput(String value, String formAction, String extraInputs) {
-        return "<form action=\"" + formAction + "\" method=\"post\">"
-                + "<div class=\"orderby-container\">"
-                + extraInputs
-                + "<input type=\"hidden\" name=\"orderBy\" value=\"" + value + "\">"
-                + "<p>" + value + "</p>"
-                + "<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"V\">"
-                + "<input class=\"button\" type=\"submit\" name=\"orderDirection\" value=\"^\">"
-                + "</div>"
-                + "</form>";
-    }
-    */
     /**
      * Prints all the students located in the student
      * table.
@@ -332,10 +320,9 @@ public class ModuleHelper {
             }
                 
             //"sort by"-buttons and necessary parameters
-            out.println("<h2>Sort by: </h2>");
             out.println("<div class=\"sort-by-container\">");
-            //out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
             
+            out.println("<h2>Sort by: </h2>");
             out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
             
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");

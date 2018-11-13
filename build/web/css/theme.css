@@ -17,7 +17,7 @@ and open the template in the editor.
 
  * {box-sizing: border-box}
  
- body {
+ html, body {
     background-color: var(--background);
     height: 100%;
 }
@@ -32,6 +32,38 @@ body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
  
+.button {
+    background-color: var(--almostblack); 
+    border: none; 
+    color: var(--background); 
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+   
+}
+
+.button-home {
+    padding: 2px;
+    font-size: 12px;
+    width: 80px;
+    height: 40px;
+}
+
+.button-default {
+    width: 150px;
+    height: 60px;
+}
+
+.back-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
 .nav-container {
     flex: 20%;
     min-width: 80px !important;
@@ -40,7 +72,7 @@ body, body * {
 }
 
 .page-container {
-    margin-left: 100px;
+    margin-left: 83.29px;
     flex: 80%;
 }
 
@@ -192,9 +224,27 @@ a {
 }
 
 .sort-by-container {
+    border: 1px solid black;
     width:fit-content ;
     margin: 20px auto;
 }
+
+.sort-by-container * {
+    display: inline-block;
+}
+
+.direction-container {
+    height: 100%;
+    line-height: 10px;
+}
+
+.order-direction {
+    display: list-item;
+    height: 49%;
+    padding: 3px;
+    min-width: 20px;
+}
+
 
 .module-container {
     padding: 5px;
@@ -347,38 +397,6 @@ td {
     font-size: 1.5em;
 }
 
-.button {
-    background-color: var(--almostblack); 
-    border: none; 
-    color: var(--background); 
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-   
-}
-
-.button-home {
-    padding: 2px;
-    font-size: 12px;
-    width: 80px;
-    height: 40px;
-}
-
-.button-default {
-    width: 150px;
-    height: 60px;
-}
-
-.back-button img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
 .module-edit-input {
     margin: 0 10px;
     padding: 5px;
@@ -386,12 +404,14 @@ td {
 }
 
 #about {
+    margin-top: 70px;
     text-align: center;
     font-size: 200%;
-}
-
-.sort-by-container *{
-    display: inline-block;
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 30%;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .course-container {
@@ -418,15 +438,6 @@ td {
 
 .message-input {
     display: list-item;
-}
-
-#about-page {
-    background-image: url("../images/Placeholder_v2.png");
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position-x: 50%;
-    color: white;
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
 .top-bar *{
