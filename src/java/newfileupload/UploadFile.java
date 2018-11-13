@@ -119,8 +119,7 @@ public class UploadFile extends FileTransfer {
                            uploads.getString(2),// filename
                            uploads.getLong(3), // filesize
                            uploads.getString(4), // mimetype
-                           uploads.getString(5) // fileUploader
-                           
+                           uploads.getString(5) // fileUploader        
                 );
             }
             out.format(TABLE_DOC_END);
