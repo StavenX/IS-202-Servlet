@@ -25,7 +25,7 @@ public class serv_FileUpload extends HttpServlet {
                 
                 try (PrintWriter out = response.getWriter()) {
                     
-                    HtmlHelper site = new HtmlHelper(out);
+                    HtmlHelper site = new HtmlHelper(out, request);
                     site.printHead("File Upload", "");
                     
                     out.println("Upload a file");
@@ -34,7 +34,8 @@ public class serv_FileUpload extends HttpServlet {
                     } else if (request.isUserInRole("Student")) {
                         out.println("STUDENT_ACCESS");
                     }
-                       
+                     
+                    out.println(request.getUserPrincipal().toString());
                     // This is the form that contains the upload button, etc. 
                     out.println("<form method='POST' action='UploadFile' enctype='multipart/form-data'>");
                     out.println("<table>");
