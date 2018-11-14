@@ -47,6 +47,7 @@
             <url-pattern>/Student</url-pattern>
             <url-pattern>/updateModule</url-pattern>
             <url-pattern>/addToModule</url-pattern>
+            <url-pattern>/UploadFile</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>

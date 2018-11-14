@@ -25,10 +25,10 @@ public abstract class FileTransfer extends HttpServlet {
     // sql code for inserting a row
 
     protected static final String INSERT_SQL
-            = "insert into file (filename, filesize, filetype, filecontent) values (?,?,?,?)";
+            = "insert into file (filename, filesize, filetype, filecontent, fileUploader) values (?,?,?,?,?)";
 
     // sql code for selecting a row
-    protected static final String SELECT_SQL = "select fileid,filename,filesize,filetype from file";
+    protected static final String SELECT_SQL = "select fileid,filename,filesize,filetype,fileUploader from file";
 
     // sql code for getting the last auto generated primary key
     protected static final String LAST_AUTO_ID = "select last_insert_id()";
@@ -48,14 +48,14 @@ public abstract class FileTransfer extends HttpServlet {
     protected static final String UPLOAD_TABLE_START = "    <h3>Uploaded files:</h3>\n"
             + "    <p>Click on the filename to download a file</p>"
             + "    <table>\n"
-            + "      <tr><th>Fileid:</th><th>Filename:</th><th>File size:</th><th>ContentType:</th></tr>\n";
+            + "      <tr><th>Fileid:</th><th>Filename:</th><th>File size:</th><th>ContentType:</th><th>Uploader:</th></tr>\n";
 
     // Format string for a html table row, which displays the info  for one
     // uploaded file. it produces html code like this:
     // <tr><td>ID</td><td><a href='DownloadFile/NAME?fileid=ID'>NAME</a></td><td>SIZE</td><td>TYPE</td></tr>
     protected static final String TABLE_ROW = "<tr><td>%d</td>" // fileid
             + "<td><a href='DownloadFile/%s?fileid=%d'>%s</a>" // name id name
-            + "</td><td>%d</td><td>%s</td></tr>\n"; // size type
+            + "</td><td>%d</td><td>%s</td><td>%s</td></tr>\n"; // size type and uploader
 
     // all the end tags :-)
     protected static final String TABLE_DOC_END = "</table>\n</body>\n</html>\n";
