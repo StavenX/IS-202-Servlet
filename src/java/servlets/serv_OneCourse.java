@@ -6,12 +6,15 @@
 package servlets;
 
 import helpers.AccessTokenHelper;
+import helpers.AnnouncementHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
 import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -88,6 +91,26 @@ public class serv_OneCourse extends HttpServlet {
                 out.println("<button class=\"button\">Make announcement</button>");
                 out.println("</form>");
             }
+            
+            out.println("<div class=\"announcement-preview-container\">");
+            System.out.println("heihei");
+            out.println("Last announcement:");
+            try {
+                ResultSet rset = AnnouncementHelper.getAnnouncements(conn, course_id, 1);
+                while (rset.next()) {
+                    String title = rset.getString("announcement_title");
+                    String content = rset.getString("announcement_content");
+                    String author = UserHelper.getFullNameById(conn, rset.getString("announcement_author_id"));
+
+                    out.println("<p>Title: " + title + "</p>");
+                    out.println("<p>Content: " + content + "</p>");
+                    out.println("<p>Author full name: " + author + "</p>");
+                }
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+            
+            out.println("</div>");
             
             
             

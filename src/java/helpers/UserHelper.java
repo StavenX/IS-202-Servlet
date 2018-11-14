@@ -11,13 +11,81 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 /**
  *
  * @author Staven
  */
 public class UserHelper {
+    
+    
+    
+    public static String getUserName(HttpServletRequest request) {
+        AccessTokenHelper a = new AccessTokenHelper(request);
+        String username = a.getUsername();
+        return username;
+    }
+    
+    public static String getUserRole(HttpServletRequest request) {
+        AccessTokenHelper a = new AccessTokenHelper(request);
+        String role = a.getUserRole();
+        return role;
+    }
+    
+    public static String getUserId (Connection conn, String username) {
+        String user_id = "";
+        try {
+            String sqlString = "SELECT user_id FROM users WHERE user_username = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, username);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                user_id = rset.getString("user_id");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return user_id;
+    }
+    
+    public static String getUserNameById (Connection conn, String user_id) {
+        String username = "";
+        try {
+            String sqlString = "SELECT user_username FROM users WHERE user_id = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, user_id);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                username = rset.getString("user_username");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return username;
+    }
+    
+    public static String getFullNameById (Connection conn, String user_id) {
+        String fullname = "";
+        try {
+            String sqlString = "SELECT user_fname, user_lname FROM users WHERE user_id = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, user_id);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                fullname = rset.getString("user_fname") + " " + rset.getString("user_lname");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return fullname;
+    }
+    
     
         /**
      * Inserts a student into the student table.
@@ -251,24 +319,6 @@ public class UserHelper {
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
             }
-    }
-    
-    public static String getUserId (Connection conn, String username) {
-        String user_id = "";
-        try {
-            String sqlString = "SELECT user_id FROM users WHERE user_username = ?";
-            PreparedStatement getId = conn.prepareStatement(sqlString);
-            getId.setString(1, username);
-            
-            ResultSet rset = getId.executeQuery();
-            
-            while (rset.next()) {
-                user_id = rset.getString("user_id");
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        }
-        return user_id;
     }
     
     public static void printUserPage (PrintWriter out, Connection conn, String user_id) {

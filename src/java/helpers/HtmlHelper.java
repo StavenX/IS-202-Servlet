@@ -60,9 +60,8 @@ public class HtmlHelper {
         String loggedUserName;
         String loggedUserRole = "";
         try {
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            loggedUserName = a.getUsername();
-            loggedUserRole = a.getUserRole();
+            loggedUserName = UserHelper.getUserName(request);
+            loggedUserRole = UserHelper.getUserRole(request);
         } catch (Exception ex) {
             loggedUserName = "not implemented in this servlet | " + ex;
         }

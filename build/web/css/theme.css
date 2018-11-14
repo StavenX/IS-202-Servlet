@@ -485,6 +485,10 @@ td {
     max-width: 200px;
 }
 
+.announcement-preview-container {
+    border: 1px solid var(--almostblack);
+}
+
 .pointer-hover:hover {
     cursor: pointer;
 }
