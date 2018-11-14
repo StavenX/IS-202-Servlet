@@ -61,8 +61,8 @@ public class serv_OneUser extends HttpServlet {
             String currentUserId = UserHelper.getUserId(conn, username);
             if (!currentUserId.equals(user_id)) {
                 out.println("<form action=\"Message\" method=\"get\">");
-                out.println("<input type=\"hidden\" name=\"abc=\"" + currentUserId + "\">");
-                out.println("<input type=\"hidden\" name=\"def=\"" + user_id + "\">");
+                out.println("<input type=\"hidden\" name=\"sender_id\" value=\"" + currentUserId + "\">");
+                out.println("<input type=\"hidden\" name=\"recipient_id\" value=\"" + user_id + "\">");
                 out.println("<input type=\"submit\" class=\"button\" value=\"Send message\">");
                 out.println("</form>");
             }

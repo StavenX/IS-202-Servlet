@@ -24,6 +24,7 @@
             <web-resource-name>UserResources</web-resource-name>
             <url-pattern>/About</url-pattern>
             <url-pattern>/Calendar</url-pattern>
+            <url-pattern>/createAnnouncement</url-pattern>
             <url-pattern>/createModule</url-pattern>
             <url-pattern>/createUser</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>

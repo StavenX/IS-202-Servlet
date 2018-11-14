@@ -58,11 +58,12 @@ public class serv_OneCourseDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            Connection conn = login.loginToDB(out);
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Details", "one-course");
             
             String course_id = request.getParameter("course_id");
-            String course_name = request.getParameter("course_name");
+            String course_name = CourseHelper.getCourseName(course_id, conn);
             String role = request.getParameter("role");
             String details = request.getParameter("details").toLowerCase();
             String orderBy = request.getParameter("orderBy");
@@ -72,11 +73,10 @@ public class serv_OneCourseDetails extends HttpServlet {
             direction = (direction == null) ? "" : direction;
             
             out.println("<form action=\"oneCourse\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<button class=\"button\">Back to " + course_name + "</button>");
             out.println("</form>");
             
-            Connection conn = login.loginToDB(out);
             switch(details) {
                 case "modules":
                     ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");

@@ -8,8 +8,10 @@ package servlets;
 import helpers.AccessTokenHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -56,12 +58,14 @@ public class serv_OneCourse extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            String course_id = request.getParameter("course_id");
-            String course_name = request.getParameter("course_name");
+            Connection conn = login.loginToDB(out);
             
+            String course_id = request.getParameter("course_id");
+            String course_name = CourseHelper.getCourseName(course_id, conn);
             
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead(course_name, "single-course");
+            
             
             out.println("You are now viewing course " + course_name);
             
@@ -71,21 +75,33 @@ public class serv_OneCourse extends HttpServlet {
             out.println("<button class=\"button\">Add to course</button>");
             out.println("</form>");
             
+            
             AccessTokenHelper a = new AccessTokenHelper(request);
+            String username = a.getUsername();
             String role = a.getUserRole();
+            String user_id = UserHelper.getUserId(conn, username);
+            
+            if (role.equals("Lecturer")) {
+                out.println("<form action=\"createAnnouncement\" method=\"get\">");
+                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+                out.println(CourseHelper.invisInputs(course_id, role));
+                out.println("<button class=\"button\">Make announcement</button>");
+                out.println("</form>");
+            }
+            
             
             
             
             out.println("<h3>Modules in this course (sort buttons not working correctly):</h3>");
             out.println("<form action=\"oneCourseDetails\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Modules\">");
             out.println("</form>");
             
             
             out.println("<h3>Students in this course:</h3>");
             out.println("<form action=\"oneCourseDetails\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
+            out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Students\">");
             out.println("</form");
             
