@@ -57,6 +57,8 @@ public class UploadFile extends FileTransfer {
                                HttpServletResponse response)
             throws ServletException, IOException {
         try {
+            
+            System.out.println("Uploaded file: " + request.getContentType());
             saveUpload(request, response);
             writeResponse(request, response);
         } catch (SQLException | NamingException e) {
@@ -71,11 +73,13 @@ public class UploadFile extends FileTransfer {
         Part filePart = request.getPart("file");
         
         AccessTokenHelper access = new AccessTokenHelper(request);
-        Upload upload = new Upload(filePart, access.getUserRole());
+        String currnetUser = access.getUsername();
+        
+        Upload upload = new Upload(filePart, currnetUser);
         request.setAttribute("upload", upload);
 
         try (Connection conn = getConnection();
-             PreparedStatement stmt = prepInsStmt(conn, upload, "edvin")) {
+             PreparedStatement stmt = prepInsStmt(conn, upload, currnetUser)) {
             stmt.executeUpdate();
             conn.commit();
         }
