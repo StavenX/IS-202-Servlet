@@ -42,15 +42,27 @@ public class serv_Messages extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); 
         
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message", "create-message");
             out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
             out.println("<h1> Create a new message </h1>");
+            
+            String sender_id = request.getParameter("abc");
+            String recipient_id = request.getParameter("def");
+            out.println(sender_id);
+            out.println(recipient_id);
+            
+            
+            if (sender_id == null && recipient_id == null) {
+                sender_id = "";
+                recipient_id = "";
+            }
+            
             out.println("<div class =\"form1\">");
             out.println("<form id=\"messageForm\" action=\"Message\" method=\"post\"> ");
             
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\" value=\"" + sender_id + "\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\" value=\"" + recipient_id + "\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
             
             out.println("</form>");

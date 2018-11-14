@@ -35,8 +35,9 @@ public class HtmlHelper {
      * Prints the start of the html page
      * @param title the title visible in the tab of your browser
      * @param bodyId the html class the body will be assigned
+     * @return username of logged in user
      */
-    public void printHead (String title, String bodyId) {
+    public String printHead (String title, String bodyId) {
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
         out.println("<head>");
@@ -50,10 +51,11 @@ public class HtmlHelper {
         printFile("nav.html");
         //useJS("navhide.js");
         out.println("<div class=\"page-container\">");
-        printUserDetails();
+        String username = printUserDetails();
+        return username;
     }
     
-    public void printUserDetails() {
+    public String printUserDetails() {
         out.println("<div class=\"top-bar\">");
         String loggedUserName;
         String loggedUserRole = "";
@@ -66,6 +68,7 @@ public class HtmlHelper {
         }
         out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
         out.println("</div>");
+        return loggedUserName;
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {

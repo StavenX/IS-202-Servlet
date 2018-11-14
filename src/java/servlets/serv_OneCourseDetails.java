@@ -70,7 +70,6 @@ public class serv_OneCourseDetails extends HttpServlet {
             
             orderBy = (orderBy == null) ? "" : orderBy;
             direction = (direction == null) ? "" : direction;
-            site.printBackButton();
             
             out.println("<form action=\"oneCourse\" method=\"post\">");
             out.println(CourseHelper.invisInputs(course_id, course_name, role));

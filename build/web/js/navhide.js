@@ -9,7 +9,7 @@ function hide() {
         nav.display = 'block';
         button.setAttribute('value', '<<');
         cont.background = temp;
-       document.getElementsByClassName('page-container')[0].style.marginLeft = '83.29px';        
+       document.getElementsByClassName('page-container')[0].style.marginLeft = '90px';        
     } else {
        nav.display = 'none';
        button.setAttribute('value', '>>');

@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Staven
@@ -248,6 +250,47 @@ public class UserHelper {
             }
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
+            }
+    }
+    
+    public static String getUserId (Connection conn, String username) {
+        String user_id = "";
+        try {
+            String sqlString = "SELECT user_id FROM users WHERE user_username = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, username);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                user_id = rset.getString("user_id");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return user_id;
+    }
+    
+    public static void printUserPage (PrintWriter out, Connection conn, String user_id) {
+        
+            String sqlString = "SELECT * FROM users WHERE user_id = ?";
+            try {
+                PreparedStatement getUser = conn.prepareStatement(sqlString);
+                getUser.setString(1, user_id);
+                ResultSet rset = getUser.executeQuery();
+                
+                while (rset.next()) {
+                    String username = rset.getString("user_username");
+                    String fname = rset.getString("user_fname");
+                    String lname = rset.getString("user_lname");
+                    String pic_url = "images/profiles/" + rset.getString("user_pic_url");
+                    
+                    out.println("<p> Name: " + fname + " " + lname + "</p>");
+                    out.println("<img class=\"profile-pic-medium\" src=\"" + pic_url + "\" alt=\"Profile picture for " + fname + "\">");
+                }
+                
+            } catch (SQLException ex) {
+                out.println(ex);
             }
     }
 }

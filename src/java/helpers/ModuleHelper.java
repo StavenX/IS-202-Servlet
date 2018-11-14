@@ -218,13 +218,13 @@ public class ModuleHelper {
         try {
             
             
-            out.println("<div class=\"sort-by-container\">");
             String[] sortingTypes = {"Course", "Name", "Points", "Score"};
             
             out.println("<form action=\"myProfile\" method=\"post\">");
+            out.println("<div class=\"sort-by-container\">");
             printOrderBy(out, orderBy, sortingTypes);
-            out.println("</form>");
             out.println("</div>");
+            out.println("</form>");
             
             out.println("<table class=\"module-students-table\">");
             out.println("<tr>");
@@ -273,11 +273,9 @@ public class ModuleHelper {
     public static void printOrderBy(PrintWriter out, String currentOrder, String[] options) {
         out.println("<select name=\"orderBy\" class=\"button\">");
         for (String option : options) {
-            if (option.equals(currentOrder)) {
-                out.println("<option selected>" + option + "</option>");
-            } else {
-                out.println("<option>" + option + "</option>");
-            }
+            String currentOption = (option.equals(currentOrder)) ? "<option selected>" + option + "</option>" : "<option>" + option + "</option>";
+            out.println(currentOption);
+            
         }
         out.println("</select>");
         out.println("<div class=\"direction-container\">");

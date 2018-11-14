@@ -8,6 +8,7 @@ package servlets;
 import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -54,32 +55,11 @@ public class serv_MyProfile extends HttpServlet {
             orderDirection = (orderDirection == null) ? "" : orderDirection;
             
             Connection conn = login.loginToDB(out);
-            
-            String sqlString = "SELECT * FROM users WHERE user_username = ?";
-            
-            try {
-                PreparedStatement getUser = conn.prepareStatement(sqlString);
-                getUser.setString(1, username);
-                ResultSet rset = getUser.executeQuery();
-                
-                while (rset.next()) {
-                    String user_id = rset.getString("user_id");
-                    String fname = rset.getString("user_fname");
-                    String lname = rset.getString("user_lname");
-                    String pic_url = "images/profiles/" + rset.getString("user_pic_url");
-                    
-                    out.println("<p> Name: " + fname + " " + lname + "</p>");
-                    out.println("<img class=\"profile-pic-medium\" src=\"" + pic_url + "\" alt=\"Profile picture for " + fname + "\">");
-                    
-                    out.println("<h2>My modules: </h2>");
-                    
-                    ModuleHelper.printStudentsModules(out, conn, orderBy, orderDirection, user_id);
-                }
-                
-            } catch (SQLException ex) {
-                out.println(ex);
-            }
-            
+            String user_id = UserHelper.getUserId(conn, username);
+            UserHelper.printUserPage(out, conn, user_id);
+            out.println("<h2>My modules: </h2>");
+
+            ModuleHelper.printStudentsModules(out, conn, orderBy, orderDirection, user_id);
             
             site.useJS("somebackgrounds.js");
             site.useJS("submitform.js");
