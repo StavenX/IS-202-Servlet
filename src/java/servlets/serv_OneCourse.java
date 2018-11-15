@@ -124,11 +124,14 @@ public class serv_OneCourse extends HttpServlet {
             
             out.println("<br>");
             
-            out.println("<h3>These students are not in the course, can be added through this link</h3>");
-            out.println("<form action=\"addToCourse\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, role));
-            out.println("<button class=\"button\">Students not in course</button>");
-            out.println("</form>");
+            
+            if (role.equals("Lecturer")) {
+                out.println("<h3>These students are not in the course, can be added through this link</h3>");
+                out.println("<form action=\"addToCourse\" method=\"post\">");
+                out.println(CourseHelper.invisInputs(course_id, role));
+                out.println("<button class=\"button\">Students not in course</button>");
+                out.println("</form>");
+            }
             
             site.useJS("submitform.js");
             site.closeAndPrintEnd(login);

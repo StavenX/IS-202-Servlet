@@ -53,6 +53,7 @@
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>
+            <role-name>Admin</role-name>
             <role-name>Student</role-name>
             <role-name>Lecturer</role-name>        
         </auth-constraint>
@@ -61,11 +62,29 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
-            <url-pattern>/AdminSaveContact</url-pattern>
-            <url-pattern>/403test</url-pattern>
+            <url-pattern>/addToCourse</url-pattern>
+            <url-pattern>/addToModule</url-pattern>
+            <url-pattern>/createAnnouncement</url-pattern>
+            <url-pattern>/createModule</url-pattern>
+            <url-pattern>/deleteAnnouncement</url-pattern>
+            <url-pattern>/deleteMessage</url-pattern>
+            <url-pattern>/deleteModule</url-pattern>
+            <url-pattern>/updateModule</url-pattern>
         </web-resource-collection>
         <auth-constraint>
+            <role-name>Admin</role-name>
             <role-name>Lecturer</role-name>
+        </auth-constraint>
+    </security-constraint>
+  
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminResources</web-resource-name>
+            <url-pattern>/createUser</url-pattern>
+            <url-pattern>/deleteUser</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
   
