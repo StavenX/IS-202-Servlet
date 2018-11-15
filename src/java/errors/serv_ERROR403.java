@@ -38,12 +38,11 @@ public class serv_ERROR403 extends HttpServlet {
             throws ServletException, IOException {
 
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             
             site.printHead("403", "error-403");
             out.println("<h1>ERROR 403: UNAUTHORIZED</h1>");
-            out.println("<p>Hansiboi said: you shall not pass!</p>");
-            out.println("<img src=\"images/hansiboi.png\">");
+            out.println("<p>Your user role does not have permission to view this page</p>");
             site.printEnd();
         }        
     }
