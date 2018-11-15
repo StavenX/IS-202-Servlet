@@ -49,7 +49,6 @@ public class HtmlHelper {
         out.println("</head>");
         out.println("<body id=\"" + bodyId + "\" class=\"flex-page\">");
         printFile("nav.html");
-        //useJS("navhide.js");
         out.println("<div class=\"page-container\">");
         String username = printUserDetails();
         return username;
@@ -57,13 +56,15 @@ public class HtmlHelper {
     
     public String printUserDetails() {
         out.println("<div class=\"top-bar\">");
-        String loggedUserName;
+        String loggedUserName = "";
         String loggedUserRole = "";
         try {
             loggedUserName = UserHelper.getUserName(request);
             loggedUserRole = UserHelper.getUserRole(request);
+        } catch (NullPointerException ex) {
+            loggedUserName = "User not found - page not in web.xml?";
         } catch (Exception ex) {
-            loggedUserName = "not implemented in this servlet | " + ex;
+            out.println(ex);
         }
         out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
         out.println("</div>");
@@ -80,6 +81,7 @@ public class HtmlHelper {
         out.println("</form>");
     }
     
+    //prints the required html code to use a javascript file in the js folder
     public void useJS(String filename) {
         out.println("<script src=\"js\\" + filename + "\"></script>");
     }

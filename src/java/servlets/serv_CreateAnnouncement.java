@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -44,18 +43,21 @@ public class serv_CreateAnnouncement extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New announcement", "new-announcement");
             
+            Connection conn = login.loginToDB(out);
+            
             String author = request.getParameter("user_id");
             String course_id = request.getParameter("course_id");
+            String course_name = CourseHelper.getCourseName(course_id, conn);
             
-            
-            
-            out.println("<form id=\"new\" action=\"createAnnouncement\" method=\"post\">");
+            out.println("<h1>Create a new announcement for course " + course_name + " </h2>");
+            out.println("<form id=\"new-announcement\" action=\"createAnnouncement\" method=\"post\">");
             out.println("<input type=\"hidden\" name=\"announcement_author_id\" value=\"" + author + "\">");
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
             out.println("</form>");
-            out.println("<textarea name=\"announcement_title\" form=\"new\" placeholder=\"Announcement title goes here\"></textarea>");
-            out.println("<textarea name=\"announcement_content\" form=\"new\" placeholder=\"Announcement content goes here\"></textarea>");
-            out.println("<button class=\"button\" onclick=\"submit(\'new\');\"> Create</button>");
+            out.println("<textarea name=\"announcement_title\" form=\"new-announcement\" placeholder=\"Announcement title goes here\"></textarea>");
+            out.println("<textarea name=\"announcement_content\" form=\"new-announcement\" placeholder=\"Announcement content goes here\"></textarea>");
+            out.println("<br>");
+            out.println("<button class=\"button\" onclick=\"submit(\'new-announcement\');\"> Create</button>");
             
             
             
@@ -77,7 +79,7 @@ public class serv_CreateAnnouncement extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Announcement created", "announcement-created");
             
             Connection conn = login.loginToDB(out);
@@ -111,7 +113,12 @@ public class serv_CreateAnnouncement extends HttpServlet {
                 out.println("</form>");
                 
             } catch (SQLException ex) {
-                out.println(ex);
+                if (ex.getMessage().contains("Column 'announcement_title' cannot be null")) {
+                    out.println("Your announcement needs a title! Please try again.");
+                    site.printBackButton();
+                } else {
+                    out.println(ex);
+                }
             }
             
             

@@ -49,7 +49,7 @@ public class ModuleHelper {
             addStudentsToNewModule(conn, out);
             
             out.println(
-                "<form action=\"getModule\" method=\"get\">\n" +
+                "<form action=\"getModule\" method=\"post\">\n" +
 "                   <input class=\"button\" type=\"Submit\" value=\"Get all Modules from Database\">   \n" +
 "               </form>");
         }

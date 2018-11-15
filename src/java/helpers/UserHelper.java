@@ -321,13 +321,22 @@ public class UserHelper {
             }
     }
     
+    public static ResultSet getUserDetails (PrintWriter out, Connection conn, String user_id) {
+        String sqlString = "SELECT * FROM users WHERE user_id = ?";
+        try {
+            PreparedStatement getUser = conn.prepareStatement(sqlString);
+            getUser.setString(1, user_id);
+            ResultSet rset = getUser.executeQuery();
+            return rset;
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+        return null;
+    }
+    
     public static void printUserPage (PrintWriter out, Connection conn, String user_id) {
-        
-            String sqlString = "SELECT * FROM users WHERE user_id = ?";
             try {
-                PreparedStatement getUser = conn.prepareStatement(sqlString);
-                getUser.setString(1, user_id);
-                ResultSet rset = getUser.executeQuery();
+                ResultSet rset = getUserDetails(out, conn, user_id);
                 
                 while (rset.next()) {
                     String username = rset.getString("user_username");

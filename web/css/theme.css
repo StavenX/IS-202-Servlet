@@ -489,6 +489,45 @@ td {
     border: 1px solid var(--almostblack);
 }
 
+.one-announcement {
+    border: 1px solid var(--almostblack);
+    margin: 5px;
+}
+
+.one-announcement p, .one-announcement h3 {
+    margin-left: 5px;
+}
+
+.announcement-byline {
+    background-color: var(--almostblack);
+    color: var(--background);
+    width: 100%;
+    border: 1px solid black;
+}
+
+.announcement-byline * {
+    display: inline;
+    font-style: italic;
+    margin: 5px;
+    padding-bottom: 5px;
+}
+
+.announcement-byline img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+#getAuthor:hover {
+    cursor: pointer;
+}
+
+#new-announcement textarea {
+    margin: 20px 0;
+    display: list-item;
+    min-width: 300px;
+    min-height: 50px;
+}
+
 .pointer-hover:hover {
     cursor: pointer;
 }

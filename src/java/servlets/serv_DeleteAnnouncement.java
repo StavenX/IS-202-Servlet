@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import helpers.AnnouncementHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
 import java.io.IOException;
@@ -22,8 +23,8 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
-public class serv_DeleteModule extends HttpServlet {
+@WebServlet(name = "deleteModule", urlPatterns = {"/deleteAnnouncement"})
+public class serv_DeleteAnnouncement extends HttpServlet {
     Login login = new Login();
 
     /**
@@ -41,16 +42,18 @@ public class serv_DeleteModule extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Delete module", "delete-module");
+            site.printHead("Deleted announcement", "deleted-announcement");
             
-            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet deleteAnnouncement at " + request.getContextPath() + "</h1>");
             
             Connection conn = login.loginToDB(out);
             
-            String module_id = request.getParameter("module_id");
+            String announcement_id = request.getParameter("announcement_id");
             
-            String results = ModuleHelper.deleteModule(module_id, conn);
+            String results = AnnouncementHelper.deleteAnnouncement(announcement_id, conn);
             out.println("<p>" + results + "</p>");
+            
+            site.printBackButton();
             
             site.closeAndPrintEnd(login);
         }
@@ -67,7 +70,6 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
     }
 
     /**
