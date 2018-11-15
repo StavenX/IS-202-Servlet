@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import helpers.CourseHelper;
 import helpers.HtmlHelper;
 import helpers.UserHelper;
 import java.io.IOException;
@@ -45,13 +46,14 @@ public class serv_AddToCourse extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Added to course", "");
             
-            String course_id = request.getParameter("course_id");
-            String student_id = request.getParameter("student_id");
-            
             Connection conn = login.loginToDB(out);
             
-            //adds user to the course
-            UserHelper.addUserToCourse(course_id, student_id, conn, out);
+            String course_id = request.getParameter("course_id");
+            String user_ids[] = request.getParameterValues("marked");
+            for (String user_id : user_ids) {
+                UserHelper.addUserToCourse(course_id, user_id, conn, out);
+            }
+            
             
             out.println("<form action=\"oneCourse\" method=\"post\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
             out.println("<button class=\"button\">Go to course</button></form>");
@@ -81,14 +83,15 @@ public class serv_AddToCourse extends HttpServlet {
             
             Connection conn = login.loginToDB(out);
             
+            String course_name = CourseHelper.getCourseName(course_id, conn);
+            
             //button for adding a student to the course using their id
             //(also adds them to all modules in the course
             out.println("<div class=\"add-to-course-box\">");
-            out.println("<h2>Type user id to add that user to this course</h2>");
-            out.println("<form action=\"addToCourse\" method=\"get\">");
-            out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
-            out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
-            out.println("<button class=\"button\">Add to course</button>");
+            out.println("<h2>Mark users you wish to add</h2>");
+            out.println("<form id=\"test\" action=\"addToCourse\" method=\"get\">");
+            out.println(CourseHelper.invisInputs(course_id, "Lecturer"));
+            out.println("<button class=\"button\">Add to " + course_name + "</button>");
             out.println("</form>");
             out.println("</div>");
             

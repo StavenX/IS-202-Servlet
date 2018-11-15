@@ -204,6 +204,7 @@ public class UserHelper {
                 
                 //form containing student information
                 out.println("<div class=\"student-container-item\">");
+                out.println("<input form=\"test\" type=\"checkbox\" name=\"marked\" value=\"" + user_id + "\">");
                 out.println("<form action=\"oneUser\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
