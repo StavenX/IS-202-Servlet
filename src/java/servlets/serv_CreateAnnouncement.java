@@ -50,14 +50,14 @@ public class serv_CreateAnnouncement extends HttpServlet {
             String course_name = CourseHelper.getCourseName(course_id, conn);
             
             out.println("<h1>Create a new announcement for course " + course_name + " </h2>");
-            out.println("<form id=\"new-announcement\" action=\"createAnnouncement\" method=\"post\">");
+            out.println("<form id=\"new-announcementt\" action=\"createAnnouncement\" method=\"post\">");
             out.println("<input type=\"hidden\" name=\"announcement_author_id\" value=\"" + author + "\">");
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
             out.println("</form>");
-            out.println("<textarea name=\"announcement_title\" form=\"new-announcement\" placeholder=\"Announcement title goes here\"></textarea>");
-            out.println("<textarea name=\"announcement_content\" form=\"new-announcement\" placeholder=\"Announcement content goes here\"></textarea>");
+            out.println("<textarea name=\"announcement_title\" form=\"new-announcementt\" placeholder=\"Announcement title goes here\"></textarea>");
+            out.println("<textarea name=\"announcement_content\" form=\"new-announcementt\" placeholder=\"Announcement content goes here\"></textarea>");
             out.println("<br>");
-            out.println("<button class=\"button\" onclick=\"submit(\'new-announcement\');\"> Create</button>");
+            out.println("<button class=\"button\" onclick=\"submit(\'new-announcementt\');\"> Create</button>");
             
             
             
@@ -84,7 +84,6 @@ public class serv_CreateAnnouncement extends HttpServlet {
             
             Connection conn = login.loginToDB(out);
             
-            String announcement_id = request.getParameter("announcement_id");
             String announcement_title = request.getParameter("announcement_title");
             String announcement_content = request.getParameter("announcement_content");
             String course_id = request.getParameter("course_id");
@@ -93,19 +92,16 @@ public class serv_CreateAnnouncement extends HttpServlet {
             String course_name = CourseHelper.getCourseName(course_id, conn);
             
             try {
-                String sqlString = "INSERT INTO announcement (announcement_id, announcement_title, announcement_content, course_id, announcement_author_id)"
-                        + "VALUES (?, ?, ?, ?, ?)";
+                String sqlString = "INSERT INTO announcement (announcement_title, announcement_content, course_id, announcement_author_id)\n"
+                        + "VALUES (?, ?, ?, ?);";
                 PreparedStatement insertAnnouncement = conn.prepareStatement(sqlString);
-                insertAnnouncement.setString(1, announcement_id);
-                insertAnnouncement.setString(2, announcement_title);
-                insertAnnouncement.setString(3, announcement_content);
-                insertAnnouncement.setString(4, course_id);
-                insertAnnouncement.setString(5, announcement_author_id);
+                insertAnnouncement.setString(1, announcement_title);
+                insertAnnouncement.setString(2, announcement_content);
+                insertAnnouncement.setString(3, course_id);
+                insertAnnouncement.setString(4, announcement_author_id);
                 int amount = insertAnnouncement.executeUpdate();
                 
                 out.println(amount + " announcement(s) made");
-                
-                
                 
                 out.println("<form action=\"oneCourse\" method=\"post\">");
                 out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
@@ -115,6 +111,7 @@ public class serv_CreateAnnouncement extends HttpServlet {
             } catch (SQLException ex) {
                 if (ex.getMessage().contains("Column 'announcement_title' cannot be null")) {
                     out.println("Your announcement needs a title! Please try again.");
+                    out.println(ex);
                     site.printBackButton();
                 } else {
                     out.println(ex);

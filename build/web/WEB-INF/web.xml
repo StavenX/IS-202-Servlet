@@ -23,6 +23,8 @@
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
             <url-pattern>/About</url-pattern>
+            <url-pattern>/addToCourse</url-pattern>
+            <url-pattern>/addToModule</url-pattern>
             <url-pattern>/Calendar</url-pattern>
             <url-pattern>/createAnnouncement</url-pattern>
             <url-pattern>/createModule</url-pattern>
@@ -48,7 +50,6 @@
             <url-pattern>/oneUser</url-pattern>
             <url-pattern>/Student</url-pattern>
             <url-pattern>/updateModule</url-pattern>
-            <url-pattern>/addToModule</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
         <auth-constraint>
@@ -60,14 +61,6 @@
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
-            <url-pattern>/Module</url-pattern>
-            <url-pattern>/Student</url-pattern>
-            <url-pattern>/serv_CreateModule</url-pattern>
-            <url-pattern>/serv_CreateNewUser</url-pattern>
-            <url-pattern>/serv_CreateStudent</url-pattern>
-            <url-pattern>/serv_DeleteModule</url-pattern>
-            <url-pattern>/serv_DeleteStudent</url-pattern>
-            <url-pattern>/serv_UpdateModule</url-pattern>
             <url-pattern>/AdminSaveContact</url-pattern>
             <url-pattern>/403test</url-pattern>
         </web-resource-collection>

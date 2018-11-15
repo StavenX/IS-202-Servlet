@@ -157,8 +157,21 @@ public class UserHelper {
             return rset;
     }
     
-    public static void printAllUsers(PrintWriter out, Connection conn) {
-        printUsers(out, conn, "%");
+    //course_id = "%" to get users not in any course
+    public static ResultSet getUsersNotInCourse(Connection conn, String course_id) throws SQLException {
+            String sqlString = "SELECT *\n" +
+                                "FROM users\n" +
+                                "WHERE users.user_id NOT IN\n" +
+                                "(SELECT user_id FROM course_details\n" +
+                                "WHERE course_details.course_id LIKE ?);";
+            PreparedStatement getUsers = conn.prepareStatement(sqlString);
+            getUsers.setString(1, course_id);
+            ResultSet rset = getUsers.executeQuery();
+            return rset;        
+    }
+    
+    public static void printAllUsers(PrintWriter out, Connection conn) throws SQLException {
+        printUsers(out, conn, getUsers(conn, "%"));
     }
     
     /**
@@ -167,15 +180,13 @@ public class UserHelper {
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
-     * @param course_id
+     * @param rset users to be printed
      */
-    public static void printUsers(PrintWriter out, Connection conn, String course_id) {
+    public static void printUsers(PrintWriter out, Connection conn, ResultSet rset) {
 
         HtmlHelper site = new HtmlHelper(out);
-        PreparedStatement getModules; 
         
         try {
-            ResultSet rset = getUsers(conn, course_id);
             
             out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
@@ -184,7 +195,7 @@ public class UserHelper {
             while (rset.next()) {               
                 // The different columns
                 
-                String user_id = rset.getString("user_id");
+                String user_id = rset.getString("users.user_id");
                 String user_username = rset.getString("user_username");
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");

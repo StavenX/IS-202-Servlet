@@ -528,6 +528,20 @@ td {
     min-height: 50px;
 }
 
+.add-to-course-box {
+    border: 1px solid black;
+    padding: 5px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    max-width: 200px;
+    text-align: center;
+}
+
+.add-to-course-box * {
+    display: block;
+}
+
 .pointer-hover:hover {
     cursor: pointer;
 }

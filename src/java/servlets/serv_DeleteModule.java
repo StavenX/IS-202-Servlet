@@ -22,7 +22,7 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+@WebServlet(name = "serv_DeleteModule", urlPatterns = {"/deleteModule"})
 public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
@@ -53,6 +53,8 @@ public class serv_DeleteModule extends HttpServlet {
             out.println("<p>" + results + "</p>");
             
             site.closeAndPrintEnd(login);
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 

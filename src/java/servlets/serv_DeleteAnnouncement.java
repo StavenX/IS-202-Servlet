@@ -7,7 +7,6 @@ package servlets;
 
 import helpers.AnnouncementHelper;
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -23,7 +22,7 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteAnnouncement"})
+@WebServlet(name = "deleteAnnouncement", urlPatterns = {"/deleteAnnouncement"})
 public class serv_DeleteAnnouncement extends HttpServlet {
     Login login = new Login();
 

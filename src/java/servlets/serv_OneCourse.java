@@ -81,7 +81,7 @@ public class serv_OneCourse extends HttpServlet {
             if (role.equals("Lecturer")) {
                 //button for adding a student to the course using their id
                 //(also adds them to all modules in the course
-                out.println("<form action=\"addToCourse\">");
+                out.println("<form action=\"addToCourse\" method=\"get\">");
                 out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
                 out.println("<input type=\"text\" name=\"student_id\" placeholder=\"student id\">");
                 out.println("<button class=\"button\">Add to course</button>");
@@ -120,7 +120,15 @@ public class serv_OneCourse extends HttpServlet {
             out.println("<form action=\"oneCourseDetails\" method=\"post\">");
             out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Students\">");
-            out.println("</form");
+            out.println("</form>");
+            
+            out.println("<br>");
+            
+            out.println("<h3>These students are not in the course, can be added through this link</h3>");
+            out.println("<form action=\"addToCourse\" method=\"post\">");
+            out.println(CourseHelper.invisInputs(course_id, role));
+            out.println("<button class=\"button\">Students not in course</button>");
+            out.println("</form>");
             
             site.useJS("submitform.js");
             site.closeAndPrintEnd(login);

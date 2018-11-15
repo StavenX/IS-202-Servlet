@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -78,24 +79,27 @@ public class serv_OneCourseDetails extends HttpServlet {
             out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<button class=\"button\">Back to " + course_name + "</button>");
             out.println("</form>");
-            
-            switch(details) {
-                case "modules":
-                    ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");
-                    break;
-                    
-                case "students":
-                    UserHelper.printUsers(out, conn, course_id);
-                    break;
-                    
-                case "announcements":
-                    ResultSet rset = AnnouncementHelper.getAnnouncements(50, conn, course_id);
-                    int amount = AnnouncementHelper.printAnnouncements(out, conn, rset, role);                    
-                    out.println("Printed " + amount + " newest announcements. If you want to see more please contact your system admin.");
-                    break;
-                    
-                default:
-                    out.println("you done goofed, Tobias.");
+            try {
+                switch(details) {
+                    case "modules":
+                        ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");
+                        break;
+
+                    case "students":
+                        UserHelper.printUsers(out, conn, UserHelper.getUsers(conn, course_id));
+                        break;
+
+                    case "announcements":
+                        ResultSet rset = AnnouncementHelper.getAnnouncements(50, conn, course_id);
+                        int amount = AnnouncementHelper.printAnnouncements(out, conn, rset, role);                    
+                        out.println("Printed " + amount + " newest announcements. If you want to see more please contact your system admin.");
+                        break;
+
+                    default:
+                        out.println("you done goofed, Tobias.");
+                }
+            } catch (SQLException ex) {
+                out.println(ex);
             }
             site.useJS("buttons-for-delete.js");
             site.closeAndPrintEnd(login);
