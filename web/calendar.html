@@ -15,9 +15,25 @@
     <div id="boi2">
     </div>
         <div id="test">
-            
+        </div>
+        <div>
+            <form>
+                <select name="study">
+                    <option value="ITandIS1">IT and information systems (1. semester)</option>
+                    <option value="ITandIS2">IT and information systems (2. semester)</option>
+                </select><br>
+                <select name="course">
+                    <option value="IS-200">IS-200</option>
+                    <option value="IS-201">IS-201</option>
+                    <option value="IS-202">IS-202</option>
+                </select><br>
+                <input type="text" name="Lecturers">
+            </form>
         </div>
     </div>
+        <script>
+        
+        </script>
     <script>
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -84,11 +100,26 @@
             }
             HTML += ("</tbody></table><br>");
             document.getElementById("boi").innerHTML = HTML;
-
         }
     </script>
     
     <script>
+        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
+        function loadEvents(v) {
+            var f = parseInt(v);
+            var t = f.toString();
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4) {
+                    var response = xhttp.responseText;
+                    
+                    HTML2 += ("f");
+                }
+            };
+            xhttp.open("GET", "Calendar", true);
+            xhttp.send();
+        }
+        
         function fillTimetable(n)
         {
             if (n.getDay() % 7 == 0) {
@@ -99,7 +130,7 @@
             }
             n.setHours(8, 0, 0, 0);
 
-            var HTML2 = ("");
+            
             HTML2 += ("<table id =\"timetable\"><thead><tr>");
             HTML2 += ("<th>&nbsp;</th>");
             
@@ -118,7 +149,8 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td>" + n + "</td>");
+                    HTML2 += ("<td id=\"n.getTime()\">" + n + "</td>");
+                    loadEvents(n.getTime());
                     n.setDate(n.getDate()+1);
                 }
                 n.setDate(n.getDate()-7);
@@ -131,8 +163,8 @@
     </script>
     <script>
         // Buttons for access next and previous months
-        document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months boi</button>");
-        document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months boi</button>");
+        document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months</button>");
+        document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months</button>");
         
         function nextMonths() {
             currentDate.setMonth(currentDate.getMonth());
@@ -160,20 +192,6 @@
         function newTT (k) {
             var s = new Date(parseInt(k));
             fillTimetable(s);
-        }
-    </script>
-    <script>
-        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
-        function loadEvents() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (xhttp.readyState == 4) {
-                    var response = xhttp.responseText;
-                    alert(response);
-                }
-            };
-            xhttp.open("GET", "Calendar", true);
-            xhttp.send();
         }
     </script>
 </body>
