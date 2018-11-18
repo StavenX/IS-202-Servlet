@@ -43,7 +43,7 @@ public class serv_OneCourse extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
+            doPost(request, response);
         }
     }
 
@@ -70,7 +70,10 @@ public class serv_OneCourse extends HttpServlet {
             site.printHead(course_name, "single-course");
             
             
-            out.println("You are now viewing course " + course_name);
+            
+            out.println("<div class=\"course-header\">");
+            out.println("<h1 class=\"course-title\">" + course_name + "</h1>");
+            out.println("</div>");           
             
             
             AccessTokenHelper a = new AccessTokenHelper(request);

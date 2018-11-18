@@ -188,9 +188,6 @@ public class UserHelper {
         
         try {
             
-            out.println("the records selected are:" + "<br>");
-            int rowCount = 0; 
-            
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
@@ -207,7 +204,6 @@ public class UserHelper {
                 out.println("<input form=\"test\" type=\"checkbox\" name=\"marked\" value=\"" + user_id + "\">");
                 out.println("<form action=\"oneUser\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
-                out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div>User Id:" + user_id + "</div>");
                 out.println("<div>Username:" + user_username + "</div>");
                 out.println("<div>First name:" + user_fname + "</div>");
@@ -226,9 +222,7 @@ public class UserHelper {
                 site.printDeleteButton("deleteUser", "user_id", user_id);
                 out.println("</div>");
                 out.println("</div>");
-                rowCount++;
             }
-            out.println("Total number of records: " + rowCount);
             
             //prints javascript
             site.useJS("buttons-for-delete.js");

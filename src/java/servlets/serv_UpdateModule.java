@@ -39,7 +39,7 @@ public class serv_UpdateModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             
             //body id 'invisible' makes no content on the page visible, and it should auto load
             //due to javascript 

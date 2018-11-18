@@ -17,6 +17,22 @@ import java.sql.SQLIntegrityConstraintViolationException;
  */
 public class ModuleHelper {
     
+    public static String getModuleName (String module_id, Connection conn) {
+        String moduleName = "";
+        try {
+            PreparedStatement getName = conn.prepareStatement("SELECT module_name FROM module WHERE module_id LIKE ?");
+            getName.setString(1, module_id);
+            ResultSet rset = getName.executeQuery();
+            
+            while (rset.next()) {
+                moduleName = rset.getString("module_name");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return moduleName;
+    }
+    
         /**
      * Inserts a module into the module table.
      * 
@@ -30,7 +46,6 @@ public class ModuleHelper {
      * @param conn The connection object
      * @param out The printwriter, for printing errors etc
      */
-        
     public static void insertModule(String name, String desc, String points, String course_id, Connection conn, PrintWriter out) {
         
         HtmlHelper site = new HtmlHelper(out);
@@ -143,6 +158,11 @@ public class ModuleHelper {
             case "score":
                 handledOrder += "module_details.module_points";
                 break;
+                
+            case "status":
+                handledOrder += "FIELD(module_details.module_status, "
+                        + "\'Not delivered\', \'Pending\', \'Completed\') ";
+                break;
 
             case "id":
             default:    
@@ -151,11 +171,11 @@ public class ModuleHelper {
         
         //what direction the order is in
         switch (direction.toLowerCase()) {
-            case "^":    
+            case "v":    
                 handledOrder += " DESC;";
                 break;
 
-            case "v":
+            case "^":
             default:        
                 handledOrder += " ASC;";
         }
@@ -218,10 +238,11 @@ public class ModuleHelper {
         try {
             
             
-            String[] sortingTypes = {"Course", "Name", "Points", "Score"};
+            String[] sortingTypes = {"Course", "Name", "Points", "Score", "Status"};
             
             out.println("<form action=\"myProfile\" method=\"post\">");
             out.println("<div class=\"sort-by-container\">");
+            out.println("<h2>Sort modules by </h2>");
             printOrderBy(out, orderBy, sortingTypes);
             out.println("</div>");
             out.println("</form>");
@@ -271,7 +292,7 @@ public class ModuleHelper {
     }
     
     public static void printOrderBy(PrintWriter out, String currentOrder, String[] options) {
-        out.println("<select name=\"orderBy\" class=\"button\">");
+        out.println("<select name=\"orderBy\" class=\"button\" onchange=\"this.form.submit();\">");
         for (String option : options) {
             String currentOption = (option.equals(currentOrder)) ? "<option selected>" + option + "</option>" : "<option>" + option + "</option>";
             out.println(currentOption);
@@ -279,8 +300,15 @@ public class ModuleHelper {
         }
         out.println("</select>");
         out.println("<div class=\"direction-container\">");
-        out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
-        out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
+        out.println("<button class=\"button order-direction\" name=\"orderDirection\" value=\"^\">"
+                + "<img class=\"up-arrow\"src=\"images/arrow.svg\">"
+                + "</button>");
+        out.println("<button class=\"button order-direction\" name=\"orderDirection\" value=\"V\">"
+                + "<img class=\"down-arrow\"src=\"images/arrow.svg\">"
+                + "</button>");
+        //old arrow buttons
+        //out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
+        //out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
         out.println("</div>");
     }
     
@@ -304,10 +332,6 @@ public class ModuleHelper {
             
             ResultSet rset = getModules(out, conn, orderBy, direction, course_id);
             
-            out.println("the records selected are:" + "<br>");
-            int rowCount = 0; 
-            
-                
             PreparedStatement getCourseName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id = ?");
             getCourseName.setString(1, course_id);
             ResultSet courseResult = getCourseName.executeQuery();
@@ -320,7 +344,7 @@ public class ModuleHelper {
             //"sort by"-buttons and necessary parameters
             out.println("<div class=\"sort-by-container\">");
             
-            out.println("<h2>Sort by: </h2>");
+            out.println("<h2>Sort modules by: </h2>");
             out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
             
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
@@ -332,6 +356,8 @@ public class ModuleHelper {
             printOrderBy(out, orderBy, sortingTypes);
             out.println("</form>");
             out.println("</div>");
+            
+            out.println("<div class=\"modules-container\">");
             
             // While there exists more entries (rows?)
             while (rset.next()) {               
@@ -355,7 +381,6 @@ public class ModuleHelper {
                 out.println("<div class=\"module-container\">");
                 out.println("<form action=\"oneModule\" method=\"get\">");
                 out.println("<input class=\"invisible\" name=\"module_id\" value=\"" + module_id + "\">");
-                out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"modid\">Module Id:" + module_id + "</div>");
                 out.println("<div>Name:" + module_name + "</div>");
                 out.println("<div>Description:" + module_desc + "</div>");
@@ -368,10 +393,8 @@ public class ModuleHelper {
                     site.printDeleteButton("deleteModule", "module_id", module_id);
                 }
                 out.println("</div>");
-                
-                rowCount++;
             }
-            out.println("Total number of records: " + rowCount);
+            out.println("</div>");
             
             site.useJS("buttons-for-delete.js");
         }
@@ -383,44 +406,62 @@ public class ModuleHelper {
         }       
     }
     
-    public static void printOneModule(PrintWriter out, Connection conn, String module_id) {
-        PreparedStatement getOneModule;
+    public static ResultSet getOneModule(Connection conn, String module_id) throws SQLException {
+        String sqlString = "SELECT * FROM module WHERE module_id = ?";
+        PreparedStatement getOneModule = conn.prepareStatement(sqlString);
+        getOneModule.setString(1, module_id);
+        ResultSet rset = getOneModule.executeQuery();
+        
+        return rset;
+    }
+    
+    public static void printOneModule(PrintWriter out, Connection conn, String module_id, String role) {
         
         try {
-            getOneModule = conn.prepareStatement("SELECT * FROM module WHERE module_id = ?");
-            getOneModule.setString(1, module_id);
-            
-            ResultSet rset = getOneModule.executeQuery();
+            ResultSet rset = getOneModule(conn, module_id);
             
             while (rset.next()) {
+                String module_points = rset.getString("module_points");
                 String module_name = rset.getString("module_name");
                 String module_desc = rset.getString("module_desc");
-                String module_points = rset.getString("module_points");
                 
-                out.println("<div>");
-                out.println("<form action=\"updateModule\" method=\"get\">");
+                String displayTypeClass = "one-module-student-view";
+                if(role.toLowerCase().equals("lecturer")) {
+                    displayTypeClass = "one-module-lecturer-view";
+                }
+                
+                out.println("<div class=\"one-module-info-container\">");
+                out.println("<form id=\"update-module\" action=\"updateModule\" method=\"get\">");
                 
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module name</p>");
-                out.println("<input type=\"text\" name=\"module_name\" value=\"" + module_name + "\" disabled>");
+                //points
+                out.println("<div class=\"" + displayTypeClass + " module-edit-input\">");
+                out.println("<p class=\"module-input-title\">Module points</p>");
+                out.println("<input class=\"module-input\" type=\"text\" name=\"module_points\" value=\"" + module_points + "\" disabled>");
                 out.println("</div>");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module description</p>");
-                out.println("<input type=\"text\" name=\"module_desc\" value=\"" + module_desc + "\" disabled>");
+                //title
+                out.println("<div class=\"" + displayTypeClass + " module-edit-input\">");
+                out.println("<p class=\"module-input-title\">Module name</p>");
+                out.println("<input class=\"module-input\" type=\"text\" name=\"module_name\" value=\"" + module_name + "\" disabled>");
                 out.println("</div>");
                 
-                out.println("<div class=\"inline-block module-edit-input\">");
-                out.println("<p>Module points</p>");
-                out.println("<input type=\"text\" name=\"module_points\" value=\"" + module_points + "\" disabled>");
-                out.println("</div>");
                 
-                out.println("<input class=\"button\" id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
-                out.println("<input class=\"button\" id=\"one-module-save\" type=\"submit\" value=\"Save\">");
+                //description
+                out.println("<div class=\"" + displayTypeClass + " module-edit-input\">");
+                out.println("<p class=\"module-input-title\">Module description</p>");
+                out.println("<textarea class=\"module-input\" name=\"module_desc\" disabled>" + module_desc + "</textarea>");
+                out.println("</div>");
                 
                 out.println("</form>");
+                
+                
+                if(role.toLowerCase().equals("lecturer")) {
+                //edit / save buttons
+                out.println("<input class=\"button\" id=\"one-module-edit\" type=\"button\" value=\"Edit module\" onclick=\"enable();\">");
+                out.println("<input class=\"button\" id=\"one-module-save\" type=\"submit\" value=\"Save\" onclick=\"submit(\'update-module\');\">");
+                }
                 
                 out.println("</div>");
                 

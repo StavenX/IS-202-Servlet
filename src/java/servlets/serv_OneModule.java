@@ -5,7 +5,6 @@
  */
 package servlets;
 
-import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
 import helpers.ModuleHelper;
+import helpers.UserHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,25 +47,23 @@ public class serv_OneModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Single module", "one-module-container");
             
+            String role = UserHelper.getUserRole(request);
+            
             String module_id = request.getParameter("module_id");
             String orderBy = request.getParameter("orderBy");
             if (orderBy == null) {
                 orderBy = "";
             }
+                       
+            Connection conn = login.loginToDB(out);
             
+            String module_name = ModuleHelper.getModuleName(module_id, conn);
             
-            Connection conn;
-            conn = login.loginToDB(out);
+            site.printBackButton();
+            
             out.println("<h2>Viewing a single module</h2>");
             
-            ModuleHelper.printOneModule(out, conn, module_id);            
-            
-            out.println("<div class=\"module-student-list\">");
-            
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            String role = a.getUserRole();
-            
-            
+            ModuleHelper.printOneModule(out, conn, module_id, role);     
             
             if (role.equals("Lecturer")) {
                 String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max_points\',\n" +
@@ -91,12 +89,15 @@ public class serv_OneModule extends HttpServlet {
                     default: sqlString += "\'Pending\', \'Not Delivered\', \'Completed\');";
                 }
                 
+                
                 out.println("<form action=\"oneModule\" method=\"get\" class=\"one-module-sort\">");
+                
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
                 out.println("<h2>Order module deliveries by:</h2>");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Not delivered\">");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Pending\">");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Completed\">");
+                
                 out.println("</form>");
                 
                 try {
@@ -107,6 +108,9 @@ public class serv_OneModule extends HttpServlet {
                     
                     //is true if rset isn't empty
                     if (rset.isBeforeFirst()) {
+                        
+                        
+                        out.println("<div class=\"module-student-list\">");
                         out.println("<table class=\"module-students-table\">");
                         out.println("<tr>");
                         out.println("<th>Name</th>");
@@ -118,7 +122,7 @@ public class serv_OneModule extends HttpServlet {
                             String user_name = rset.getString("user_username");
                             String user_id = rset.getString("student_id");
                             String course_name = rset.getString("course_name");
-                            String module_name = rset.getString("module_name");
+                            module_name = rset.getString("module_name");
                             String module_desc = rset.getString("module_desc");
                             String max_points = rset.getString("max_points");
                             String your_points = rset.getString("your_points");
@@ -138,7 +142,8 @@ public class serv_OneModule extends HttpServlet {
                             out.println("</tr>");
                             out.println("</form>");
                         }
-                        out.println("</table>");
+                        out.println("</table>");                        
+                        out.println("</div>");
                     } else {
                         out.println("<p style=\"text-align: center\">No students have this module, check if db mistake</p>");
                     }
@@ -147,9 +152,9 @@ public class serv_OneModule extends HttpServlet {
                     out.println("SQL error: " + ex);
                 }
             }
-            out.println("</div>");
-            site.useJS("editmodule.js");
             site.useJS("somebackgrounds.js");
+            site.useJS("editmodule.js");
+            site.useJS("submitform.js");
             
             site.closeAndPrintEnd(login);
         }

@@ -79,6 +79,15 @@ public class serv_OneCourseDetails extends HttpServlet {
             out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<button class=\"button\">Back to " + course_name + "</button>");
             out.println("</form>");
+            
+            //link to add students who isn't in the course
+            if(role.toLowerCase().equals("lecturer")) {
+                out.println("<form action=\"addToCourse\" method=\"post\">");
+                out.println(CourseHelper.invisInputs(course_id, role));
+                out.println("<button class=\"button\">View students not in this course</button>");
+                out.println("</form>");
+            }
+            
             try {
                 switch(details) {
                     case "modules":
