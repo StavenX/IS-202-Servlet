@@ -39,6 +39,7 @@ public class serv_Calendar extends HttpServlet {
             Connection conn;
             conn = dbLogin.loginToDB(out);
             CalendarHelper.getEvent(out, conn);
+            dbLogin.close();
         }
     }
     

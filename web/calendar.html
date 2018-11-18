@@ -105,22 +105,20 @@
     </script>
     
     <script>
-        
         document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
         function loadEvents() {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (xhttp.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(xhttp.responseText);
-                    var sDate = response["startDate"];
-                    var description = response["description"];
-                    var lecturers = response["lecturers"];
-                    var courseID = response["courseID"];
-                    console.log(response, sDate);
-                    document.getElementById(sDate).innerHTML = ("<td>" + "<span> description: " + description + 
-                                                                "</span><br><span> lecturers: " + lecturers +
-                                                                "</span><br><span> Course: " + courseID + 
-                                                                "</span></td>");
+                    for (var r = 0; r < response.length; r++) {
+                        var obj = response[r];
+                        console.log(obj.startDate);
+                        document.getElementById(obj.startDate).innerHTML = ("<td>" + "<span> description: " + obj.description + 
+                                                                    "</span><br><span> lecturers: " + obj.lecturers +
+                                                                    "</span><br><span> Course: " + obj.courseID + 
+                                                                    "</span></td>");
+                    }
                 }
             };
             xhttp.open("GET", "Calendar", true);
@@ -156,7 +154,7 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td id=" + n.getTime() + ">" + n + "</td>");
+                    HTML2 += ("<td id=" + n.getTime() + "></td>");
                     
                     n.setDate(n.getDate()+1);
                 }
