@@ -75,18 +75,7 @@ public class serv_OneCourseDetails extends HttpServlet {
             orderBy = (orderBy == null) ? "" : orderBy;
             direction = (direction == null) ? "" : direction;
             
-            out.println("<form action=\"oneCourse\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, role));
-            out.println("<button class=\"button\">Back to " + course_name + "</button>");
-            out.println("</form>");
-            
-            //link to add students who isn't in the course
-            if(role.toLowerCase().equals("lecturer")) {
-                out.println("<form action=\"addToCourse\" method=\"post\">");
-                out.println(CourseHelper.invisInputs(course_id, role));
-                out.println("<button class=\"button\">View students not in this course</button>");
-                out.println("</form>");
-            }
+            out.println(CourseHelper.backToCourseButton(course_id, course_name, role));
             
             try {
                 switch(details) {
@@ -96,6 +85,14 @@ public class serv_OneCourseDetails extends HttpServlet {
 
                     case "students":
                         UserHelper.printUsers(out, conn, UserHelper.getUsers(conn, course_id));
+                        //link to add students who isn't in the course
+                        if(role.toLowerCase().equals("lecturer")) {
+                            out.println("<form action=\"addToCourse\" method=\"post\">");
+                            out.println(CourseHelper.invisInputs(course_id, role));
+                            out.println("<button class=\"button\">View students not in this course</button>");
+                            out.println("</form>");
+                        }
+            
                         break;
 
                     case "announcements":

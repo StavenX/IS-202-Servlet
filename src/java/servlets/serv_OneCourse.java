@@ -112,7 +112,7 @@ public class serv_OneCourse extends HttpServlet {
             out.println("</form>");
             
             //view modules in course
-            out.println("<h3>Modules in this course (sort buttons not working correctly):</h3>");
+            out.println("<h3>Modules in this course:</h3>");
             out.println("<form action=\"oneCourseDetails\" method=\"post\">");
             out.println(CourseHelper.invisInputs(course_id, role));
             out.println("<input type=\"submit\" class=\"button\" name=\"details\" value=\"Modules\">");

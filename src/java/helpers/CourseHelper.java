@@ -24,6 +24,14 @@ public class CourseHelper {
         return str;
     }
     
+    public static String backToCourseButton(String course_id, String course_name, String role) {
+        String str ="<form action=\"oneCourse\" method=\"post\">"
+                + CourseHelper.invisInputs(course_id, role)
+                + "<button class=\"button\">Back to " + course_name + "</button>"
+                + "</form>";
+        return str;
+    }
+    
     /**
      * shortcut method for selecting all courses
      * @param out

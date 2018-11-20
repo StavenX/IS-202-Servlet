@@ -95,6 +95,9 @@ public class serv_AddToCourse extends HttpServlet {
             out.println("</form>");
             out.println("</div>");
             
+            
+            out.println(CourseHelper.backToCourseButton(course_id, course_name, "Lecturer"));
+            
             try {
                 ResultSet rset = UserHelper.getUsersNotInCourse(conn, course_id);
                 

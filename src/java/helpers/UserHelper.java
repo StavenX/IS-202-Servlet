@@ -125,7 +125,7 @@ public class UserHelper {
 "               </form>");
         }
         catch (SQLIntegrityConstraintViolationException ex) {
-            String error = "";
+            String error;
             if (ex.getMessage().contains("Duplicate entry")) {
                 error = "Username already taken, try another";
             } else {
@@ -170,8 +170,12 @@ public class UserHelper {
             return rset;        
     }
     
-    public static void printAllUsers(PrintWriter out, Connection conn) throws SQLException {
-        printUsers(out, conn, getUsers(conn, "%"));
+    public static void printAllUsers(PrintWriter out, Connection conn){
+        try {
+            printUsers(out, conn, getUsers(conn, "%"));
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
     }
     
     /**

@@ -43,7 +43,7 @@ public class serv_CreateUser extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); 
         
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New user", "create-user");
             out.println("<form action=\"createUser\" method=\"post\">");
             out.println("<input class=\"student-input\" type=\"text\" name=\"user_username\" placeholder=\"Insert username\">");   

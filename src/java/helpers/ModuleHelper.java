@@ -56,7 +56,6 @@ public class ModuleHelper {
             prepInsert.setString(3, site.checkIfValidText(points));
             prepInsert.setString(4, site.checkIfValidText(course_id));
             
-            System.out.println("The SQL query is: " + prepInsert.toString() ); // debug
             int countInserted = prepInsert.executeUpdate();           
             out.println("<p>" + countInserted + " module created.</p>");  
             
@@ -103,7 +102,7 @@ public class ModuleHelper {
             }
         }
         catch (SQLException ex) {
-            System.out.println(ex);
+            out.println(ex);
         }
     }
     
@@ -119,10 +118,7 @@ public class ModuleHelper {
             prepUpdate.setString(2, site.checkIfValidText(desc));
             prepUpdate.setString(3, site.checkIfValidText(points));
             prepUpdate.setString(4, site.checkIfValidText(id));
-            
-            System.out.println("The SQL query is: " + prepUpdate.toString() ); // debug
             int countInserted = prepUpdate.executeUpdate();         
-            System.out.println(countInserted + " records inserted.\n");  
             out.println(countInserted + " records updated.\n");  
             
         }

@@ -23,16 +23,8 @@
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
             <url-pattern>/About</url-pattern>
-            <url-pattern>/addToCourse</url-pattern>
-            <url-pattern>/addToModule</url-pattern>
             <url-pattern>/Calendar</url-pattern>
-            <url-pattern>/createAnnouncement</url-pattern>
-            <url-pattern>/createModule</url-pattern>
-            <url-pattern>/createUser</url-pattern>
-            <url-pattern>/deleteAnnouncement</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
-            <url-pattern>/deleteModule</url-pattern>
-            <url-pattern>/deleteUser</url-pattern>
             <url-pattern>/FileUpload</url-pattern>
             <url-pattern>/getCourse</url-pattern>
             <url-pattern>/getMessage</url-pattern>
@@ -66,6 +58,7 @@
             <url-pattern>/addToModule</url-pattern>
             <url-pattern>/createAnnouncement</url-pattern>
             <url-pattern>/createModule</url-pattern>
+            <url-pattern>/createUser</url-pattern>
             <url-pattern>/deleteAnnouncement</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
             <url-pattern>/deleteModule</url-pattern>

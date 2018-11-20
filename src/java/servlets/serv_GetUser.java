@@ -68,7 +68,7 @@ public class serv_GetUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try (PrintWriter out = response.getWriter()) {
-            
+            doGet(request, response);
         }
     }
 
