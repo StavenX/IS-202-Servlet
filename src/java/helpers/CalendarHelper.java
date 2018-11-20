@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
+import java.util.Calendar;
 
 /**
  *
@@ -18,13 +19,19 @@ import org.json.simple.JSONArray;
  */
 
 public class CalendarHelper {
-      public static void getEvent (PrintWriter out, Connection conn) {
+      public static void getEvent (PrintWriter out, Connection conn, String reqDate, String reqDegree) {
         
         Statement stmt;
+        Calendar cal = Calendar.getInstance();
         
         try {
+
+            cal.setTimeInMillis(Long.parseLong(reqDate));
+            int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
+            System.out.println(reqDegree);
+            
             JSONArray jsonA = new JSONArray();
-            String query = ("SELECT * FROM calendar_event;");
+            String query = ("SELECT * FROM calendar_event WHERE ce_weekOfYear =" + weekOfYear + ";");
             
             stmt = conn.createStatement();
             ResultSet rset = stmt.executeQuery(query);
@@ -38,8 +45,6 @@ public class CalendarHelper {
                 jsonA.add(i, jsonResponse);
                 i++;
             }
-            System.out.println(jsonA);
-            System.out.println(i);
             out.print(jsonA);
         }
         catch (Exception e) {

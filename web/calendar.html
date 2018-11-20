@@ -19,16 +19,10 @@
         </div>
         <div>
             <form>
-                <select name="study">
-                    <option value="ITandIS1">IT and information systems (1. semester)</option>
-                    <option value="ITandIS2">IT and information systems (2. semester)</option>
+                <select id="selected" onchange="changeSelectedDegree()">
+                    <option value="IT og IS semester 1">IT and information systems (1. semester)</option>
+                    <option value="IT og IS semester 2">IT and information systems (2. semester)</option>
                 </select><br>
-                <select name="course">
-                    <option value="IS-200">IS-200</option>
-                    <option value="IS-201">IS-201</option>
-                    <option value="IS-202">IS-202</option>
-                </select><br>
-                <input type="text" name="Lecturers">
             </form>
         </div>
     </div>
@@ -40,6 +34,13 @@
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
         today.setMilliseconds(0);
+        var selectedDegree = ("bajs");
+        
+        function changeSelectedDegree() {
+            var j = document.getElementById("selected").value;
+            selectedDegree = (j);
+            console.log(selectedDegree);
+        }
         
         // Fills three calendars
         function fillCalendar(d)
@@ -105,23 +106,21 @@
     </script>
     
     <script>
-        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
-        function loadEvents() {
+        function loadEvents(r, p) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (xhttp.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(xhttp.responseText);
                     for (var r = 0; r < response.length; r++) {
                         var obj = response[r];
-                        console.log(obj.startDate);
-                        document.getElementById(obj.startDate).innerHTML = ("<td>" + "<span> description: " + obj.description + 
+                        document.getElementById(obj.startDate).innerHTML = ("<td><span> description: " + obj.description + 
                                                                     "</span><br><span> lecturers: " + obj.lecturers +
                                                                     "</span><br><span> Course: " + obj.courseID + 
                                                                     "</span></td>");
                     }
                 }
             };
-            xhttp.open("GET", "Calendar", true);
+            xhttp.open("GET", "Calendar?currDay=" + r + "&selectedDegree=" + p, true);
             xhttp.send();
         }
         
@@ -154,7 +153,7 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td id=" + n.getTime() + "></td>");
+                    HTML2 += ("<td id=" + n.getTime() + ">" + n.getTime() + "</td>");
                     
                     n.setDate(n.getDate()+1);
                 }
@@ -164,7 +163,7 @@
             }
             HTML2 += ("</tr></tbody></table>");
             document.getElementById("boi2").innerHTML = HTML2;
-            loadEvents();
+            loadEvents(n.getTime(), selectedDegree);
         }
     </script>
     <script>
@@ -191,7 +190,7 @@
     </script>
     <script>
         function displayCurrentDay () {
-            document.getElementById(today).innerHTML = "<td class= \"currentWD\" id=" + today + ">" + today.getDate() + "</td>";
+            document.getElementById(today.getTime()).innerHTML = "<td class= \"currentWD\" id=" + today.getTime() + ">" + today.getDate() + "</td>";
         }
     </script>
     <script>

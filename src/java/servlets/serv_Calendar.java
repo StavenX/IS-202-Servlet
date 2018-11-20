@@ -36,9 +36,12 @@ public class serv_Calendar extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            String reqDate = request.getParameter("currDay");
+            String reqDegree = request.getParameter("selectedDegree");
+            
             Connection conn;
             conn = dbLogin.loginToDB(out);
-            CalendarHelper.getEvent(out, conn);
+            CalendarHelper.getEvent(out, conn, reqDate, reqDegree);
             dbLogin.close();
         }
     }
