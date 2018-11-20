@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import javax.servlet.http.HttpServletRequest;
 /**
  *
  * @author Staven
@@ -493,4 +494,58 @@ public class ModuleHelper {
         return results;
     }
     
+    
+    public static ResultSet getModuleComments(Connection conn, String module_id) throws SQLException {
+        String sqlString = "SELECT * FROM module_comment WHERE module_id LIKE ?";
+        PreparedStatement getComments = conn.prepareStatement(sqlString);
+        getComments.setString(1, module_id);
+        ResultSet rset = getComments.executeQuery();
+        
+        return rset;
+    }
+    
+    public static void printModuleComments(PrintWriter out, Connection conn, String module_id, HttpServletRequest request) {
+        try {
+            ResultSet rset = getModuleComments(conn, module_id);
+            while (rset.next()) {
+                String module_comment_id = rset.getString("module_comment_id");
+                String user_id = rset.getString("user_id");
+                String author = UserHelper.getFullNameById(conn, user_id);
+                String content = rset.getString("module_comment_content");
+                
+                out.println("<form action=\"deleteComment\" class=\"module-comment-container\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<h3>" + author + " said:</h3>");
+                out.println("<p>" + content + "</p>");
+                HtmlHelper site = new HtmlHelper(out);
+                
+                String currentuser = UserHelper.getUserId(conn, UserHelper.getUserName(request));
+                String role = UserHelper.getUserRole(request);
+                if (role.equals("Lecturer") || currentuser.equals(user_id)) {                    
+                    site.printDeleteButton("oneModule", "module_comment_id", module_comment_id);
+                }
+                out.println("</form>");
+            }
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+    }
+    
+    public static String deleteModuleComment(Connection conn, String module_comment_id) {
+        
+        String results = "";
+
+        try {
+            PreparedStatement deleteComment = conn.prepareStatement("DELETE FROM module_comment WHERE module_comment_id = ?");
+            deleteComment.setString(1, module_comment_id);
+            int amount = deleteComment.executeUpdate();
+            
+            results += amount + " comment(s) deleted.";
+        } catch (SQLException ex) {
+            results += "SQL error: " + ex;
+            return results;
+        }
+        
+        return results;
+    }
 }

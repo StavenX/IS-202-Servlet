@@ -43,7 +43,6 @@ public class serv_OneModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Single module", "one-module-container");
             
@@ -152,9 +151,23 @@ public class serv_OneModule extends HttpServlet {
                     out.println("SQL error: " + ex);
                 }
             }
+            
+            String user_id = UserHelper.getUserId(conn, UserHelper.getUserName(request));
+            
+            out.println("<h2>Comments on module</h2>");
+            
+            out.println("<form id=\"newComment\" action=\"oneModule\" method=\"post\">");
+            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+            out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+            out.println("</form>");
+            out.println("<textarea form=\"newComment\" name=\"module_comment_content\" placeholder=\"Write a comment...\"></textarea>");
+            out.println("<button class=\"button\" onclick=\"submit(\'newComment\');\">Post comment</button>");
+            
+            ModuleHelper.printModuleComments(out, conn, module_id, request);
             site.useJS("somebackgrounds.js");
             site.useJS("editmodule.js");
             site.useJS("submitform.js");
+            site.useJS("buttons-for-delete.js");
             
             site.closeAndPrintEnd(login);
         }
@@ -171,7 +184,39 @@ public class serv_OneModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().println("hei");
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("commenting", "commenting");
+            
+            
+            Connection conn = login.loginToDB(out);
+            String sqlString = "INSERT INTO module_comment (module_comment_content, module_id, user_id) VALUES (?, ?, ?);";
+            try {
+                PreparedStatement insertComment = conn.prepareStatement(sqlString);
+                
+                String content = request.getParameter("module_comment_content");
+                String module_id = request.getParameter("module_id");
+                String user_id = request.getParameter("user_id");
+                insertComment.setString(1, content);
+                insertComment.setString(2, module_id);
+                insertComment.setString(3, user_id);
+                
+                int amount = insertComment.executeUpdate();
+                out.println(amount + " inserted.");
+                out.println("<form action=\"oneModule\" method=\"get\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<input type=\"submit\" class=\"button\" value=\"Back to module\">");
+                out.println("</form>");
+                
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+            
+            site.closeAndPrintEnd(login);
+        }
+            
     }
 
     /**

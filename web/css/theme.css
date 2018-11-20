@@ -320,6 +320,16 @@ a {
     display: inline-block;
 }
 
+.module-comment-container {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid var(--almostblack);
+}
+
+.module-comment-container * {
+    margin-left: 5px;
+}
+
 /* Calendar styling starts here*/
 .calendarWrapper {
     min-width: 1300px;

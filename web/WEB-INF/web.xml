@@ -25,6 +25,7 @@
             <url-pattern>/About</url-pattern>
             <url-pattern>/Calendar</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
+            <url-pattern>/deleteComment</url-pattern>
             <url-pattern>/FileUpload</url-pattern>
             <url-pattern>/getCourse</url-pattern>
             <url-pattern>/getMessage</url-pattern>
