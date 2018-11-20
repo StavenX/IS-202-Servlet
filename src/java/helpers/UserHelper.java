@@ -201,10 +201,10 @@ public class UserHelper {
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");
                 
-                out.println("<div class=\"student-container\">");
+                out.println("<div class=\"user-container\">");
                 
                 //form containing student information
-                out.println("<div class=\"student-container-item\">");
+                out.println("<div class=\"user-box-item\">");
                 out.println("<input form=\"test\" type=\"checkbox\" name=\"marked\" value=\"" + user_id + "\">");
                 out.println("<form action=\"oneUser\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
@@ -215,13 +215,13 @@ public class UserHelper {
                 out.println("</div>");
                 
                 //"more info"-button
-                out.println("<div class=\"student-container-item\">");
-                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
+                out.println("<div class=\"user-box-item\">");
+                site.printDetailsButton();
                 out.println("</div>");
                 out.println("</form>");
                 
                 //delete-buttons
-                out.println("<div class=\"student-container-item\">");
+                out.println("<div class=\"user-box-item\">");
                 out.println("<form name=\"delete-form-" + user_id + "\" action=\"deleteUser\" method=\"get\">");
                 site.printDeleteButton("deleteUser", "user_id", user_id);
                 out.println("</div>");

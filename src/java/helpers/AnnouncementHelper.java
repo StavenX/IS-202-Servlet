@@ -55,7 +55,7 @@ public class AnnouncementHelper {
                 }
                 
                 out.println("<div class=\"one-announcement\">");
-                out.println("<div class=\"announcement-byline\">");
+                out.println("<div class=\"author-byline\">");
                 out.println("<img src=\"images/profiles/" + profilePic + "\">");
                 out.println("<form id=\"getAuthor\" action=\"oneUser\" method=\"get\" onclick=\"submit(\'getAuthor\')\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + author_id + "\">");

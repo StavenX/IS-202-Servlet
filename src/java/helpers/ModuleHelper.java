@@ -297,15 +297,12 @@ public class ModuleHelper {
         }
         out.println("</select>");
         out.println("<div class=\"direction-container\">");
-        out.println("<button class=\"button order-direction\" name=\"orderDirection\" value=\"^\">"
+        out.println("<button class=\"button sort-direction\" name=\"orderDirection\" value=\"^\">"
                 + "<img class=\"up-arrow\"src=\"images/arrow.svg\">"
                 + "</button>");
-        out.println("<button class=\"button order-direction\" name=\"orderDirection\" value=\"V\">"
+        out.println("<button class=\"button sort-direction\" name=\"orderDirection\" value=\"V\">"
                 + "<img class=\"down-arrow\"src=\"images/arrow.svg\">"
                 + "</button>");
-        //old arrow buttons
-        //out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"^\">");
-        //out.println("<input class=\"button order-direction\" type=\"submit\" name=\"orderDirection\" value=\"V\">");
         out.println("</div>");
     }
     
@@ -383,7 +380,7 @@ public class ModuleHelper {
                 out.println("<div>Description:" + module_desc + "</div>");
                 out.println("<div>Max points:" + module_points + "</div>");
                 out.println("<div>Course: " + course_name + "</div>");
-                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
+                site.printDetailsButton();
                 out.println("</form>");
                 //button(s) for deletion of a module
                 if (role.toLowerCase().equals("lecturer")) {
@@ -442,8 +439,7 @@ public class ModuleHelper {
                 out.println("<div class=\"" + displayTypeClass + " module-edit-input\">");
                 out.println("<p class=\"module-input-title\">Module name</p>");
                 out.println("<input class=\"module-input\" type=\"text\" name=\"module_name\" value=\"" + module_name + "\" disabled>");
-                out.println("</div>");
-                
+                out.println("</div>");                
                 
                 //description
                 out.println("<div class=\"" + displayTypeClass + " module-edit-input\">");

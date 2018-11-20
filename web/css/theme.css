@@ -1,15 +1,7 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Aug 23, 2018, 9:52:28 AM
-    Author     : Staven
-*/
-
+/* Font used on the site */
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
+/* Color variables */
 :root {
     --background: #F8F1E5;
     --almostblack: #2F3131;
@@ -22,16 +14,30 @@ and open the template in the editor.
     height: 100%;
 }
 
-.flex-page {
-    margin: 0;
-    display: flex;
-}
-
-/*font type for the page and all items in the page*/
+/* Font type for the page and all items in the page */
 body, body * {
     font-family: 'Rubik', sans-serif !important;
 }
+
+/* Makes typeable input boxes bigger */
+ input[type=text], input[type=password] {
+     font-size: 1em;
+     margin: 10px 0;
+     padding: 15px;
+ }
  
+ /* Input boxes changes when clicked on */
+ input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+textarea {
+    font-size: 1em;
+    padding: 5px;
+}
+ 
+/* Should be applied to all buttons and submit inputs */
 .button {
     background-color: var(--almostblack); 
     border: none; 
@@ -43,19 +49,22 @@ body, body * {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
-   
 }
 
-.button-home {
-    padding: 2px;
-    font-size: 12px;
-    width: 80px;
-    height: 40px;
+.small-button {
+    padding: 15px;
 }
 
+/* Style for buttons on legacy index page */
 .button-default {
     width: 150px;
     height: 60px;
+}
+
+/* Allows page to be split between left nav and main page */
+.flex-page {
+    margin: 0;
+    display: flex;
 }
 
 .back-button img {
@@ -64,6 +73,7 @@ body, body * {
     margin-right: 5px;
 }
 
+/* Container class for the entire left nav-bar */
 .nav-container {
     flex: 20%;
     min-width: 80px !important;
@@ -71,265 +81,59 @@ body, body * {
     animation-delay: 2s;
 }
 
+/* Container class for the rest of the page (that isn't nav) */
 .page-container {
     margin-left: 90px;
     margin-top: 40px;
     flex: 80%;
 }
 
-/* makes typeable input boxes bigger */
- input[type=text], input[type=password] {
-     margin: 10px 0;
-     padding: 15px;
- }
- 
- /*input boxes changes when clicked on */
- input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
- /* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
-
+/* Index file when server is first started */
 #welcome-page {
     text-align: center;
     margin-top: 10%;
 }
 
- /* Set a style for the submit/register button */
-.registerbtn {
-  background-color: var(--almostblack);
-  color: var(--background);
-  padding: 16px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
- .registerbtn:hover {
-  opacity:1;
-}
- /* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
- /* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-}
- .student-input {
-    max-width: 20%;
-    
-}
- .form1 {
-    text-align: center;
-}
- .form1 input {
-    display: list-item;
-}
 
- .student-container {
-    margin: 30px 0;
-    border: solid 1px buttonface;
-    width: 50%;
-}
-
-.student-container-item {
-    margin: 0px 5px;
-}
-
-.message-container {
-    border: solid 2px black;
-    width: 20%;
-    background-color: beige;
-    text-align: center;
-    color: black;
-    margin: 30px 10px;
-    word-wrap: break-word;
-}
-.message-flex-container {
-    width: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    border: 1px solid black;
-}
-.message-bold-container {
-    font-weight: bold;
-}
-
-.message-container-item {
-    margin: 10px 5px;
-}
-
-.student-container input {
-    min-width: 10%;
-}
-
- .student-container div {
-    /*display: inline;*/
-}
-
- #nav {
-    display:block;
-}
- .home-nav {
-    max-width: 100%;
-    
-}
+/* ~~ ~~ ~~ */
+/* Nav bar starts here */
  .nav-container {
     margin: 0 20px 0 0;
     background: var(--almostblack);
-    max-width: 10%;
     padding: 5px;
     text-align: center;
     position: fixed;
     height: 100%;
-    
 }
+
+/* Button that hides nav bar */
+#nav-button {
+    padding: 5px 15px;
+    background-color: var(--background);
+    color: var(--almostblack);
+    margin: 0 auto;
+}
+
  .nav-item {
-    border: 1px;
     margin: 20px 0;
-    width: 100%;
-    text-align: center;
 }
 
 .nav-item a{
     text-decoration: none;
     color: var(--background);
 }
- .body {
-    margin: 0;
-    display: flex;
-}
+
  .nav-img {
     display: block;
     width: 50px;
     height: 50px;
     margin: 0 auto;
 }
-
-#nav-button {
-    padding: 5px 15px;
-    background-color: var(--background);
-    color: var(--almostblack);
-    margin: 0 auto;
-    border-radius: 0px;
-    text-align: center;
-}
-
-.sort-by-container {
-    margin-bottom: 5px;
-    width:fit-content ;
-    margin-right: 10px;
-}
-
-.sort-by-container * {
-    position: relative;
-    display: inline-block;
-}
-
-.direction-container {
-    position: relative;
-    top: 15px;
-}
-
-.order-direction {
-    display: list-item;
-    margin: 5px 2px;
-    height: 49%;
-    padding: 3px;
-    max-width: 22px;
-}
-
-.up-arrow {
-    transform: rotate(180deg);
-}
-
-.down-arrow, .up-arrow {
-    width: 100%;
-    height: 100%;
-}
+/* Nav bar ends here */
+/* ~~ ~~ ~~ */
 
 
-.module-container {
-    padding: 5px;
-    width: 70%;
-    border: 1px solid var(--almostblack);
-    margin: 20px auto;
-    word-break: break-all;
-}
-
-
-.module-student-list {
-    margin: 10px auto;
-    width: 90%;
-    border: solid 2px black;
-    min-height: 300px;
-}
-
-.module-input-text {
-    text-align: center;
-}
-
-#one-module-save {
-    display:none;
-}
-
-.one-module-enabled {
-    font-weight: bold;
-    font-size: 1.5em;
-    position: relative;
-    bottom: 0;
-}
-
-.one-module-sort {
-    text-align: center;
-}
-
-.one-module-student-view {
-    display: block;
-    min-width: fit-content;
-    width: 100%;
-    max-width: 300px;
-}
-
-.one-module-student-view.module-edit-input{
-    border: var(--almostblack) 1px solid;
-    font-style: italic;
-    margin: 10px 0;
-}
-
-.one-module-student-view .module-input {
-    color: var(--almostblack);
-    font-size: 120%;
-    width: 100%;
-    background-color: white;
-}
-.one-module-student-view textarea {
-    height: 200px;
-}
-
-.one-module-lecturer-view {
-    display: inline-block;
-}
-
-.module-comment-container {
-    margin: 10px 0;
-    padding: 5px;
-    border: 1px solid var(--almostblack);
-}
-
-.module-comment-container * {
-    margin-left: 5px;
-}
-
+/* ~~ ~~ ~~ */
 /* Calendar styling starts here*/
 .calendarWrapper {
     min-width: 1300px;
@@ -446,12 +250,184 @@ td {
   left: 0;
 }
 /* Calendar styling ends here */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Everything to do with sorting / ordering start */
+.sort-by-container {
+    margin-bottom: 5px;
+    width:fit-content ;
+    margin-right: 10px;
+}
+
+.sort-by-container * {
+    display: inline-block;
+}
+
+.sort-direction {
+    margin: 5px 2px;
+    padding: 3px;
+    max-width: 30px;
+}
+
+.up-arrow {
+    transform: rotate(180deg);
+}
+
+.down-arrow, .up-arrow {
+    width: 100%;
+    height: 100%;
+}
+/* Everything to do with sorting / ordering end */
+/* ~~ ~~ ~~ */
+
+/* what is this? */
+ .form1 {
+    text-align: center;
+}
+ .form1 input {
+    display: list-item;
+}
+
+
+/* ~~ ~~ ~~ */
+/* Users start */
+ .user-container {
+    margin: 30px 0;
+    border: solid 1px buttonface;
+    width: 50%;
+}
+
+.user-box-item {
+    margin: 0px 5px;
+}
+
+/* Users end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Modules start */
+.module-container {
+    padding: 5px;
+    width: 70%;
+    border: 1px solid var(--almostblack);
+    margin: 20px auto;
+    word-break: break-all;
+}
+
+.module-student-list {
+    margin: 10px auto;
+    width: 90%;
+    border: solid 2px black;
+    min-height: 300px;
+}
+
+/* Hides the save button */
+#one-module-save {
+    display:none;
+}
 
 .module-edit-input {
     margin: 0 10px;
     padding: 5px;
     text-align: center;
 }
+
+.one-module-enabled {
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.one-module-sort {
+    text-align: center;
+}
+
+.one-module-student-view {
+    display: block;
+    min-width: fit-content;
+    width: 100%;
+    max-width: 300px;
+}
+
+.one-module-student-view.module-edit-input{
+    border: var(--almostblack) 1px solid;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.one-module-student-view .module-input {
+    color: var(--almostblack);
+    font-size: 120%;
+    width: 100%;
+    background-color: white;
+}
+.one-module-student-view textarea {
+    height: 200px;
+}
+
+.one-module-lecturer-view {
+    display: inline-block;
+}
+
+/* Modules end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Module comments start */
+.module-comment-container {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid var(--almostblack);
+}
+
+.module-comment-container * {
+    margin-left: 5px;
+}
+
+.new-comment-container *{
+    margin: 10px;
+    display: block;
+}
+
+.new-comment-input {
+    font-size: 1em;
+    width: 400px;
+    height: 100px;
+}
+
+/* Module comments end */
+/* ~~ ~~ ~~ */
+/* ~~ ~~ ~~ */
+/* Messages start */
+.message-container {
+    border: solid 2px black;
+    width: 20%;
+    background-color: beige;
+    text-align: center;
+    color: black;
+    margin: 30px 10px;
+    word-wrap: break-word;
+}
+.message-flex-container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.message-bold-container {
+    font-weight: bold;
+}
+
+.message-container-item {
+    margin: 10px 5px;
+}
+
+/* Messages end */
+/* ~~ ~~ ~~ */
 
 #about {
     margin-top: 70px;
@@ -559,21 +535,21 @@ td {
     margin-left: 5px;
 }
 
-.announcement-byline {
+.author-byline {
     background-color: var(--almostblack);
     color: var(--background);
     width: 100%;
     border: 1px solid black;
 }
 
-.announcement-byline * {
+.author-byline * {
     display: inline;
     font-style: italic;
     margin: 5px;
     padding-bottom: 5px;
 }
 
-.announcement-byline img {
+.author-byline img {
     max-width: 40px;
     max-height: 40px;
 }

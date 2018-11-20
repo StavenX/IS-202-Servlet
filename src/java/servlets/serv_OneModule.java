@@ -65,14 +65,14 @@ public class serv_OneModule extends HttpServlet {
             ModuleHelper.printOneModule(out, conn, module_id, role);     
             
             if (role.equals("Lecturer")) {
-                String sqlString = "SELECT users.user_username, course.course_name, module.module_name, module.module_desc, module.module_points AS \'max_points\',\n" +
-                "module_details.module_points AS \'your_points\', module_details.student_id, module_details.module_status \n" +
+                String sqlString = "SELECT CONCAT(users.user_fname, \' \', users.user_lname) AS `Name`, course.course_name, module.module_name, module.module_desc,\n" +
+                "module.module_points AS \'max_points\', module_details.module_points AS \'student points\', module_details.student_id, module_details.module_status \n" +
                 "FROM course\n" +
                 "INNER JOIN module ON course.course_id = module.course_id\n" +
                 "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
                 "INNER JOIN users ON module_details.student_id = users.user_id\n" +
                 "WHERE module.module_id = ?\n" +
-                "AND module_details.student_id LIKE '%'\n" + 
+                "HAVING `Name` LIKE ?\n" + 
                 "ORDER BY FIELD(module_status, ";
                 
                 switch(orderBy) {
@@ -88,11 +88,13 @@ public class serv_OneModule extends HttpServlet {
                     default: sqlString += "\'Pending\', \'Not Delivered\', \'Completed\');";
                 }
                 
-                
                 out.println("<form action=\"oneModule\" method=\"get\" class=\"one-module-sort\">");
                 
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
                 out.println("<h2>Order module deliveries by:</h2>");
+                
+                out.println("<input type=\"text\" name=\"search\" placeholder=\"Search\">");
+                out.println("<input class=\"button small-button\"type=\"submit\" value=\"Search\">");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Not delivered\">");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Pending\">");
                 out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Completed\">");
@@ -102,6 +104,11 @@ public class serv_OneModule extends HttpServlet {
                 try {
                     PreparedStatement getPeople = conn.prepareStatement(sqlString);
                     getPeople.setString(1, module_id);
+                    
+                    String search = request.getParameter("search");
+                    search = (search == null) ? "%" : "%" + search + "%";
+                    
+                    getPeople.setString(2, search);
 
                     ResultSet rset = getPeople.executeQuery();
                     
@@ -113,22 +120,22 @@ public class serv_OneModule extends HttpServlet {
                         out.println("<table class=\"module-students-table\">");
                         out.println("<tr>");
                         out.println("<th>Name</th>");
-                        out.println("<th>Your points</th>");
+                        out.println("<th>Student's points</th>");
                         out.println("<th>Status</th>");
                         out.println("</tr>");
 
                         while (rset.next()) {
-                            String user_name = rset.getString("user_username");
+                            String user_name = rset.getString("Name");
                             String user_id = rset.getString("student_id");
                             String course_name = rset.getString("course_name");
                             module_name = rset.getString("module_name");
                             String module_desc = rset.getString("module_desc");
                             String max_points = rset.getString("max_points");
-                            String your_points = rset.getString("your_points");
+                            String student_points = rset.getString("student points");
                             String status = rset.getString("module_status");
 
-                            if (your_points == null) {
-                                your_points = "N/A";
+                            if (student_points == null) {
+                                student_points = "---";
                             }
 
                             out.println("<form action=\"oneStudentModule\" method=\"post\">");
@@ -136,8 +143,9 @@ public class serv_OneModule extends HttpServlet {
                             out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
                             out.println("<tr>");
                             out.println("<td>" + user_name + "</td>");
-                            out.println("<td>" + your_points + "</td>");
-                            out.println("<td class=\"deliver-status\"><div class=\"module-status\">" + status + "</div><button class=\"button\">Grade</button></td>");
+                            out.println("<td>" + student_points + "</td>");
+                            out.println("<td class=\"deliver-status\"><div class=\"module-status\">" + status + "</div>");
+                            out.println("<button class=\"button small-button\">Grade</button></td>");
                             out.println("</tr>");
                             out.println("</form>");
                         }
@@ -156,12 +164,14 @@ public class serv_OneModule extends HttpServlet {
             
             out.println("<h2>Comments on module</h2>");
             
+            out.println("<div class=\"new-comment-container\">");
             out.println("<form id=\"newComment\" action=\"oneModule\" method=\"post\">");
             out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
             out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
             out.println("</form>");
-            out.println("<textarea form=\"newComment\" name=\"module_comment_content\" placeholder=\"Write a comment...\"></textarea>");
+            out.println("<textarea form=\"newComment\" name=\"module_comment_content\" class=\"new-comment-input\" placeholder=\"Write a comment...\"></textarea>");
             out.println("<button class=\"button\" onclick=\"submit(\'newComment\');\">Post comment</button>");
+            out.println("</div>");
             
             ModuleHelper.printModuleComments(out, conn, module_id, request);
             site.useJS("somebackgrounds.js");

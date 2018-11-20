@@ -71,13 +71,17 @@ public class HtmlHelper {
         return loggedUserName;
     }
     
+    public void printDetailsButton () {
+        out.println("<input class=\"button more-info-button small-button\" type=\"submit\" value=\"Details\">");
+    }
+    
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
         out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\" method=\"get\">");
         out.println("<input type=\"hidden\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
-        out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
+        out.println("<input class=\"button small-button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
         out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
-        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
-        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
         out.println("</form>");
     }
     
