@@ -11,14 +11,14 @@ and open the template in the editor.
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
 :root {
-    --background: #F8F1E5;
-    --almostblack: #2F3131;
+    background: #F8F1E5;
+    almostblack: #2F3131;
 }
 
  * {box-sizing: border-box}
  
  body {
-    background-color: var(--background);
+
     height: 100%;
 }
 
@@ -67,8 +67,7 @@ hr {
 
  /* Set a style for the submit/register button */
 .registerbtn {
-  background-color: var(--almostblack);
-  color: var(--background);
+
   padding: 16px 20px;
   margin: 8px 0;
   border: none;
@@ -150,7 +149,7 @@ a {
 }
  .nav-container {
     margin: 0 20px 0 0;
-    background: var(--almostblack);
+
     max-width: 10%;
     padding: 5px;
 }
@@ -163,7 +162,7 @@ a {
 
 .nav-item a{
     text-decoration: none;
-    color: var(--background);
+
 }
  .body {
     margin: 0;
@@ -178,8 +177,7 @@ a {
 
 #nav-button {
     padding: 5px 15px;
-    background-color: var(--background);
-    color: var(--almostblack);
+
     margin: 0 auto;
     border-radius: 0px;
 }
@@ -192,7 +190,7 @@ a {
 .module-container {
     padding: 5px;
     width: 70%;
-    border: 1px solid var(--almostblack);
+
     margin: 20px auto;
     word-break: break-all;
 }
@@ -255,11 +253,17 @@ a {
 
 /* Timetable styling */
 #timetable {
-  border-collapse: collapse;
+    border-collapse: collapse;
 }
 
 #timetable td {
-      border: solid black;
+    border: solid black;
+}
+
+.timetableCell {
+    font-size: 10px;
+    height:80px;
+    width: 14.2857143%;
 }
 
 #timetable th {
@@ -299,9 +303,9 @@ a {
 }
 
 .button {
-    background-color: var(--almostblack); 
+
     border: none; 
-    color: var(--background); 
+
     padding: 20px;
     text-align: center;
     text-decoration: none;

@@ -10,6 +10,9 @@
     </div>
     <div id="buttons2">
     </div>
+    <div id="showAndHideForm">
+        <button onclick="showAndHideForm()">Show/Hide</button>
+    </div>
     <div id="calendarWrapper">
     <div id="boi">
     </div>
@@ -17,17 +20,35 @@
     </div>
         <div id="test">
         </div>
-        <div>
+        <div id="addEventForm">
             <form>
-                <select id="selected" onchange="changeSelectedDegree()">
-                    <option value="IT og IS semester 1">IT and information systems (1. semester)</option>
-                    <option value="IT og IS semester 2">IT and information systems (2. semester)</option>
-                </select><br>
+                Course ID <input type="text" name="Course ID"><br>
+                Lecturers <input type="text" name="Lecturers"><br>
+                Room      <input type="text" name="Room"><br>
+                Start time <input type="time" name="Start time">
+                End time <input type="time" name="End time"><br><br>
+                Event date <input type="date" name="Date"><br><br>
+                <span> Repeat event every: </span><br>
+                <input type="checkbox" name="Monday">Monday<br>
+                <input type="checkbox" name="Tuesday">Tuesday<br>
+                <input type="checkbox" name="Wednesday">Wednesday<br>
+                <input type="checkbox" name="Thursday">Thursday<br>
+                <input type="checkbox" name="Friday">Friday<br>
+                <input type="checkbox" name="Saturday">Saturday<br>
+                <input type="checkbox" name="Sunday">Sunday<br><br>
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
         <script>
-        
+            function showAndHideForm() {
+                var x = document.getElementById("addEventForm");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
         </script>
     <script>
         var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
@@ -106,7 +127,7 @@
     </script>
     
     <script>
-        function loadEvents(r, p) {
+        function loadEvents(r) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (xhttp.readyState == 4 && this.status == 200) {
@@ -120,7 +141,7 @@
                     }
                 }
             };
-            xhttp.open("GET", "Calendar?currDay=" + r + "&selectedDegree=" + p, true);
+            xhttp.open("GET", "Calendar?currDay=" + r, true);
             xhttp.send();
         }
         
@@ -153,7 +174,7 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td id=" + n.getTime() + ">" + n.getTime() + "</td>");
+                    HTML2 += ("<td class=\"timetableCell\" id=" + n.getTime() + ">" + n.getTime() + "</td>");
                     
                     n.setDate(n.getDate()+1);
                 }
