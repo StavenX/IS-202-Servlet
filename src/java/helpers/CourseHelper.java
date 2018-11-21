@@ -107,4 +107,16 @@ public class CourseHelper {
         }
         return courseName;
     }
+    
+    public static String getCourseId (Connection conn, String module_id) throws SQLException {
+        String courseName = "";
+        PreparedStatement getId = conn.prepareStatement("SELECT course_id FROM module WHERE module_id LIKE ?");
+        getId.setString(1, module_id);
+        ResultSet rset = getId.executeQuery();
+        
+        while (rset.next()) {
+            courseName = rset.getString("course_id");
+        }
+        return courseName;
+    }
 }

@@ -50,6 +50,11 @@ public class UserHelper {
         return user_id;
     }
     
+    public static String getUserId (Connection conn, HttpServletRequest request) {
+        String user_id =  getUserId(conn, getUserName(request));
+        return user_id;
+    }
+    
     public static String getUserNameById (Connection conn, String user_id) {
         String username = "";
         try {

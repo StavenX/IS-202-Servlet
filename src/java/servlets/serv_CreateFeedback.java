@@ -7,10 +7,10 @@ package servlets;
 
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,9 +23,11 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "serv_DeleteComment", urlPatterns = {"/deleteComment"})
-public class serv_DeleteComment extends HttpServlet {
-    Login login = new Login();
+@WebServlet(name = "serv_CreateFeedback", urlPatterns = {"/createFeedback"})
+public class serv_CreateFeedback extends HttpServlet {
+Login login = new Login();
+
+    /**
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -39,20 +41,8 @@ public class serv_DeleteComment extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Deleted comment", "deleted-comment");
-            Connection conn = login.loginToDB(out);
-            
-            String module_id = request.getParameter("module_id");
-            String module_comment_id = request.getParameter("module_comment_id");
-            String results = ModuleHelper.deleteModuleComment(conn, module_comment_id);
-            out.println(results);
-            out.println("<form action=\"oneModule#Comments\" method=\"get\">");
-            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
-            out.println("<input type=\"submit\" class=\"button\" value=\"Back to module\">");
-            out.println("</form>");
-            site.closeAndPrintEnd(login);
-        }
+            doPost(request, response);
+    }
     }
 
     /**
@@ -68,8 +58,33 @@ public class serv_DeleteComment extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            doGet(request, response);
-        }
+            
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Feedbacking...", "feedbackiing");
+            
+            String content = request.getParameter("module_feedback_content");
+            String module_id = request.getParameter("module_id");
+            String user_id = request.getParameter("user_id");
+            
+            Connection conn = login.loginToDB(out);
+            String author_id = UserHelper.getUserId(conn, request);
+            try {
+                String results = ModuleHelper.newModuleFeedback(conn, module_id, user_id, author_id, content);
+                
+                
+                out.println(results);
+                out.println("<form action=\"oneStudentModule#Feedback\" method=\"post\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+                out.println("<input type=\"submit\" class=\"button\" value=\"Back to student module\">");
+                out.println("</form>");
+                
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+            
+            site.closeAndPrintEnd(login);
+    }
     }
 
     /**

@@ -270,7 +270,7 @@ public class ModuleHelper {
                 
                 String formName = "oneModule-" + module_id;
                 
-                out.println("<form name=\"" + formName + "\" action=\"oneModule\">");
+                out.println("<form id=\"" + formName + "\" action=\"oneModule\">");
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 out.println("<tr class=\"pointer-hover " + rowClassName + "\" onclick=\"submit(\'" + formName + "\')\">");
                 out.println("<td>" + course_name + "</td>");
@@ -467,6 +467,181 @@ public class ModuleHelper {
         }
     }
     
+    public static ResultSet getOneModuleParticipants (Connection conn, String module_id, String orderBy, String search) throws SQLException {
+        
+        String sqlString = "SELECT CONCAT(users.user_fname, \' \', users.user_lname) AS `Name`, course.course_name, module.module_name, module.module_desc,\n" +
+                "module.module_points AS \'max_points\', module_details.module_points AS \'student points\', module_details.student_id, module_details.module_status \n" +
+                "FROM course\n" +
+                "INNER JOIN module ON course.course_id = module.course_id\n" +
+                "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
+                "INNER JOIN users ON module_details.student_id = users.user_id\n" +
+                "WHERE module.module_id = ?\n" +
+                "HAVING `Name` LIKE ?\n" + 
+                "ORDER BY FIELD(module_status, ";
+        
+        switch(orderBy) {
+            case "Not delivered":
+                sqlString += "\'Not delivered\', \'Pending\', \'Completed\');";
+                break;
+
+            case "Completed":
+                sqlString += "\'Completed\', \'Pending\', \'Not Delivered\');";
+                break;
+
+            case "Pending":
+            default: sqlString += "\'Pending\', \'Not Delivered\', \'Completed\');";
+        }
+                
+        PreparedStatement getPeople = conn.prepareStatement(sqlString);
+        getPeople.setString(1, module_id);
+        getPeople.setString(2, search);
+        ResultSet rset = getPeople.executeQuery();
+        
+        return rset;
+    }
+    
+    public static void printOneModuleStudentTable(PrintWriter out, Connection conn, String module_id, String orderBy, String search) throws SQLException {
+        
+        ResultSet rset = getOneModuleParticipants(conn, module_id, orderBy, search);
+        //is true if rset isn't empty
+        if (rset.isBeforeFirst()) {
+            
+            //sorting and search-by-name form
+            out.println("<form action=\"oneModule\" method=\"get\" class=\"one-module-sort\">");
+            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
+            out.println("<h2>Order module deliveries by:</h2>");
+            out.println("<input type=\"text\" name=\"search\" placeholder=\"Search\">");
+            out.println("<input class=\"button small-button\"type=\"submit\" value=\"Search\">");
+            out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Not delivered\">");
+            out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Pending\">");
+            out.println("<input type=\"submit\" class=\"button\" name=\"orderBy\" value=\"Completed\">");
+            out.println("</form>");
+            
+            //header row of table
+            out.println("<div class=\"module-student-list\">");
+            out.println("<table class=\"module-students-table\">");
+            out.println("<tr>");
+            out.println("<th>Name</th>");
+            out.println("<th>Student's points</th>");
+            out.println("<th>Status</th>");
+            out.println("</tr>");
+
+            //prints a row for each student
+            while (rset.next()) {
+                String user_name = rset.getString("Name");
+                String user_id = rset.getString("student_id");
+                String student_points = rset.getString("student points");
+                String status = rset.getString("module_status");
+
+                if (student_points == null) {
+                    student_points = "---";
+                }
+                
+                String formName = module_id + "-" + user_id;
+                out.println("<form id=\"" + formName + "\" action=\"oneStudentModule\" method=\"post\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
+                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+                out.println("<tr class=\"pointer-hover\" onclick=\"submit(\'" + formName + "\');\">");
+                out.println("<td>" + user_name + "</td>");
+                out.println("<td>" + student_points + "</td>");
+                out.println("<td class=\"deliver-status\"><div class=\"module-status\">" + status + "</div>");
+                out.println("<button class=\"button small-button\">View</button></td>");
+                out.println("</tr>");
+                out.println("</form>");
+            }
+            out.println("</table>");                        
+            out.println("</div>");
+        } else {
+            out.println("<p style=\"text-align: center\">No students have this module, check if db mistake</p>");
+        }
+    }
+    
+    public static boolean studentHasModule (Connection conn, String module_id, String user_id) throws SQLException {
+        String sqlString = "SELECT * FROM module_details WHERE module_id LIKE ? AND student_id LIKE ?;";
+        PreparedStatement check = conn.prepareStatement(sqlString);
+        check.setString(1, module_id);
+        check.setString(2, user_id);
+        ResultSet rset = check.executeQuery();
+        return rset.isBeforeFirst();
+    }
+    
+    public static ResultSet getOneStudentModule (Connection conn, String module_id, String user_id) throws SQLException {
+            String sqlString = "SELECT *" +
+                            "FROM course\n" +
+                            "INNER JOIN module ON course.course_id = module.course_id\n" +
+                            "INNER JOIN module_details ON module.module_id = module_details.module_id\n" +
+                            "INNER JOIN users ON module_details.student_id = users.user_id\n" +
+                            "WHERE module.module_id = ?\n" +
+                            "AND module_details.student_id = ?;";
+            PreparedStatement get = conn.prepareStatement(sqlString);
+            get.setString(1, module_id);
+            get.setString(2, user_id);
+            ResultSet rset = get.executeQuery();
+
+            return rset;
+    }
+    
+    public static void printOneStudentModule (PrintWriter out, Connection conn, String module_id, String user_id) {
+        try {
+            ResultSet rset = getOneStudentModule(conn, module_id, user_id);
+             while (rset.next()) {
+                        String user_username = rset.getString("user_fname") + " " + rset.getString("user_lname");
+                        String module_name = rset.getString("module_name");
+                        String course_name = rset.getString("course_name");
+                        String module_desc = rset.getString("module_desc");
+                        String max_points = rset.getString("module.module_points");
+                        String your_points = rset.getString("module_details.module_points");
+                        
+                        if (your_points == null) {
+                            your_points = "N/A";
+                        }
+                        String module_status = rset.getString("module_status");
+                        
+                        
+                        out.println("<table>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Name of student</td>");
+                        out.println("<td>" + user_username + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Course</td>");
+                        out.println("<td>" + course_name + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Module name</td>");
+                        out.println("<td>" + module_name + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Module description</td>");
+                        out.println("<td>" + module_desc + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Max points</td>");
+                        out.println("<td>" + max_points + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Points achieved</td>");
+                        out.println("<td>" + your_points + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("<tr>");
+                        out.println("<td>Status</td>");
+                        out.println("<td>"+ module_status + "</td>");
+                        out.println("</tr>");
+                        
+                        out.println("</table>");
+             }
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+    }
+    
     public static String deleteModule(String module_id, Connection conn) {
         
         String results = "";
@@ -492,7 +667,7 @@ public class ModuleHelper {
     
     
     public static ResultSet getModuleComments(Connection conn, String module_id) throws SQLException {
-        String sqlString = "SELECT * FROM module_comment WHERE module_id LIKE ?";
+        String sqlString = "SELECT * FROM module_comment WHERE module_id LIKE ? ORDER BY module_comment_id DESC";
         PreparedStatement getComments = conn.prepareStatement(sqlString);
         getComments.setString(1, module_id);
         ResultSet rset = getComments.executeQuery();
@@ -527,6 +702,17 @@ public class ModuleHelper {
         }
     }
     
+    public static String newModuleComment(Connection conn, String module_id, String user_id, String content) throws SQLException {
+        String sqlString = "INSERT INTO module_comment (module_comment_content, module_id, user_id) VALUES (?, ?, ?);";
+        PreparedStatement insertComment = conn.prepareStatement(sqlString);
+        insertComment.setString(1, content);
+        insertComment.setString(2, module_id);
+        insertComment.setString(3, user_id);
+        int amount = insertComment.executeUpdate();
+        
+        return amount + " comments inserted.";
+    }
+    
     public static String deleteModuleComment(Connection conn, String module_comment_id) {
         
         String results = "";
@@ -537,6 +723,76 @@ public class ModuleHelper {
             int amount = deleteComment.executeUpdate();
             
             results += amount + " comment(s) deleted.";
+        } catch (SQLException ex) {
+            results += "SQL error: " + ex;
+            return results;
+        }
+        
+        return results;
+    }
+    
+    
+    public static String newModuleFeedback(Connection conn, String module_id, String user_id, String author_id, String content) throws SQLException {
+        String sqlString =  "INSERT INTO module_feedback (module_id, user_id, author_id, module_feedback_content) VALUES (?, ?, ?, ?)";
+        PreparedStatement newFeedback = conn.prepareStatement(sqlString);
+        newFeedback.setString(1, module_id);
+        newFeedback.setString(2, user_id);
+        newFeedback.setString(3, author_id);
+        newFeedback.setString(4, content);
+        String results = newFeedback.executeUpdate() + " feedback comment added.";
+        
+        return results;
+    }
+        
+    public static ResultSet getModuleFeedback(Connection conn, String module_id, String user_id) throws SQLException {
+        String sqlString = "SELECT * FROM module_feedback WHERE module_id LIKE ? AND user_id LIKE ? ORDER BY module_feedback_id DESC";
+        PreparedStatement getFeedback = conn.prepareStatement(sqlString);
+        getFeedback.setString(1, module_id);
+        getFeedback.setString(2, user_id);
+        ResultSet rset = getFeedback.executeQuery();
+        
+        return rset;
+    }
+    
+    public static void printModuleFeedback(PrintWriter out, Connection conn, String module_id, String user_id, HttpServletRequest request) {
+        try {
+            ResultSet rset = getModuleFeedback(conn, module_id, user_id);
+            while (rset.next()) {
+                String module_feedback_id = rset.getString("module_feedback_id");
+                String author_id = rset.getString("author_id");
+                String author = UserHelper.getFullNameById(conn, author_id);
+                String content = rset.getString("module_feedback_content");
+                
+                out.println("<form action=\"deleteFeedback\" class=\"module-comment-container\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+                out.println("<h3>" + author + " said:</h3>");
+                out.println("<p>" + content + "</p>");
+                HtmlHelper site = new HtmlHelper(out);
+                
+                String currentuser = UserHelper.getUserId(conn, UserHelper.getUserName(request));
+                String role = UserHelper.getUserRole(request);
+                
+                if (role.equals("Lecturer") || currentuser.equals(user_id)) {                    
+                    site.printDeleteButton("deleteFeedback", "module_feedback_id", module_feedback_id);
+                }
+                
+                out.println("</form>");
+            }
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+    }
+    public static String deleteModuleFeedback(Connection conn, String module_feedback_id) {
+        
+        String results = "";
+
+        try {
+            PreparedStatement deleteFeedback = conn.prepareStatement("DELETE FROM module_feedback WHERE module_feedback_id = ?");
+            deleteFeedback.setString(1, module_feedback_id);
+            int amount = deleteFeedback.executeUpdate();
+            
+            results += amount + " feedback deleted.";
         } catch (SQLException ex) {
             results += "SQL error: " + ex;
             return results;
