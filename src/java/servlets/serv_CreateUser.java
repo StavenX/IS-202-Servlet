@@ -43,18 +43,17 @@ public class serv_CreateUser extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); 
         
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New user", "create-user");
-            out.println("");
             out.println("<form action=\"createUser\" method=\"post\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_username\" placeholder=\"Insert username\">");   
-            out.println("<input class=\"student-input\" type=\"password\" name=\"user_password\" placeholder=\"Insert password\">");
-            out.println("<select class=\"student-input\" name=\"user_role\">");
+            out.println("<input class=\"create-user-input\" type=\"text\" name=\"user_username\" placeholder=\"Insert username\">");   
+            out.println("<input class=\"create-user-input\" type=\"password\" name=\"user_password\" placeholder=\"Insert password\">");
+            out.println("<select class=\"create-user-input\" name=\"user_role\">");
             out.println("<option value=\"Student\">Student</option>");
             out.println("<option value=\"Lecturer\">Lecturer</option>");
             out.println("</select>"); 
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert first name\">");
-            out.println("<input class=\"student-input\" type=\"text\" name=\"user_lname\" placeholder=\"Insert last name\">");
+            out.println("<input class=\"create-user-input\" type=\"text\" name=\"user_fname\" placeholder=\"Insert first name\">");
+            out.println("<input class=\"create-user-input\" type=\"text\" name=\"user_lname\" placeholder=\"Insert last name\">");
             out.println("<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Create\">");
             out.println("</form>");
             site.printEnd();

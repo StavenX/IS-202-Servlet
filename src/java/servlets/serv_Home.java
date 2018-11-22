@@ -82,6 +82,8 @@ public class serv_Home extends HttpServlet {
             
             out.println("</div>");
             
+            out.println("<a href=\"FileUpload\">Temporary link to fileupload</a>");
+            
             
             site.closeAndPrintEnd(login);
         }

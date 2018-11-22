@@ -43,17 +43,30 @@ public class serv_OneUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Single user", "one-student-container");
             
             String user_id = request.getParameter("user_id");
+            AccessTokenHelper a = new AccessTokenHelper(request);
+            String username = a.getUsername();
             
             Connection conn;
             conn = login.loginToDB(out);
 
             
             out.println("<h2>Viewing a single user</h2>");
-            UserHelper.printOneUser(out, conn, user_id);
+            
+            UserHelper.printUserPage(out, conn, user_id);
+            
+            String currentUserId = UserHelper.getUserId(conn, username);
+            if (!currentUserId.equals(user_id)) {
+                out.println("<form action=\"Message\" method=\"get\">");
+                out.println("<input type=\"hidden\" name=\"sender_id\" value=\"" + currentUserId + "\">");
+                out.println("<input type=\"hidden\" name=\"recipient_id\" value=\"" + user_id + "\">");
+                out.println("<input type=\"submit\" class=\"button\" value=\"Send message\">");
+                out.println("</form>");
+            }
+            
 
             site.closeAndPrintEnd(login);
         }

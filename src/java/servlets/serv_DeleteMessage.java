@@ -9,7 +9,6 @@ import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import helpers.MessageHelper;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
@@ -28,7 +27,6 @@ import network.Login;
 public class serv_DeleteMessage extends HttpServlet {
     Login login = new Login();
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
