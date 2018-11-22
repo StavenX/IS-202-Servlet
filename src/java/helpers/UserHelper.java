@@ -144,6 +144,64 @@ public class UserHelper {
         }
     }
     
+    /**
+     * deletes the user from all tables related to the course
+     * @param conn connection to mysql db
+     * @param user_id primary key of user to delete
+     * @return string containing info if deletion was successful
+     */
+    public static String deleteFromCourse (Connection conn, String user_id) {
+        String results = "";
+        
+            try {
+                PreparedStatement feedback = conn.prepareStatement("DELETE FROM module_feedback WHERE user_id = ?;");
+                PreparedStatement comments = conn.prepareStatement("DELETE FROM module_comment WHERE user_id = ?;");
+                PreparedStatement moduleDetails = conn.prepareStatement("DELETE FROM module_details WHERE student_id = ?;");
+                PreparedStatement courseDetails = conn.prepareStatement("DELETE FROM course_details WHERE user_id = ?;");
+                
+                PreparedStatement[] stmts = {feedback, comments, moduleDetails, courseDetails};
+                String[] tableNames = {"feedback", "comments", "moduleDetails", "courseDetails"};
+                
+                for (int i = 0; i < stmts.length; i++) {
+                    stmts[i].setString(1, user_id);
+                    int amount = stmts[i].executeUpdate();
+                    results += String.format("| %s %s deleted. ", amount, tableNames[i]);
+                }
+                
+            } catch (SQLException ex) {
+                results += "SQL error: " + ex;
+                return results;
+            }
+        
+        return results;
+    }
+    
+    /**
+     * Deletes the user from the system
+     * @param conn connection to mysql db
+     * @param user_id primary key of user to delete
+     * @return string containing info if deletion was successful
+     */
+    public static String deleteUser(Connection conn, String user_id) {
+        String results = "";
+            try {
+                results += deleteFromCourse(conn, user_id);
+                PreparedStatement deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
+                int amount = deleteUser.executeUpdate();
+                
+                results += "\n " + amount + " user deleted";
+                
+                results += "<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>";
+
+            } catch (SQLException ex) {
+                results += "SQL error: " + ex;
+                return results;
+            }
+        
+        return results;
+    }
+    
     
     public static ResultSet getUsers(Connection conn, String course_id) throws SQLException {
             String sqlString;
@@ -284,7 +342,7 @@ public class UserHelper {
         }
     }
     
-    public static void addUserToModule(String module_id, String student_id, Connection conn, PrintWriter out) {
+    public static int addUserToModule(String module_id, String student_id, Connection conn, PrintWriter out) {
         
             String sqlString = "INSERT INTO module_details (student_id, module_id) VALUES (?, ?);";
             
@@ -295,11 +353,12 @@ public class UserHelper {
                 ps.setString(2, module_id);
                 
                 int amount = ps.executeUpdate();
-                out.println(amount + " inserted");
+                return amount;
             }
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
             }
+        return 0;
     }
     
     /**
@@ -309,31 +368,34 @@ public class UserHelper {
      * @param conn the connection to the db
      * @param out the web page writer
      */
-    public static void addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
+    public static String addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
         
         String sqlString = "INSERT INTO course_details (course_id, user_id) VALUES (?, ?);";
             try {
                 PreparedStatement ps = conn.prepareStatement(sqlString);
                 ps.setString(1, course_id);
                 ps.setString(2, user_id);
-                int amount = ps.executeUpdate();
+                int addedToCourse = ps.executeUpdate();
 
                 //gets all modules in the course the user is to be added to
                 //sorted by module_id
                 ResultSet rset = ModuleHelper.getModules(out, conn, "id", "v", course_id);
                 
+                int addedToModules = 0;
                 //for each module add the user to the module too
                 while (rset.next()) {
                         String module_id = rset.getString("module_id");
-                        addUserToModule(module_id, user_id, conn, out);
+                        addedToModules += addUserToModule(module_id, user_id, conn, out);
                 }
                 
                 //executes 
-                out.println(amount + " inserted");
+                String results = String.format("Added to %d course - %d modules.", addedToCourse, addedToModules);
+                return results;
             }
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
             }
+        return null;
     }
     
     public static ResultSet getUserDetails (PrintWriter out, Connection conn, String user_id) {

@@ -6,6 +6,7 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -40,7 +41,7 @@ public class serv_DeleteUser extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
 
             site.printHead("Delete user", "delete-user");
             
@@ -50,18 +51,7 @@ public class serv_DeleteUser extends HttpServlet {
             
             String user_id = request.getParameter("user_id");
             
-            PreparedStatement deleteUser;
-            try {
-                deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
-                deleteUser.setString(1, user_id);
-                
-                int amountDeleted = deleteUser.executeUpdate();
-                out.println("<div>" + amountDeleted + " users deleted.</div>");
-                out.println("<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>");
-
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
+            out.println(UserHelper.deleteUser(conn, user_id));
             
             
             site.closeAndPrintEnd(login);

@@ -51,7 +51,8 @@ public class serv_AddToCourse extends HttpServlet {
             String course_id = request.getParameter("course_id");
             String user_ids[] = request.getParameterValues("marked");
             for (String user_id : user_ids) {
-                UserHelper.addUserToCourse(course_id, user_id, conn, out);
+                String results = UserHelper.addUserToCourse(course_id, user_id, conn, out);
+                out.printf("<p>User with id %s, %s</p>\n", user_id, results);
             }
             
             

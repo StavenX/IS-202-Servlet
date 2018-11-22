@@ -398,6 +398,12 @@ td {
     height: 100px;
 }
 
+.one-module-comment {
+    margin: 20px 10px;
+    padding: 5px;
+    border: 1px solid black;
+}
+
 /* Module comments end */
 /* ~~ ~~ ~~ */
 /* ~~ ~~ ~~ */
@@ -426,6 +432,16 @@ td {
     margin: 10px 5px;
 }
 
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
+}
+
+
 /* Messages end */
 /* ~~ ~~ ~~ */
 
@@ -440,6 +456,8 @@ td {
     text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
 }
 
+/* ~~ ~~ ~~ */
+/* Courses start */
 .course-container {
     border: 1px solid black;
     padding: 5px;
@@ -462,14 +480,27 @@ td {
     text-align: center;
 }
 
-.message-content {
-    width: 90%;
-    height: 300px;
+/* Courses end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Announcements start */
+.announcement-preview-container {
+    border: 1px solid var(--almostblack);
 }
 
-.message-input {
-    display: list-item;
+.one-announcement {
+    border: 1px solid var(--almostblack);
+    margin: 5px;
 }
+
+.one-announcement p, .one-announcement h3 {
+    margin-left: 5px;
+}
+
+/* Announcements end */
+/* ~~ ~~ ~~ */
 
 .top-bar {
     position: absolute;
@@ -481,11 +512,15 @@ td {
     display: inline;
 }
 
+/* User page */
 .user-details {
     float: right;
     margin-right: 10px;
 }
 
+/* user page ends */
+
+/* a table view */
 .module-students-table {
     width: 100%;
     margin: 0 auto;
@@ -510,31 +545,14 @@ td {
     margin: 0 10px;
 }
 
-.one-module-comment {
-    margin: 20px 10px;
-    padding: 5px;
-    border: 1px solid black;
-    
-}
+/* table view end */
 
 .profile-pic-medium {
     max-height: 200px;
     max-width: 200px;
 }
 
-.announcement-preview-container {
-    border: 1px solid var(--almostblack);
-}
-
-.one-announcement {
-    border: 1px solid var(--almostblack);
-    margin: 5px;
-}
-
-.one-announcement p, .one-announcement h3 {
-    margin-left: 5px;
-}
-
+/* Author of comments, announcements etc */
 .author-byline {
     background-color: var(--almostblack);
     color: var(--background);

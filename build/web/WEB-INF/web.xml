@@ -66,6 +66,7 @@
             <url-pattern>/deleteAnnouncement</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
             <url-pattern>/deleteModule</url-pattern>
+            <url-pattern>/deleteUser</url-pattern>
             <url-pattern>/gradeModule</url-pattern>
             <url-pattern>/updateModule</url-pattern>
         </web-resource-collection>

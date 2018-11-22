@@ -647,16 +647,19 @@ public class ModuleHelper {
         String results = "";
 
         try {
-            PreparedStatement deleteModuleDetails = conn.prepareStatement("DELETE FROM module_details WHERE module_id = ?");
-            deleteModuleDetails.setString(1, module_id);
-            int detailsDeleted = deleteModuleDetails.executeUpdate();
-
-
-            PreparedStatement deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-            deleteModule.setString(1, module_id);
-            int modulesDeleted = deleteModule.executeUpdate();
             
-            results += modulesDeleted + " modules deleted. " + detailsDeleted + " students affected";
+            PreparedStatement feedback = conn.prepareStatement("DELETE FROM module_feedback WHERE module_id = ?");
+            PreparedStatement comments = conn.prepareStatement("DELETE FROM module_comment WHERE module_id = ?");
+            PreparedStatement moduleDetails = conn.prepareStatement("DELETE FROM module_details WHERE module_id = ?");
+            PreparedStatement modules = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
+            
+            PreparedStatement[] stmts = {feedback, comments, moduleDetails, modules};
+            String[] tableNames = {"feedback", "comments", "moduleDetails", "modules"};
+            for (int i = 0; i < stmts.length; i++) {
+                stmts[i].setString(1, module_id);
+                int amount = stmts[i].executeUpdate();
+                results += String.format("| %s %s deleted. ", amount, tableNames[i]);
+            }
         } catch (SQLException ex) {
             results += "SQL error: " + ex;
             return results;
