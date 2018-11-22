@@ -57,7 +57,7 @@ public class serv_CreateAnnouncement extends HttpServlet {
             out.println("<textarea name=\"announcement_title\" form=\"new-announcementt\" placeholder=\"Announcement title goes here\"></textarea>");
             out.println("<textarea name=\"announcement_content\" form=\"new-announcementt\" placeholder=\"Announcement content goes here\"></textarea>");
             out.println("<br>");
-            out.println("<button class=\"button\" onclick=\"submit(\'new-announcementt\');\"> Create</button>");
+            out.println("<button class=\"button\" onclick=\"submit(\'new-announcementt\');\">Publish</button>");
             
             
             
