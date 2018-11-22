@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 
-function makeSure(stId) {
-    var items = document.getElementsByClassName('makesure-' + stId);
+function makeSure(id) {
+    var items = document.getElementsByClassName('makesure-' + id);
     for (var i = 0; i < items.length; i++) {
         flip(items[i]);
     }

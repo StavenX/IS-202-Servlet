@@ -112,12 +112,8 @@ public class MessageHelper {
                 out.println("<div><b>Content:  " + "</b>"+ mess_content + "</div>");
 
                 //out.println("</div>");
-                                out.println("</div>");
+                out.println("</div>");
 
-                //more info button
-                //out.println("<div class=\"message-container-item\">");
-                //out.println("<input type=\"submit\" value=\"Details\" class=\"more-info-button\">");
-                //out.println("</div>");
                 out.println("</form>");
                 
                 //delete buttons
@@ -132,9 +128,8 @@ public class MessageHelper {
             out.println("</div>");
             out.println("Total number of records: " + rowCount);
             
-            site.printJsForDeleteButton();
+            site.useJS("buttons-for-delete.js");
             
-            conn.close();
         }
         catch (SQLException ex) {
             out.println("SQL error: " + ex);

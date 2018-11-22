@@ -18,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author tobia
  */
-@WebServlet(name = "serv_Index", urlPatterns = {"/Index"})
+@WebServlet(name = "Index", urlPatterns = {"/Index"})
 public class serv_Index extends HttpServlet {
-
+    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -32,30 +32,34 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
             HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Home", "home");
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<meta charset=\"UTF-8\">");
+            out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+            out.println("<link rel=\"icon\" href=\"images/Placeholder_v2.png\" type=\"image/png\">");
+            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
+            out.println("<title>Welcome</title>");            
+            out.println("</head>");
+            out.println("<body id=\"welcome-page\">");
             
-            out.println("<div class=\"courses-container\">");
-            for (int i = 0; i < 4; i++) {
-                courseBox(out, "Course" + (i+1));
+            out.println("<h1>Welcome to our student learning platform</h1>");
+            out.println("<h2>Click the button to log in</h2>");
+            
+            out.println("<form action=\"Home\" method=\"get\">");
+            out.println("<button class=\"button\">Log in</button>");
+            out.println("</form>");
+            
+            out.println("</body>");
+            out.println("</html>");
+            
             }
-            out.println("</div>");
-            
-        }
     }
 
-    public void courseBox(PrintWriter out, String courseTitle) {
-        out.println("<form action=\"getCourse\" method=\"get\">");
-        out.println("<button class=\"course-container\">");
-        out.println("<img class=\"course-img\" src=\"http://via.placeholder.com/200x100\">");
-        out.println("<input name=\"course\" type=\"hidden\" value=\"" + courseTitle + "\">");
-        out.println("<h2 name=\"" + courseTitle + "\" class=\"course-title\">" + courseTitle + "</h2>");
-        out.println("<p class=\"course-name\">Lorem ipsum</p>");
-        out.println("</button>");
-        out.println("</form>");
-    } 
-    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -67,7 +71,9 @@ public class serv_Index extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+        }
     }
 
     /**

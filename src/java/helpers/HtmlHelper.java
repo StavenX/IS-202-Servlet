@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import javax.servlet.http.HttpServletRequest;
 import network.Login;
+import servlets.serv_Index;
 
 /**
  *
@@ -17,9 +19,15 @@ import network.Login;
  */
 public class HtmlHelper {
     private PrintWriter out;
+    private HttpServletRequest request;
     
     
     public HtmlHelper (PrintWriter out) {
+        this.out = out;
+    }
+    
+    public HtmlHelper (PrintWriter out, HttpServletRequest request) {
+        this.request = request;
         this.out = out;
     }
     
@@ -27,10 +35,11 @@ public class HtmlHelper {
      * Prints the start of the html page
      * @param title the title visible in the tab of your browser
      * @param bodyId the html class the body will be assigned
+     * @return username of logged in user
      */
-    public void printHead (String title, String bodyId) {
+    public String printHead (String title, String bodyId) {
         out.println("<!DOCTYPE html>");
-        out.println("<html>");
+        out.println("<html lang=\"en\">");
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
@@ -38,29 +47,47 @@ public class HtmlHelper {
         out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"css/theme.css\">");
         out.println("<title>" + title + "</title>");            
         out.println("</head>");
-        //out.println(nav());
-        //printNav();
-        out.println("<body id=\"" + bodyId + "\">");
-        out.println("<form action=\"http://localhost:8084/WEB/\"> <button class=\"button button-home\">Go home</button> </form>");
+        out.println("<body id=\"" + bodyId + "\" class=\"flex-page\">");
+        printFile("nav.html");
+        out.println("<div class=\"page-container\">");
+        String username = printUserDetails();
+        return username;
+    }
+    
+    public String printUserDetails() {
+        out.println("<div class=\"top-bar\">");
+        String loggedUserName = "";
+        String loggedUserRole = "";
+        try {
+            loggedUserName = UserHelper.getUserName(request);
+            loggedUserRole = UserHelper.getUserRole(request);
+        } catch (NullPointerException ex) {
+            loggedUserName = "User not found - page not in web.xml?";
+        } catch (Exception ex) {
+            out.println(ex);
+        }
+        out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
+        out.println("</div>");
+        return loggedUserName;
+    }
+    
+    public void printDetailsButton () {
+        out.println("<input class=\"button more-info-button small-button\" type=\"submit\" value=\"Details\">");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
-                out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
-                out.println("<input class=\"invisible\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
-                out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
-                out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
-                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
-                out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
-                out.println("</form>");
-    }
-        
-    //javascript for handling delete buttons
-    public void printJsForDeleteButton() {
-        out.println("<script src=\"buttons-for-delete.js\"></script>");
+        out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\" method=\"get\">");
+        out.println("<input type=\"hidden\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
+        out.println("<input class=\"button small-button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
+        out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
+        out.println("</form>");
     }
     
+    //prints the required html code to use a javascript file in the js folder
     public void useJS(String filename) {
-        out.println("<script src=\"" + filename + "\"></script>");
+        out.println("<script src=\"js\\" + filename + "\"></script>");
     }
     
     public String checkIfValidText(String toCheck) {
@@ -97,111 +124,46 @@ public class HtmlHelper {
         return contents;
     }
     
-    public void printNav () {
-        out.println("\n" +
-"        <div class=\"nav-container\" id=\"nav-container\">\n" +
-"            <div class=\"nav-button\">\n" +
-"                <input onclick=\"hide()\" type=\"button\" value=\"<<\" id=\"nav-button\">\n" +
-"            </div>\n" +
-"            <div class=\"home-nav\" id=\"nav\">\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"#\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            My profile\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"student.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Students\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"                <div class=\"nav-item\">\n" +
-"                    <a href=\"module.html\">\n" +
-"                        <div class=\"nav-img\">\n" +
-"                            <img src=\"http://via.placeholder.com/50x50\" alt=\"lol\">\n" +
-"                        </div>\n" +
-"                        <div class=\"nav-text\">\n" +
-"                            Modules\n" +
-"                        </div>\n" +
-"                    </a>\n" +
-"                </div>\n" +
-"            </div>\n" +
-"        </div>");
+    //use on html file to print it
+    public void printFile(String filename) {
+            //gets the path of the programs current location
+            ClassLoader loader = serv_Index.class.getClassLoader();
+            //goes up to directory levels to 'web' dir
+            String path = loader.getResource("..\\..\\").toString();
+            //removes first part of path
+            path = path.replace("file:/", "");
+            
+            //adds filename to the path
+            path += filename;
+            
+            //prints the html file
+            try {
+            out.println(readFile(path));
+            } catch (IOException ex) {
+                out.println("oopsie file couldnt load" + ex);
+            }
+    }
+    
+    
+     public String readFile(String filename) throws IOException {
+        String content = new String(Files.readAllBytes(Paths.get(filename)));
+        return content;
+    }
+    
+    
+    /**
+     * Prints a button that takes you back one step on the website
+     */
+    public void printBackButton() {
+        out.println("<button class=\"button back-button\" onclick=\"window.history.back();\"><img src=\"images/back.svg\">Go back</button>");
     }
     
     /**
      * Prints the closing tag of body and html
      */
     public void printEnd () {
+        out.println("</div>");
+        useJS("navhide.js");
         out.println("</body>");
         out.println("</html>");
     }
@@ -211,7 +173,7 @@ public class HtmlHelper {
      * @param login the connection to be closed
      */
     public void closeAndPrintEnd(Login login) {
-        login.close();
+        out.println("<p>Connection is: " + login.close() + " (remove before shipping)</p>");
         printEnd();
     }
 }

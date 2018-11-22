@@ -6,11 +6,10 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,7 +22,7 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+@WebServlet(name = "serv_DeleteModule", urlPatterns = {"/deleteModule"})
 public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
@@ -50,19 +49,12 @@ public class serv_DeleteModule extends HttpServlet {
             
             String module_id = request.getParameter("module_id");
             
-            PreparedStatement deleteModule;
-            try {
-                deleteModule = conn.prepareStatement("DELETE FROM module WHERE module_id = ?;");
-                deleteModule.setString(1, module_id);
-                
-                int amountDeleted = deleteModule.executeUpdate();
-                out.println("<div>" + amountDeleted + " modules deleted.</div>");
-                out.println("<form action=\"getModule\"><button class=\"button\">Back to module list</button></form>");
-            } catch (SQLException ex) {
-                out.println("SQL error: " + ex);
-            }
+            String results = ModuleHelper.deleteModule(module_id, conn);
+            out.println("<p>" + results + "</p>");
             
             site.closeAndPrintEnd(login);
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -77,6 +69,8 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.getWriter().println("hei");
+        doGet(request, response);
     }
 
     /**

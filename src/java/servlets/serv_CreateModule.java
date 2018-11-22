@@ -44,12 +44,21 @@ public class serv_CreateModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New module", "create-module");
             
             out.println("<h1> Create a new module </h1>");  
             out.println("<div class =\"form1\">");  
-            out.println("<form action=\"createModule\" method=\"post\">");  
+            out.println("<form action=\"createModule\" method=\"post\">");
+            
+            out.println("<select style=\"display:list-item\" name=\"course_id\">");
+            out.println("<option value=\"1\">IS-200</option>");
+            out.println("<option value=\"2\">IS-201</option>");
+            out.println("<option value=\"3\">IS-202</option>");
+            out.println("<option value=\"4\">ORG-110</option>");
+            out.println("<option value=\"5\">ENG-205</option>");
+            out.println("</select>");
+            
             out.println("<input type=\"text\" name=\"module_name\" placeholder=\"Insert module name\">");  
             out.println("<input type=\"text\" name=\"module_desc\" placeholder=\"Insert module description\">");
             out.println("<input type=\"text\" name=\"module_points\" placeholder=\"Insert module points\">");
@@ -86,6 +95,7 @@ public class serv_CreateModule extends HttpServlet {
                         request.getParameter("module_name"),
                         request.getParameter("module_desc"),
                         request.getParameter("module_points"),
+                        request.getParameter("course_id"),
                         conn, 
                         out
                 );                

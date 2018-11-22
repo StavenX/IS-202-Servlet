@@ -38,7 +38,7 @@ public class serv_ERROR401 extends HttpServlet {
             throws ServletException, IOException {
 
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             
             site.printHead("401", "error-401");
             out.println("<h1>ERROR 401: Failed to log in</h1>");
