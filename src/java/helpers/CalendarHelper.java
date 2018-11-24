@@ -42,6 +42,9 @@ public class CalendarHelper {
                 jsonResponse.put("startDate", rset.getString("ce_sDate")); 
                 jsonResponse.put("lecturers", rset.getString("ce_lecturers")); 
                 jsonResponse.put("courseID", rset.getString("ce_CourseID")); 
+                jsonResponse.put("startTime", rset.getString("ce_sDate"));
+                jsonResponse.put("endTime", rset.getString("ce_eDate"));
+                jsonResponse.put("room", rset.getString("ce_room"));
                 jsonA.add(i, jsonResponse);
                 i++;
             }

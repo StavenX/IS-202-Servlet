@@ -18,25 +18,9 @@
     </div>
     <div id="boi2">
     </div>
-        <div id="test">
-        </div>
-        <div id="addEventForm">
-            <form>
-                Course ID <input type="text" name="Course ID"><br>
-                Lecturers <input type="text" name="Lecturers"><br>
-                Room      <input type="text" name="Room"><br>
-                Start time <input type="time" name="Start time">
-                End time <input type="time" name="End time"><br><br>
-                Event date <input type="date" name="Date"><br><br>
-                <span> Repeat event every: </span><br>
-                <input type="checkbox" name="Monday">Monday<br>
-                <input type="checkbox" name="Tuesday">Tuesday<br>
-                <input type="checkbox" name="Wednesday">Wednesday<br>
-                <input type="checkbox" name="Thursday">Thursday<br>
-                <input type="checkbox" name="Friday">Friday<br>
-                <input type="checkbox" name="Saturday">Saturday<br>
-                <input type="checkbox" name="Sunday">Sunday<br><br>
-                <input type="submit" value="Submit">
+        <div id="newEvent">
+            <form action="CreateTimetableEvent" method ="get">
+                <input type="submit" value="New event">
             </form>
         </div>
     </div>
@@ -55,6 +39,8 @@
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
         today.setMilliseconds(0);
+        today.setSeconds(0);
+        today.setMinutes(0);
         var selectedDegree = ("bajs");
         
         function changeSelectedDegree() {
@@ -67,6 +53,8 @@
         function fillCalendar(d)
         {
             d.setMilliseconds(0);
+            d.setSeconds(0);
+            d.setMinutes(0);
             var HTML = ("");
             for(var q = 0; q < 3; q++)
             {
@@ -134,10 +122,53 @@
                     var response = JSON.parse(xhttp.responseText);
                     for (var r = 0; r < response.length; r++) {
                         var obj = response[r];
-                        document.getElementById(obj.startDate).innerHTML = ("<td><span> description: " + obj.description + 
-                                                                    "</span><br><span> lecturers: " + obj.lecturers +
-                                                                    "</span><br><span> Course: " + obj.courseID + 
-                                                                    "</span></td>");
+                        var startTimeRowIndex = (document.getElementById(obj.startTime).parentNode);
+                        var endTimeRowIndex = (document.getElementById(obj.endTime).parentNode);
+                        var rowspan = endTimeRowIndex.rowIndex - startTimeRowIndex.rowIndex;
+                        var oldTD = document.getElementById(obj.startDate);
+                        
+                        var newTD = document.createElement("td");
+                        newTD.setAttribute("class", "filledEvent");
+                        newTD.setAttribute("style", "background-color: " + obj.color);
+                        newTD.setAttribute("rowspan", rowspan);
+                        
+                        var st = document.createElement("span");
+                        st.setAttribute("class", "startTimeSpan");
+                        st.textContent = (startTimeRowIndex.children[0].innerText);
+                        newTD.appendChild(st);
+                        
+                        var coID = document.createElement("span");
+                        coID.setAttribute("class", "courseIDSpan");
+                        coID.textContent = (obj.courseID);
+                        newTD.appendChild(coID);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var room = document.createElement("span");
+                        room.setAttribute("class", "courseIDSpan");
+                        room.textContent = (obj.room);
+                        newTD.appendChild(room);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var lect = document.createElement("span");
+                        lect.setAttribute("class", "lecturersSpan");
+                        lect.textContent = (obj.lecturers);
+                        newTD.appendChild(lect);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var desc = document.createElement("span");
+                        desc.setAttribute("class", "descriptionSpan");
+                        desc.textContent = (obj.description);
+                        newTD.appendChild(desc);
+                        
+                        var et = document.createElement("span");
+                        et.setAttribute("class", "endTimeSpan");
+                        et.textContent = (endTimeRowIndex.children[0].innerText);
+                        
+                        newTD.appendChild(et);
+                        oldTD.parentNode.replaceChild(newTD, oldTD);
                     }
                 }
             };
@@ -167,19 +198,36 @@
             }
             HTML2 += ("</tr></thead><tbody><tr>");
             
-            for (var o = 0; o < 21; o++) 
+            for (var o = 0; o < 121; o++) 
             {
                 var minutes = n.getMinutes();
-                HTML2 += ("<tr><td class=\"timeStamp\">" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                
+                if(n.getMinutes() == 0) {
+                    if(n.getHours() < 10) {
+                        HTML2 += ("<tr><td class=\"showTimeStamp\">0" + n.getHours() + ":" + n.getMinutes() + "0</td>");
+                    }
+                    else {
+                        HTML2 += ("<tr><td class=\"showTimeStamp\">" + n.getHours() + ":" + n.getMinutes() + "0</td>");
+                    }
+                }
+                else {
+                    HTML2 += ("<tr><td class= hideTimeStamp>" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                }
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td class=\"timetableCell\" id=" + n.getTime() + ">" + n.getTime() + "</td>");
-                    
+                    if (n.getMinutes() == 0) {
+                    HTML2 += ("<td class=\"showTimetableCell\" id=" + n.getTime() + "></td>");
                     n.setDate(n.getDate()+1);
+                    }
+                    
+                    else {
+                        HTML2 += ("<td class=\"hideTimetableCell\" id=" + n.getTime() + "></td>");
+                        n.setDate(n.getDate()+1);
+                    }
                 }
                 n.setDate(n.getDate()-7);
-                n.setMinutes(minutes+30);
+                n.setMinutes(minutes+5);
                 HTML2 += ("</tr>");
             }
             HTML2 += ("</tr></tbody></table>");

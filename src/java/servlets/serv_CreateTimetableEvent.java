@@ -1,5 +1,6 @@
 package servlets;
 
+import helpers.HtmlHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -30,13 +31,9 @@ public class serv_CreateTimetableEvent extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet serv_CreateTimetableEvent</title>");  
-            out.println("<link rel=\"stylesheet\" type=\"text/css\" href=\"theme.css\">");
-            out.println("</head>");
-            out.println("<body>");
+            HtmlHelper site = new HtmlHelper(out);
+            site.printHead("New event", "body");
+            
             
             // Form for new event input
             out.println("<form method=\"post\">");
@@ -56,10 +53,26 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             out.println("<input type=\"submit\" value=\"Submit\">");
             out.println("</form>");
             
-            
-            
-            out.println("</body>");
-            out.println("</html>");
+            /*<div id="addEventForm">
+            <form>
+                <br>
+                Course ID <input type="text" name="Course ID"><br>
+                Lecturers <input type="text" name="Lecturers"><br>
+                Room      <input type="text" name="Room"><br>
+                Start time <input type="time" name="Start time" min="08:00:00" max="18:00:00">
+                End time <input type="time" name="End time" min="08:00:00" max="18:00:00"><br><br>
+                Event date <input type="date" name="Date"><br><br>
+                <span> Repeat event every: </span><br>
+                <input type="checkbox" name="Monday">Monday<br>
+                <input type="checkbox" name="Tuesday">Tuesday<br>
+                <input type="checkbox" name="Wednesday">Wednesday<br>
+                <input type="checkbox" name="Thursday">Thursday<br>
+                <input type="checkbox" name="Friday">Friday<br>
+                <input type="checkbox" name="Saturday">Saturday<br>
+                <input type="checkbox" name="Sunday">Sunday<br><br>
+                <input type="submit" value="Submit">
+            </form>
+        </div>*/
         }
     }
             
