@@ -217,13 +217,13 @@ a {
     min-width: 1300px;
 }
 
-#boi {
+#calendarsDiv { 
     float: left;
     width: 20%;
     display: table;
 }
  
-#boi2 {
+#timetableDiv {
     float: left;
     width: 75%;
     margin-left: 30px;

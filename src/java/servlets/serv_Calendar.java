@@ -37,7 +37,7 @@ public class serv_Calendar extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             String reqDate = request.getParameter("currDay");
-            String reqDegree = request.getParameter("selectedDegree");
+            String reqDegree = request.getParameter("currDegree");
             
             Connection conn;
             conn = dbLogin.loginToDB(out);

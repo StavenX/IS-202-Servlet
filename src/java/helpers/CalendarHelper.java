@@ -28,11 +28,10 @@ public class CalendarHelper {
 
             cal.setTimeInMillis(Long.parseLong(reqDate));
             int weekOfYear = cal.get(Calendar.WEEK_OF_YEAR);
-            System.out.println(reqDegree);
             
             JSONArray jsonA = new JSONArray();
-            String query = ("SELECT * FROM calendar_event WHERE ce_weekOfYear =" + weekOfYear + ";");
-            
+            String query = ("SELECT * FROM calendar_event WHERE ce_weekOfYear =" + weekOfYear + " AND ce_degreeNandS ='" + reqDegree + "';");
+
             stmt = conn.createStatement();
             ResultSet rset = stmt.executeQuery(query);
             int i = 0;
