@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="css/theme.css">
+    
+    <title>Calendar</title>    
+</head>
+<body>
+    <div id="buttons">
+    </div>
+    <div id="buttons2">
+    </div>
+    <div id="calendarWrapper">
+    <div id="boi">
+    </div>
+    <div id="boi2">
+    </div>
+        <div id="test">
+        </div>
+        <div>
+            <form>
+                <select name="study">
+                    <option value="ITandIS1">IT and information systems (1. semester)</option>
+                    <option value="ITandIS2">IT and information systems (2. semester)</option>
+                </select><br>
+                <select name="course">
+                    <option value="IS-200">IS-200</option>
+                    <option value="IS-201">IS-201</option>
+                    <option value="IS-202">IS-202</option>
+                </select><br>
+                <input type="text" name="Lecturers">
+            </form>
+        </div>
+    </div>
+        <script>
+        
+        </script>
+    <script>
+        var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
+        var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        var today = new Date();
+        today.setMilliseconds(0);
+        
+        // Fills three calendars
+        function fillCalendar(d)
+        {
+            d.setMilliseconds(0);
+            var HTML = ("");
+            for(var q = 0; q < 3; q++)
+            {
+
+                var month = d.getMonth();
+                var year = d.getFullYear();
+                var monthLastDay =  new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+                var firstDay = new Date(d.getFullYear(), d.getMonth()).getDay() || 7;
+
+                // Prints month name
+                HTML += ("<table class=\"calendarTable\"><thead><tr><th COLSPAN=7>" + monthNames[month] + "<br>" + year + "</thead><tbody><tr>");
+
+                // Prints weekdays
+                for (var p = 0; p <= 6; p++) 
+                {
+                        HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
+                }
+                
+                // Prints empty days in calendar
+                HTML += ("</tr><tr>");
+                for (var i = 1; i < firstDay; i++) 
+                {
+                    HTML += ("<td>");
+                }
+                d.setDate(1);
+
+                // Prints first week of month
+                for (var i = firstDay; i < 8; i++)
+                {
+                    HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + d.getDate() + "</td>");
+                    d.setDate(d.getDate()+1);
+                }
+                // Prints remaining weeks
+                HTML += ("<tr>");
+
+                while (d.getDate() < monthLastDay) {
+                    for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) 
+                    {
+                        HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + d.getDate() + "</td>");
+                        d.setDate(d.getDate()+1);
+                            if(d.getDate() == monthLastDay){
+                                if (i == 7) {
+                                    HTML += ("</tr><tr><td id=" + d.getTime() + " onclick= newTT(this.id)>" + monthLastDay + "</td>");
+                                }
+                                else { 
+                                    HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + monthLastDay + "</td>");
+                                }
+                            }
+                    }
+                    HTML += ("</tr><tr>");
+                }
+                HTML += ("</tr>");
+                d.setDate(d.getDate()+1);
+            }
+            HTML += ("</tbody></table><br>");
+            document.getElementById("boi").innerHTML = HTML;
+        }
+    </script>
+    
+    <script>
+        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
+        function loadEvents(currDate) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (xhttp.readyState == 4 && this.status == 200) {
+                    var response = JSON.parse(xhttp.responseText);
+                    for (var r = 0; r < response.length; r++) {
+                        var obj = response[r];
+                        console.log(obj.startDate);
+                        document.getElementById(obj.startDate).innerHTML = ("<td>" + "<span> description: " + obj.description + 
+                                                                    "</span><br><span> lecturers: " + obj.lecturers +
+                                                                    "</span><br><span> Course: " + obj.courseID + 
+                                                                    "</span></td>");
+                    }
+                }
+            };
+            xhttp.open("GET", "Calendar?"+currDate, true);
+            xhttp.send();
+        }
+        
+        function fillTimetable(n)
+        {
+            if (n.getDay() % 7 == 0) {
+                n.setDate(n.getDate() - n.getDay()-6);
+            }
+            else {
+                n.setDate(n.getDate() - n.getDay()+1);
+            }
+            n.setHours(8, 0, 0, 0);
+
+            HTML2 = ("");
+            HTML2 += ("<table id =\"timetable\"><thead><tr>");
+            HTML2 += ("<th>&nbsp;</th>");
+            
+            for (var p = 0; p <= 6; p++) 
+            {
+                var thisweekd = new Date (n);
+                thisweekd.setDate(thisweekd.getDate()+p);
+                HTML2 += ("<th>" + weekdayNames[p] + "<br>" + thisweekd.getDate() + "." + (n.getMonth()+1) + "</th>");
+            }
+            HTML2 += ("</tr></thead><tbody><tr>");
+            
+            for (var o = 0; o < 21; o++) 
+            {
+                var minutes = n.getMinutes();
+                HTML2 += ("<tr><td class=\"timeStamp\">" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                
+                for (var w = 0; w <= 6; w++) 
+                {
+                    HTML2 += ("<td id=" + n.getTime() + "></td>");
+                    
+                    n.setDate(n.getDate()+1);
+                }
+                n.setDate(n.getDate()-7);
+                n.setMinutes(minutes+30);
+                HTML2 += ("</tr>");
+            }
+            HTML2 += ("</tr></tbody></table>");
+            document.getElementById("boi2").innerHTML = HTML2;
+            var dfdf = n.getTime();
+            loadEvents(dfdf);
+        }
+    </script>
+    <script>
+        // Buttons for access next and previous months
+        document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months</button>");
+        document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months</button>");
+        
+        function nextMonths() {
+            currentDate.setMonth(currentDate.getMonth());
+            fillCalendar(currentDate);
+        }
+        
+        function prevMonths() {
+            currentDate.setMonth(currentDate.getMonth()-6);
+            fillCalendar(currentDate);
+        }
+    </script>
+    <script>
+        // Prints current calendar on page load
+        var currentDate = new Date();
+        var currentDate2 = new Date();
+        fillTimetable(currentDate2);
+        fillCalendar(currentDate);
+    </script>
+    <script>
+        function displayCurrentDay () {
+            document.getElementById(today).innerHTML = "<td class= \"currentWD\" id=" + today + ">" + today.getDate() + "</td>";
+        }
+    </script>
+    <script>
+        function newTT (k) {
+            var s = new Date(parseInt(k));
+            fillTimetable(s);
+        }
+    </script>
+</body>
+</html>

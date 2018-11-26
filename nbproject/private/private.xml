@@ -4,8 +4,8 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/calendar.html</file>
-            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/css/theme.css</file>
             <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/helpers/CalendarHelper.java</file>
         </group>
     </open-files>
 </project-private>
