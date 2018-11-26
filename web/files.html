@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>File upload and download</title>
+    <link rel="stylesheet" type="text/css" href="example.css"/>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <h1>File upload demo</h1>
+    <p>This project demonstrates file upload, using only standard java classes.
+      File upload starts with a form like the one below. The important points
+      here are:</p>
+    <ul>
+      <li>The method is POST and enctype='multipart/form-data'. This changes the
+        structure of the request message to make the file transfer possible</li>
+      <li>The action is the url of the servlet that will receive the request.
+        The request message, with the file attached, will be sent to the
+        servlet specified in the forms action attribute..</li>
+      <li>Use the browse button to select the file to upload. When you have
+        selected a file the filename will be displayed next to the browse
+        button, and you can start the upload by clicking the upload button.</li>
+      <li>Open UploadFile.java to see how the upload is handled.</li>
+    </ul>
+
+    <form method='POST' action='UploadFile' enctype='multipart/form-data'>
+      <table>
+        <tr>
+          <th>Select File:</th>
+          <td><input type='file' name='file'/></td>
+        </tr>
+        <tr>
+          <td colspan='2'>
+            <input type='submit' value='Upload selected file'>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</html>

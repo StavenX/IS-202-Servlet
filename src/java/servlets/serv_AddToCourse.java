@@ -5,10 +5,8 @@
  */
 package servlets;
 
-import helpers.AnnouncementHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
-import helpers.ModuleHelper;
 import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -24,11 +22,12 @@ import network.Login;
 
 /**
  *
- * @author tobia
+ * @author Tobias
  */
-@WebServlet(name = "oneCourseDetails", urlPatterns = {"/oneCourseDetails"})
-public class serv_OneCourseDetails extends HttpServlet {
+@WebServlet(name = "addToCourse", urlPatterns = {"/addToCourse"})
+public class serv_AddToCourse extends HttpServlet {
     Login login = new Login();
+
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -44,9 +43,27 @@ public class serv_OneCourseDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Added to course", "");
+            
+            Connection conn = login.loginToDB(out);
+            
+            String course_id = request.getParameter("course_id");
+            String user_ids[] = request.getParameterValues("marked");
+            for (String user_id : user_ids) {
+                String results = UserHelper.addUserToCourse(course_id, user_id, conn, out);
+                out.printf("<p>User with id %s, %s</p>\n", user_id, results);
+            }
+            
+            
+            out.println("<form action=\"oneCourse\" method=\"post\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
+            out.println("<button class=\"button\">Go to course</button></form>");
+            
+            
+            site.closeAndPrintEnd(login);
         }
     }
-
+    
     /**
      * Handles the HTTP <code>POST</code> method.
      *
@@ -60,54 +77,37 @@ public class serv_OneCourseDetails extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            
-            Connection conn = login.loginToDB(out);
             HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Details", "one-course");
+            site.printHead("Students not in course", "");
             
             String course_id = request.getParameter("course_id");
+            
+            Connection conn = login.loginToDB(out);
+            
             String course_name = CourseHelper.getCourseName(course_id, conn);
-            String role = request.getParameter("role");
-            String details = request.getParameter("details").toLowerCase();
-            String orderBy = request.getParameter("orderBy");
-            String direction = request.getParameter("orderDirection");
             
-            orderBy = (orderBy == null) ? "" : orderBy;
-            direction = (direction == null) ? "" : direction;
+            //button for adding a student to the course using their id
+            //(also adds them to all modules in the course
+            out.println("<div class=\"add-to-course-box\">");
+            out.println("<h2>Mark users you wish to add</h2>");
+            out.println("<form id=\"test\" action=\"addToCourse\" method=\"get\">");
+            out.println(CourseHelper.invisInputs(course_id, "Lecturer"));
+            out.println("<button class=\"button\">Add to " + course_name + "</button>");
+            out.println("</form>");
+            out.println("</div>");
             
-            out.println(CourseHelper.backToCourseButton(course_id, course_name, role));
+            
+            out.println(CourseHelper.backToCourseButton(course_id, course_name, "Lecturer"));
             
             try {
-                switch(details) {
-                    case "modules":
-                        ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");
-                        break;
-
-                    case "students":
-                        UserHelper.printUsers(out, conn, UserHelper.getUsers(conn, course_id));
-                        //link to add students who isn't in the course
-                        if(role.toLowerCase().equals("lecturer")) {
-                            out.println("<form action=\"addToCourse\" method=\"post\">");
-                            out.println(CourseHelper.invisInputs(course_id, role));
-                            out.println("<button class=\"button\">View students not in this course</button>");
-                            out.println("</form>");
-                        }
-            
-                        break;
-
-                    case "announcements":
-                        ResultSet rset = AnnouncementHelper.getAnnouncements(50, conn, course_id);
-                        int amount = AnnouncementHelper.printAnnouncements(out, conn, rset, role);                    
-                        out.println("Printed " + amount + " newest announcements. If you want to see more please contact your system admin.");
-                        break;
-
-                    default:
-                        out.println("you done goofed, Tobias.");
-                }
+                ResultSet rset = UserHelper.getUsersNotInCourse(conn, course_id);
+                
+                UserHelper.printUsers(out, conn, rset);
             } catch (SQLException ex) {
                 out.println(ex);
             }
-            site.useJS("buttons-for-delete.js");
+            
+            site.useJS("delete-for-buttons.js");
             site.closeAndPrintEnd(login);
         }
     }

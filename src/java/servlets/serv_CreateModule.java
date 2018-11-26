@@ -44,7 +44,7 @@ public class serv_CreateModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("New module", "create-module");
             
             out.println("<h1> Create a new module </h1>");  

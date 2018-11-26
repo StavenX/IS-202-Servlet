@@ -41,10 +41,10 @@ public class serv_Student extends HttpServlet {
             
             out.println("<h1> Student operations </h1>");
             
-            out.println("<form action=\"createUser\">");
+            out.println("<form action=\"createUser\" method=\"get\">");
             out.println("<button class=\"button\">Create user</button>");
             out.println("</form>");
-            out.println("<form action=\"getUser\">");
+            out.println("<form action=\"getUser\" method=\"get\">");
             out.println("<button class=\"button\">Get all users from database</button>");
             out.println("</form>");
             
@@ -63,6 +63,8 @@ public class serv_Student extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        try (PrintWriter out = response.getWriter()) {
+        }
     }
 
     /**

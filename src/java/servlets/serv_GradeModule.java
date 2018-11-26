@@ -1,19 +1,18 @@
-package servlets;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package servlets;
 
-
-import helpers.AccessTokenHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
+import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,14 +22,12 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getModule", urlPatterns = {"/getModule"})
-public class serv_GetModule extends HttpServlet {
+@WebServlet(name = "serv_GradeModule", urlPatterns = {"/gradeModule"})
+public class serv_GradeModule extends HttpServlet {
+    Login login = new Login();    
 
-    Statement stmt;
-    Login login = new Login();
-    
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -60,31 +57,41 @@ public class serv_GetModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
             HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("Graded", "");
+            
+            
+            Connection conn = login.loginToDB(out);
+            String module_id = request.getParameter("module_id");
+            String user_id = request.getParameter("user_id");
+            String new_points = request.getParameter("new_points");
+            String comment = request.getParameter("comment");
+            out.println(comment);
+                       
+            String current_user = UserHelper.getUserId(conn, UserHelper.getUserName(request));
+            try {
+                PreparedStatement grade = conn.prepareStatement("UPDATE module_details SET module_points = ?, module_status = \'Completed\'\n" +
+                                                                "WHERE module_ID = ? AND student_id = ?;");
+                grade.setString(1, new_points);
+                grade.setString(2, module_id);
+                grade.setString(3, user_id);
+                
+                grade.executeUpdate();
+                
+                ModuleHelper.newModuleFeedback(conn, module_id, user_id, current_user, comment);
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+            
+            
+            out.println("<form name=\"back\" action=\"oneStudentModule\" method=\"post\">");
+            out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id +"\">");
+            out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
+            out.println("<input class=\"button\" type=\"submit\" value=\"Back\">");
+            out.println("</form>");
+            
+            //out.println("<script>window.onload=document.forms[\'back\'].submit();</script>");
 
-            site.printHead("Modules", "bodyy");
-            
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                //is null if first time entering the page, which is handled by a
-                //'default' in a switch in printModules()
-                String orderBy = request.getParameter("orderBy");
-                if (orderBy == null) {
-                    orderBy = "";
-                }
-                String direction = request.getParameter("orderDirection");
-                direction = (direction == null) ? "" : direction;
-                
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            String role = a.getUserRole();
-                
-                ModuleHelper.printModules(out, conn, orderBy, direction, role, "%", "getModule");
-                
             site.closeAndPrintEnd(login);
         }
     }

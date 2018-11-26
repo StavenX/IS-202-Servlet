@@ -6,11 +6,11 @@
 package servlets;
 
 import helpers.HtmlHelper;
+import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import helpers.MessageHelper;
-import java.sql.Statement;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,41 +20,11 @@ import network.Login;
 
 /**
  *
- * @author Staven
+ * @author Tobias
  */
-@WebServlet(name = "getMessage", urlPatterns = {"/getMessage"})
-public class serv_GetMessage extends HttpServlet {
-
-    Statement stmt;
-    Login login = new Login();
-    
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
-            HtmlHelper site = new HtmlHelper(out);
-            site.printHead("Message", "bodyy");
-            
-            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
-
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
-                
-            site.closeAndPrintEnd(login);
-        }
-    }
+@WebServlet(name = "serv_CreateComment", urlPatterns = {"/createComment"})
+public class serv_CreateComment extends HttpServlet {
+Login login = new Login();
 
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -68,9 +38,9 @@ public class serv_GetMessage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8");  
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            doPost(request, response);
+        }
     }
 
     /**
@@ -85,9 +55,32 @@ public class serv_GetMessage extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setCharacterEncoding("UTF-8"); 
-        processRequest(request, response);
+        try (PrintWriter out = response.getWriter()) {
+            
+            HtmlHelper site = new HtmlHelper(out, request);
+            site.printHead("commenting", "commenting");
+            
+            String content = request.getParameter("module_comment_content");
+            String module_id = request.getParameter("module_id");
+            String user_id = request.getParameter("user_id");
+            
+            Connection conn = login.loginToDB(out);
+            try {
+                String results = ModuleHelper.newModuleComment(conn, module_id, user_id, content);
+                
+                
+                out.println(results);
+                out.println("<form action=\"oneModule#Comments\" method=\"get\">");
+                out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+                out.println("<input type=\"submit\" class=\"button\" value=\"Back to module\">");
+                out.println("</form>");
+                
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+            
+            site.closeAndPrintEnd(login);
+        }
     }
 
     /**

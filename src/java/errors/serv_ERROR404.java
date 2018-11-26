@@ -38,7 +38,7 @@ public class serv_ERROR404 extends HttpServlet {
             throws ServletException, IOException {
 
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             
             site.printHead("404", "error-404");
             out.println("<p>Missing resource</p>");
