@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
+<!--Datasource for my computer (edvin)-->
 <!--
-Datasource for my computer (edvin)
 <Context path="/WEB">
 	<Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
             username="root" password="admin" driverClassName="com.mysql.jdbc.Driver"
             url="jdbc:mysql://localhost:3306/malware">
 	</Resource>			  
+
+ <Realm className="org.apache.catalina.realm.DataSourceRealm" 
+         dataSourceName="jdbc/localhostDS" localDataSource="true"
+         userTable="users"  userNameCol="user_name" userCredCol="user_password"
+         userRoleTable="users" roleNameCol="user_role" />                 	  
 </Context>
 -->
+
 
 <!--Datasource for remote Digitalocean server-->
 <Context path="/WEB">
