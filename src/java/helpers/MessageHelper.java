@@ -73,14 +73,15 @@ public class MessageHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      */
-    public static void printMessages(PrintWriter out, Connection conn) {
+    public static void printMessages(PrintWriter out, Connection conn, String userId) {
 
         HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getMessage; 
         
         try {
-            getMessage = conn.prepareStatement("SELECT * FROM message ORDER BY ?");
-            getMessage.setString(1, "mess_senderId");
+            getMessage = conn.prepareStatement("SELECT * FROM message WHERE mess_senderId LIKE ? OR mess_recipient LIKE ? ORDER BY mess_senderId");
+            getMessage.setString(1, userId);
+            getMessage.setString(2, userId);
                        
             ResultSet rset = getMessage.executeQuery();
             
