@@ -21,8 +21,8 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "addToCourse", urlPatterns = {"/addToCourse"})
-public class serv_addToCourse extends HttpServlet {
+@WebServlet(name = "addToModule", urlPatterns = {"/addToModule"})
+public class serv_AddToModule extends HttpServlet {
     Login login = new Login();
 
 
@@ -41,18 +41,17 @@ public class serv_addToCourse extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out, request);
-            site.printHead("Added to course", "");
+            site.printHead("Added to module", "");
             
-            String course_id = request.getParameter("course_id");
+            String module_id = request.getParameter("module_id");
             String student_id = request.getParameter("student_id");
             
             Connection conn = login.loginToDB(out);
             
-            //adds user to the course
-            UserHelper.addUserToCourse(course_id, student_id, conn, out);
+            UserHelper.addUserToModule(module_id, student_id, conn, out);
             
-            out.println("<form action=\"oneCourse\"><input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
-            out.println("<button class=\"button\">Go to course</button></form>");
+            out.println("<form action=\"oneModule\"><input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
+            out.println("<button class=\"button\">Go to module</button></form>");
             
             
             site.closeAndPrintEnd(login);

@@ -10,8 +10,6 @@ import helpers.ModuleHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +22,7 @@ import network.Login;
  *
  * @author Tobias
  */
-@WebServlet(name = "deleteModule", urlPatterns = {"/deleteModule"})
+@WebServlet(name = "serv_DeleteModule", urlPatterns = {"/deleteModule"})
 public class serv_DeleteModule extends HttpServlet {
     Login login = new Login();
 
@@ -42,7 +40,7 @@ public class serv_DeleteModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out, request);
+            HtmlHelper site = new HtmlHelper(out);
             site.printHead("Delete module", "delete-module");
             
             out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
@@ -55,6 +53,8 @@ public class serv_DeleteModule extends HttpServlet {
             out.println("<p>" + results + "</p>");
             
             site.closeAndPrintEnd(login);
+        } catch (Exception ex) {
+            System.out.println(ex);
         }
     }
 
@@ -69,6 +69,8 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.getWriter().println("hei");
+        doGet(request, response);
     }
 
     /**

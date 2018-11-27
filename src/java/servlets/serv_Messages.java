@@ -42,15 +42,21 @@ public class serv_Messages extends HttpServlet {
         request.setCharacterEncoding("UTF-8"); 
         
         try (PrintWriter out = response.getWriter()) {
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message", "create-message");
             out.println("<a href=\"http://localhost:8084/WEB/\"></a>");
             out.println("<h1> Create a new message </h1>");
+            
+            String sender_id = request.getParameter("sender_id");
+            String recipient_id = request.getParameter("recipient_id");
+            out.println(sender_id);
+            out.println(recipient_id);
+            
             out.println("<div class =\"form1\">");
             out.println("<form id=\"messageForm\" action=\"Message\" method=\"post\"> ");
             
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\" value=\"" + sender_id + "\">");
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\" value=\"" + recipient_id + "\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
             
             out.println("</form>");
@@ -60,7 +66,8 @@ public class serv_Messages extends HttpServlet {
             out.println("<input class=\"button\" type=\"button\" name=\"get\" value=\"Send message\" onclick=\"submit(\'messageForm\')\">");
             
             out.println("</div>");
-            out.println("<script src=\"submitform.js\"></script>");
+            
+            site.useJS("submitform.js");
 
             site.printEnd();
         }
@@ -85,7 +92,7 @@ public class serv_Messages extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message sent", "sent-message");
             
                 Connection conn;

@@ -22,12 +22,13 @@
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
+            <url-pattern>/About</url-pattern>
             <url-pattern>/Calendar</url-pattern>
-            <url-pattern>/createModule</url-pattern>
-            <url-pattern>/createUser</url-pattern>
+            <url-pattern>/createComment</url-pattern>
+            <url-pattern>/createFeedback</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
-            <url-pattern>/deleteModule</url-pattern>
-            <url-pattern>/deleteUser</url-pattern>
+            <url-pattern>/deleteComment</url-pattern>
+            <url-pattern>/deleteFeedback</url-pattern>
             <url-pattern>/FileUpload</url-pattern>
             <url-pattern>/getCourse</url-pattern>
             <url-pattern>/getMessage</url-pattern>
@@ -36,40 +37,54 @@
             <url-pattern>/Home</url-pattern>
             <url-pattern>/Message</url-pattern>
             <url-pattern>/Module</url-pattern>
+            <url-pattern>/myProfile</url-pattern>
             <url-pattern>/oneCourse</url-pattern>
             <url-pattern>/oneCourseDetails</url-pattern>
             <url-pattern>/oneMessage</url-pattern>
             <url-pattern>/oneModule</url-pattern>
+            <url-pattern>/oneStudentModule</url-pattern>
             <url-pattern>/oneUser</url-pattern>
             <url-pattern>/Student</url-pattern>
-            <url-pattern>/Calendar</url-pattern>
-            <url-pattern>/serv_FileUpload</url-pattern>
-            <url-pattern>/serv_GetModule</url-pattern>
-            <url-pattern>/serv_GetStudent</url-pattern>
-            <url-pattern>/serv_OneModule</url-pattern>
-            <url-pattern>/serv_CreateNewUser</url-pattern>
-            <url-pattern>/serv_OneStudent</url-pattern>
-            <url-pattern>/Message</url-pattern>
+            <url-pattern>/updateModule</url-pattern>
+            <url-pattern>/UploadFile</url-pattern>
         </web-resource-collection>
         <!--  the user must have one of these roles  -->
-
+        <auth-constraint>
+            <role-name>Admin</role-name>
+            <role-name>Student</role-name>
+            <role-name>Lecturer</role-name>        
+        </auth-constraint>
+    </security-constraint>
     
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>AdminResources</web-resource-name>
-            <url-pattern>/Module</url-pattern>
-            <url-pattern>/Student</url-pattern>
-            <url-pattern>/serv_CreateModule</url-pattern>
-            <url-pattern>/serv_CreateNewUser</url-pattern>
-            <url-pattern>/serv_CreateStudent</url-pattern>
-            <url-pattern>/serv_DeleteModule</url-pattern>
-            <url-pattern>/serv_DeleteStudent</url-pattern>
-            <url-pattern>/serv_UpdateModule</url-pattern>
-            <url-pattern>/AdminSaveContact</url-pattern>
-            <url-pattern>/403test</url-pattern>
+            <url-pattern>/addToCourse</url-pattern>
+            <url-pattern>/addToModule</url-pattern>
+            <url-pattern>/createAnnouncement</url-pattern>
+            <url-pattern>/createModule</url-pattern>
+            <url-pattern>/createUser</url-pattern>
+            <url-pattern>/deleteAnnouncement</url-pattern>
+            <url-pattern>/deleteMessage</url-pattern>
+            <url-pattern>/deleteModule</url-pattern>
+            <url-pattern>/deleteUser</url-pattern>
+            <url-pattern>/gradeModule</url-pattern>
+            <url-pattern>/updateModule</url-pattern>
         </web-resource-collection>
         <auth-constraint>
+            <role-name>Admin</role-name>
             <role-name>Lecturer</role-name>
+        </auth-constraint>
+    </security-constraint>
+  
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>AdminResources</web-resource-name>
+            <url-pattern>/createUser</url-pattern>
+            <url-pattern>/deleteUser</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Admin</role-name>
         </auth-constraint>
     </security-constraint>
   

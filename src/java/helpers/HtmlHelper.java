@@ -35,8 +35,9 @@ public class HtmlHelper {
      * Prints the start of the html page
      * @param title the title visible in the tab of your browser
      * @param bodyId the html class the body will be assigned
+     * @return username of logged in user
      */
-    public void printHead (String title, String bodyId) {
+    public String printHead (String title, String bodyId) {
         out.println("<!DOCTYPE html>");
         out.println("<html lang=\"en\">");
         out.println("<head>");
@@ -48,35 +49,43 @@ public class HtmlHelper {
         out.println("</head>");
         out.println("<body id=\"" + bodyId + "\" class=\"flex-page\">");
         printFile("nav.html");
-        //useJS("navhide.js");
         out.println("<div class=\"page-container\">");
-        out.println("<form action=\"Home\"> <button class=\"button button-home\">Go home</button> </form>");
-        printUserDetails();
+        String username = printUserDetails();
+        return username;
     }
     
-    public void printUserDetails() {
-        String loggedUserName;
+    public String printUserDetails() {
+        out.println("<div class=\"top-bar\">");
+        String loggedUserName = "";
         String loggedUserRole = "";
         try {
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            loggedUserName = a.getUsername();
-            loggedUserRole = a.getUserRole();
+            loggedUserName = UserHelper.getUserName(request);
+            loggedUserRole = UserHelper.getUserRole(request);
+        } catch (NullPointerException ex) {
+            loggedUserName = "User not found - page not in web.xml?";
         } catch (Exception ex) {
-            loggedUserName = "not implemented in this servlet | " + ex;
+            out.println(ex);
         }
-        out.printf("<p>Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
+        out.printf("<p class=\"user-details\">Logged in. | User: %s | Role %s </p>\n", loggedUserName, loggedUserRole);
+        out.println("</div>");
+        return loggedUserName;
+    }
+    
+    public void printDetailsButton () {
+        out.println("<input class=\"button more-info-button small-button\" type=\"submit\" value=\"Details\">");
     }
     
     public void printDeleteButton (String servletName, String entityPK, String entityID) {
-        out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\">");
+        out.println("<form name=\"delete-form-" + entityID + "\" action=\"" + servletName + "\" method=\"get\">");
         out.println("<input type=\"hidden\" name=\"" + entityPK + "\" value=\"" + entityID + "\">");
-        out.println("<input class=\"button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
+        out.println("<input class=\"button small-button makesure-" + entityID + "\" type=\"button\" value=\"Delete\" onclick=\"makeSure(" + entityID + ");\"  style=\"display: inline-block\">");
         out.println("<p class=\"invisible makesure-" + entityID + "\">Really delete?<br></p>");
-        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
-        out.println("<input class=\"invisible button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"submit\" value=\"Yes\">");
+        out.println("<input class=\"invisible button small-button makesure-" + entityID + "\" type=\"button\" value=\"No\" onclick=\"makeSure(" + entityID + ");\">");
         out.println("</form>");
     }
     
+    //prints the required html code to use a javascript file in the js folder
     public void useJS(String filename) {
         out.println("<script src=\"js\\" + filename + "\"></script>");
     }
