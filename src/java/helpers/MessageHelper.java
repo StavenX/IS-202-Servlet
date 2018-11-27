@@ -52,7 +52,7 @@ public class MessageHelper {
             // The button that prints all messages
             out.println(
                 "<form action=\"getMessage\" method=\"post\">\n" +
-"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"Get all Messages from Database\">   \n" +
+"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"My messages\">   \n" +
 "               </form>");
         }
         catch (SQLIntegrityConstraintViolationException ex) {
@@ -73,14 +73,15 @@ public class MessageHelper {
      * @param out The printwriter to write with
      * @param conn The connection to use
      */
-    public static void printMessages(PrintWriter out, Connection conn) {
+    public static void printMessages(PrintWriter out, Connection conn, String userId) {
 
         HtmlHelper site = new HtmlHelper(out);
         PreparedStatement getMessage; 
         
         try {
-            getMessage = conn.prepareStatement("SELECT * FROM message ORDER BY ?");
-            getMessage.setString(1, "mess_senderId");
+            getMessage = conn.prepareStatement("SELECT * FROM message WHERE mess_senderId LIKE ? OR mess_recipient LIKE ? ORDER BY mess_senderId");
+            getMessage.setString(1, userId);
+            getMessage.setString(2, userId);
                        
             ResultSet rset = getMessage.executeQuery();
             
@@ -117,7 +118,9 @@ public class MessageHelper {
                 out.println("</form>");
                 
                 //delete buttons
-                out.println("<div class=\"message-container-item\">");                
+                out.println("<form method='Get' action='Message'>" + "<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Respond\">\n");
+                out.println("<div class=\"message-container-item\">");   
+
                 out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteMessage\">");
                 site.printDeleteButton("deleteMessage", "mess_id", mess_id);
                 out.println("</div>");

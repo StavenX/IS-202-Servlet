@@ -57,16 +57,17 @@ public class serv_Messages extends HttpServlet {
             
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\" value=\"" + sender_id + "\">");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\" value=\"" + recipient_id + "\">");
-            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");
-            
+            out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");           
             out.println("</form>");
-            
-            out.println("<textarea class=\"message-input\" name=\"mess_content\" rows=\"4\" cols=\"50\" form=\"messageForm\" placeholder=\"Insert content\"></textarea>");
-            
+          
+            out.println("<textarea class=\"message-input\" name=\"mess_content\" rows=\"4\" cols=\"50\" form=\"messageForm\" placeholder=\"Insert content\"></textarea>");           
             out.println("<input class=\"button\" type=\"button\" name=\"get\" value=\"Send message\" onclick=\"submit(\'messageForm\')\">");
             
             out.println("</div>");
-            
+             out.println(
+                "<form action=\"getMessage\" method=\"post\">\n" +
+"                   <input class=\"button\" type=\"Submit\" name=\"get\" value=\"My messages\">   \n" +
+"               </form>");
             site.useJS("submitform.js");
 
             site.printEnd();
