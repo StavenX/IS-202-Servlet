@@ -57,10 +57,18 @@ public class CalendarHelper {
     public static void createEvent (String courseCode, String classroom, String lecturer, String date, String startTime, String endTime, 
                                       String mon, String tue, String wed, String thu, String fri, String sat, String sun) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date parsedDate = dateFormat.parse(date);
+            SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat hourMinutes = new SimpleDateFormat("HH:mm");
             
+            Date parsedEndTime = hourMinutes.parse(endTime);
+            Date parsedStartTime = hourMinutes.parse(startTime);
+            Date parsedDate = yearMonthDay.parse(date);
             
+            parsedDate.setHours(parsedStartTime.getHours());
+            parsedDate.setMinutes(parsedStartTime.getMinutes());
+            
+            System.out.println(parsedDate);
+
         
         }
         catch (Exception e) {
