@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import helpers.MessageHelper;
+import helpers.UserHelper;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,15 +43,16 @@ public class serv_GetMessage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message", "bodyy");
             
             out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
 
                 Connection conn;
                 conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
+                String userId = UserHelper.getUserId(conn, request);
+
+                MessageHelper.printMessages(out, conn, userId);
                 
             site.closeAndPrintEnd(login);
         }

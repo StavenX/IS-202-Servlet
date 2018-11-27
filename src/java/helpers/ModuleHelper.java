@@ -687,9 +687,10 @@ public class ModuleHelper {
                 String author = UserHelper.getFullNameById(conn, user_id);
                 String content = rset.getString("module_comment_content");
                 
+                out.println("<div class=\"module-comment-container\">");
+                UserHelper.printAuthorByline(out, conn, user_id, "commentAuthor");
                 out.println("<form action=\"deleteComment\" class=\"module-comment-container\">");
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
-                out.println("<h3>" + author + " said:</h3>");
                 out.println("<p>" + content + "</p>");
                 HtmlHelper site = new HtmlHelper(out);
                 
@@ -699,6 +700,7 @@ public class ModuleHelper {
                     site.printDeleteButton("oneModule", "module_comment_id", module_comment_id);
                 }
                 out.println("</form>");
+                out.println("</div>");
             }
         } catch (SQLException ex) {
             out.println(ex);
@@ -765,11 +767,11 @@ public class ModuleHelper {
                 String author_id = rset.getString("author_id");
                 String author = UserHelper.getFullNameById(conn, author_id);
                 String content = rset.getString("module_feedback_content");
-                
-                out.println("<form action=\"deleteFeedback\" class=\"module-comment-container\">");
+                out.println("<div class=\"module-comment-container\">");
+                UserHelper.printAuthorByline(out, conn, author_id, "commentAuthor");
+                out.println("<form action=\"deleteFeedback\">");
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
-                out.println("<h3>" + author + " said:</h3>");
                 out.println("<p>" + content + "</p>");
                 HtmlHelper site = new HtmlHelper(out);
                 
@@ -781,6 +783,7 @@ public class ModuleHelper {
                 }
                 
                 out.println("</form>");
+                out.println("</div>");
             }
         } catch (SQLException ex) {
             out.println(ex);
