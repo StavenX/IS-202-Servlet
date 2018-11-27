@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
 import helpers.MessageHelper;
+import helpers.UserHelper;
 import java.sql.Statement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -49,8 +50,9 @@ public class serv_GetMessage extends HttpServlet {
 
                 Connection conn;
                 conn = login.loginToDB(out);
-                
-                MessageHelper.printMessages(out, conn);
+                String userId = UserHelper.getUserId(conn, request);
+
+                MessageHelper.printMessages(out, conn, userId);
                 
             site.closeAndPrintEnd(login);
         }
