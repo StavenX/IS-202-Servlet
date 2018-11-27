@@ -41,7 +41,7 @@ public class serv_DeleteMessage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Delete message", "delete-message");
             
             out.println("<h1>Servlet deleteMessage at " + request.getContextPath() + "</h1>");

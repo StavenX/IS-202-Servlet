@@ -43,7 +43,7 @@ public class serv_OneMessage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Single message", "one-message-container");
             
             String singleMess_id = request.getParameter("mess_id");

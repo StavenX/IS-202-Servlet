@@ -35,7 +35,7 @@ public class serv_Index extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
