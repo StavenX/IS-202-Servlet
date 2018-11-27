@@ -3,8 +3,8 @@
 
 /* Color variables */
 :root {
-    background: #F8F1E5;
-    almostblack: #2F3131;
+    --background: #F8F1E5;
+    --almostblack: #2F3131;
 }
 
  * {box-sizing: border-box}
