@@ -18,10 +18,17 @@ import java.sql.SQLException;
 public class CourseHelper {
     
     
-    public static String invisInputs(String course_id, String course_name, String role) {
+    public static String invisInputs(String course_id, String role) {
         String str = "<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">";
-        str += "\n<input type=\"hidden\" name=\"course_name\" value=\"" + course_name + "\">";
         str += "\n<input type=\"hidden\" name=\"role\" value=\"" + role + "\">";
+        return str;
+    }
+    
+    public static String backToCourseButton(String course_id, String course_name, String role) {
+        String str ="<form action=\"oneCourse\" method=\"post\">"
+                + CourseHelper.invisInputs(course_id, role)
+                + "<button class=\"button\">Back to " + course_name + "</button>"
+                + "</form>";
         return str;
     }
     
@@ -83,5 +90,33 @@ public class CourseHelper {
         
         //program shouldn't reach this ever
         return null;
+    }
+    
+    public static String getCourseName (String course_id, Connection conn) {
+        String courseName = "";
+        try {
+            PreparedStatement getName = conn.prepareStatement("SELECT course_name FROM course WHERE course_id LIKE ?");
+            getName.setString(1, course_id);
+            ResultSet rset = getName.executeQuery();
+            
+            while (rset.next()) {
+                courseName = rset.getString("course_name");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return courseName;
+    }
+    
+    public static String getCourseId (Connection conn, String module_id) throws SQLException {
+        String courseName = "";
+        PreparedStatement getId = conn.prepareStatement("SELECT course_id FROM module WHERE module_id LIKE ?");
+        getId.setString(1, module_id);
+        ResultSet rset = getId.executeQuery();
+        
+        while (rset.next()) {
+            courseName = rset.getString("course_id");
+        }
+        return courseName;
     }
 }

@@ -5,6 +5,7 @@
  */
 package servlets;
 
+import helpers.AnnouncementHelper;
 import helpers.CourseHelper;
 import helpers.HtmlHelper;
 import helpers.ModuleHelper;
@@ -12,6 +13,8 @@ import helpers.UserHelper;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -58,39 +61,53 @@ public class serv_OneCourseDetails extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
+            Connection conn = login.loginToDB(out);
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Details", "one-course");
             
             String course_id = request.getParameter("course_id");
-            String course_name = request.getParameter("course_name");
+            String course_name = CourseHelper.getCourseName(course_id, conn);
             String role = request.getParameter("role");
             String details = request.getParameter("details").toLowerCase();
             String orderBy = request.getParameter("orderBy");
+            String direction = request.getParameter("orderDirection");
             
-            if (orderBy == null) {
-                orderBy = "";
+            orderBy = (orderBy == null) ? "" : orderBy;
+            direction = (direction == null) ? "" : direction;
+            
+            out.println(CourseHelper.backToCourseButton(course_id, course_name, role));
+            
+            try {
+                switch(details) {
+                    case "modules":
+                        ModuleHelper.printModules(out, conn, orderBy, direction, role, course_id, "oneCourseDetails");
+                        break;
+
+                    case "students":
+                        UserHelper.printUsers(out, conn, UserHelper.getUsers(conn, course_id));
+                        //link to add students who isn't in the course
+                        if(role.toLowerCase().equals("lecturer")) {
+                            out.println("<form action=\"addToCourse\" method=\"post\">");
+                            out.println(CourseHelper.invisInputs(course_id, role));
+                            out.println("<button class=\"button\">View students not in this course</button>");
+                            out.println("</form>");
+                        }
+            
+                        break;
+
+                    case "announcements":
+                        ResultSet rset = AnnouncementHelper.getAnnouncements(50, conn, course_id);
+                        int amount = AnnouncementHelper.printAnnouncements(out, conn, rset, role);                    
+                        out.println("Printed " + amount + " newest announcements. If you want to see more please contact your system admin.");
+                        break;
+
+                    default:
+                        out.println("you done goofed, Tobias.");
+                }
+            } catch (SQLException ex) {
+                out.println(ex);
             }
-            
-            site.printBackButton();
-            
-            out.println("<form action=\"oneCourse\" method=\"post\">");
-            out.println(CourseHelper.invisInputs(course_id, course_name, role));
-            out.println("<button class=\"button\">Back to " + course_name + "</button>");
-            out.println("</form>");
-            
-            Connection conn = login.loginToDB(out);
-            switch(details) {
-                case "modules":
-                    ModuleHelper.printModules(out, conn, orderBy, role, course_id, "oneCourseDetails");
-                    break;
-                    
-                case "students":
-                    UserHelper.printUsers(out, conn, course_id);
-                    break;
-                    
-                default:
-                    out.println("you done goofed, Tobias.");
-            }
+            site.useJS("buttons-for-delete.js");
             site.closeAndPrintEnd(login);
         }
     }

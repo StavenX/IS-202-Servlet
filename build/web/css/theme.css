@@ -1,15 +1,7 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-/* 
-    Created on : Aug 23, 2018, 9:52:28 AM
-    Author     : Staven
-*/
-
+/* Font used on the site */
 @import url('https://fonts.googleapis.com/css?family=Rubik');
 
+/* Color variables */
 :root {
     --background: #F8F1E5;
     --almostblack: #2F3131;
@@ -17,21 +9,71 @@ and open the template in the editor.
 
  * {box-sizing: border-box}
  
- body {
+ html, body {
     background-color: var(--background);
     height: 100%;
 }
 
+/* Font type for the page and all items in the page */
+body, body * {
+    font-family: 'Rubik', sans-serif !important;
+}
+
+/* Makes typeable input boxes bigger */
+ input[type=text], input[type=password] {
+     font-size: 1em;
+     margin: 10px 0;
+     padding: 15px;
+ }
+ 
+ /* Input boxes changes when clicked on */
+ input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+textarea {
+    font-size: 1em;
+    padding: 5px;
+}
+ 
+/* Should be applied to all buttons and submit inputs */
+.button {
+    background-color: var(--almostblack); 
+    border: none; 
+    color: var(--background); 
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.small-button {
+    padding: 15px;
+}
+
+/* Style for buttons on legacy index page */
+.button-default {
+    width: 150px;
+    height: 60px;
+}
+
+/* Allows page to be split between left nav and main page */
 .flex-page {
     margin: 0;
     display: flex;
 }
 
-/*font type for the page and all items in the page*/
-body, body * {
-    font-family: 'Rubik', sans-serif !important;
+.back-button img {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
 }
- 
+
+/* Container class for the entire left nav-bar */
 .nav-container {
     flex: 20%;
     min-width: 80px !important;
@@ -39,192 +81,63 @@ body, body * {
     animation-delay: 2s;
 }
 
+/* Container class for the rest of the page (that isn't nav) */
 .page-container {
-    margin-left: 100px;
+    margin-left: 90px;
+    margin-top: 40px;
     flex: 80%;
 }
 
-/* makes typeable input boxes bigger */
- input[type=text], input[type=password] {
-     margin: 10px 0;
-     padding: 15px;
- }
- 
- /*input boxes changes when clicked on */
- input[type=text]:focus, input[type=password]:focus {
-  background-color: #ddd;
-  outline: none;
-}
-
- /* Overwrite default styles of hr */
-hr {
-  border: 1px solid #f1f1f1;
-  margin-bottom: 25px;
-}
-
+/* Index file when server is first started */
 #welcome-page {
     text-align: center;
     margin-top: 10%;
 }
 
- /* Set a style for the submit/register button */
-.registerbtn {
-  background-color: var(--almostblack);
-  color: var(--background);
-  padding: 16px 20px;
-  margin: 8px 0;
-  border: none;
-  cursor: pointer;
-  width: 100%;
-  opacity: 0.9;
-}
- .registerbtn:hover {
-  opacity:1;
-}
- /* Add a blue text color to links */
-a {
-  color: dodgerblue;
-}
- /* Set a grey background color and center the text of the "sign in" section */
-.signin {
-  background-color: #f1f1f1;
-  text-align: center;
-}
- .student-input {
-    max-width: 20%;
-    
-}
- .form1 {
-    text-align: center;
-}
- .form1 input {
-    display: list-item;
-}
 
- .student-container {
-    margin: 30px 0;
-    border: solid 1px buttonface;
-    width: 50%;
-}
-
-.student-container-item {
-    margin: 0px 5px;
-}
-
-.message-container {
-    border: solid 2px black;
-    width: 20%;
-    background-color: beige;
-    text-align: center;
-    color: black;
-    margin: 30px 10px;
-    word-wrap: break-word;
-}
-.message-flex-container {
-    width: 90%;
-    display: flex;
-    flex-wrap: wrap;
-    margin: 0 auto;
-    border: 1px solid black;
-}
-.message-bold-container {
-    font-weight: bold;
-}
-
-.message-container-item {
-    margin: 10px 5px;
-}
-
-.student-container input {
-    min-width: 10%;
-}
-
- .student-container div {
-    /*display: inline;*/
-}
-
- #nav {
-    display:block;
-}
- .home-nav {
-    max-width: 100%;
-    
-}
+/* ~~ ~~ ~~ */
+/* Nav bar starts here */
  .nav-container {
     margin: 0 20px 0 0;
     background: var(--almostblack);
-    max-width: 10%;
     padding: 5px;
     text-align: center;
     position: fixed;
     height: 100%;
-    
 }
+
+/* Button that hides nav bar */
+#nav-button {
+    padding: 5px 15px;
+    background-color: var(--background);
+    color: var(--almostblack);
+    margin: 0 auto;
+}
+
  .nav-item {
-    border: 1px;
     margin: 20px 0;
-    width: 100%;
-    text-align: center;
+}
+
+.nav-item:hover {
+    background: #1F2121;
 }
 
 .nav-item a{
     text-decoration: none;
     color: var(--background);
 }
- .body {
-    margin: 0;
-    display: flex;
-}
+
  .nav-img {
     display: block;
     width: 50px;
     height: 50px;
     margin: 0 auto;
 }
-
-#nav-button {
-    padding: 5px 15px;
-    background-color: var(--background);
-    color: var(--almostblack);
-    margin: 0 auto;
-    border-radius: 0px;
-    text-align: center;
-}
-
-.sort-by-container {
-    width:fit-content ;
-    margin: 20px auto;
-}
-
-.module-container {
-    padding: 5px;
-    width: 70%;
-    border: 1px solid var(--almostblack);
-    margin: 20px auto;
-    word-break: break-all;
-}
+/* Nav bar ends here */
+/* ~~ ~~ ~~ */
 
 
-.module-student-list {
-    margin: 10px auto;
-    width: 90%;
-    border: solid 2px black;
-    min-height: 300px;
-}
-
-#one-module-save {
-    display:none;
-}
-
-.one-module-enabled {
-    font-weight: bold;
-    font-size: 1.5em;
-}
-
-.one-module-sort {
-    text-align: center;
-}
-
+/* ~~ ~~ ~~ */
 /* Calendar styling starts here*/
 .calendarWrapper {
     min-width: 1300px;
@@ -341,42 +254,75 @@ td {
   left: 0;
 }
 /* Calendar styling ends here */
+/* ~~ ~~ ~~ */
 
-.one-module-enabled {
-    font-weight: bold;
-    font-size: 1.5em;
+
+/* ~~ ~~ ~~ */
+/* Everything to do with sorting / ordering start */
+.sort-by-container {
+    margin-bottom: 5px;
+    width:fit-content ;
+    margin-right: 10px;
 }
 
-.button {
-    background-color: var(--almostblack); 
-    border: none; 
-    color: var(--background); 
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
+.sort-by-container * {
     display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-   
 }
 
-.button-home {
-    padding: 2px;
-    font-size: 12px;
-    width: 80px;
-    height: 40px;
+.sort-direction {
+    margin: 5px 2px;
+    padding: 3px;
+    max-width: 30px;
 }
 
-.button-default {
-    width: 150px;
-    height: 60px;
+.up-arrow {
+    transform: rotate(180deg);
 }
 
-.back-button img {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
+.down-arrow, .up-arrow {
+    width: 100%;
+    height: 100%;
+}
+/* Everything to do with sorting / ordering end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Users start */
+ .user-container {
+    margin: 30px 0;
+    border: solid 1px buttonface;
+    width: 50%;
+}
+
+.user-box-item {
+    margin: 0px 5px;
+}
+
+/* Users end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Modules start */
+.module-container {
+    padding: 5px;
+    width: 70%;
+    border: 1px solid var(--almostblack);
+    margin: 20px auto;
+    word-break: break-all;
+}
+
+.module-student-list {
+    margin: 10px auto;
+    width: 90%;
+    border: solid 2px black;
+    min-height: 300px;
+}
+
+/* Hides the save button */
+#one-module-save {
+    display:none;
 }
 
 .module-edit-input {
@@ -385,15 +331,133 @@ td {
     text-align: center;
 }
 
-#about {
-    text-align: center;
-    font-size: 200%;
+.one-module-enabled {
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
-.sort-by-container *{
+.one-module-sort {
+    text-align: center;
+}
+
+.one-module-student-view {
+    display: block;
+    min-width: fit-content;
+    width: 100%;
+    max-width: 300px;
+}
+
+.one-module-student-view.module-edit-input{
+    border: var(--almostblack) 1px solid;
+    font-style: italic;
+    margin: 10px 0;
+}
+
+.one-module-student-view .module-input {
+    color: var(--almostblack);
+    font-size: 120%;
+    width: 100%;
+    background-color: white;
+}
+.one-module-student-view textarea {
+    height: 200px;
+}
+
+.one-module-lecturer-view {
     display: inline-block;
 }
 
+/* Modules end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Module comments start */
+.module-comment-container {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid var(--almostblack);
+}
+
+.module-comment-container * {
+    margin-left: 5px;
+}
+
+.new-comment-container *{
+    margin: 10px;
+    display: block;
+}
+
+.new-comment-input {
+    font-size: 1em;
+    width: 400px;
+    height: 100px;
+}
+
+.one-module-comment {
+    margin: 20px 10px;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+#comment-author {
+    font-size: 2em;
+}
+
+/* Module comments end */
+/* ~~ ~~ ~~ */
+/* ~~ ~~ ~~ */
+/* Messages start */
+.message-container {
+    border: solid 2px black;
+    width: 20%;
+    background-color: beige;
+    text-align: center;
+    color: black;
+    margin: 30px 10px;
+    word-wrap: break-word;
+}
+.message-flex-container {
+    width: 90%;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 1px solid black;
+}
+.message-bold-container {
+    font-weight: bold;
+}
+
+.message-container-item {
+    margin: 10px 5px;
+}
+
+.message-content {
+    width: 90%;
+    height: 300px;
+}
+
+.message-input {
+    display: list-item;
+}
+
+
+/* Messages end */
+/* ~~ ~~ ~~ */
+
+#about {
+    margin-top: 70px;
+    text-align: center;
+    font-size: 200%;
+    background-image: url("../images/Placeholder_v2.png");
+    background-size: 30%;
+    background-position-x: 50%;
+    color: white;
+    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+}
+
+/* ~~ ~~ ~~ */
+/* Courses start */
 .course-container {
     border: 1px solid black;
     padding: 5px;
@@ -411,33 +475,52 @@ td {
     flex-wrap: wrap;
 }
 
-.message-content {
-    width: 90%;
-    height: 300px;
+.course-header {
+    margin: 0 auto 50px auto;
+    text-align: center;
 }
 
-.message-input {
-    display: list-item;
+/* Courses end */
+/* ~~ ~~ ~~ */
+
+
+/* ~~ ~~ ~~ */
+/* Announcements start */
+.announcement-preview-container {
+    border: 1px solid var(--almostblack);
 }
 
-#about-page {
-    background-image: url("../images/Placeholder_v2.png");
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position-x: 50%;
-    color: white;
-    text-shadow: -2px 0 black, 0 2px black, 2px 0 black, 0 -2px black;
+.one-announcement {
+    border: 1px solid var(--almostblack);
+    margin: 5px;
+}
+
+.one-announcement p, .one-announcement h3 {
+    margin-left: 5px;
+}
+
+/* Announcements end */
+/* ~~ ~~ ~~ */
+
+.top-bar {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 .top-bar *{
     display: inline;
 }
 
+/* User page */
 .user-details {
     float: right;
     margin-right: 10px;
 }
 
+/* user page ends */
+
+/* a table view */
 .module-students-table {
     width: 100%;
     margin: 0 auto;
@@ -462,20 +545,63 @@ td {
     margin: 0 10px;
 }
 
-.one-module-comment {
-    margin: 20px 10px;
-    padding: 5px;
-    border: 1px solid black;
-    
-}
+/* table view end */
 
 .profile-pic-medium {
     max-height: 200px;
     max-width: 200px;
 }
 
+/* Author of comments, announcements etc */
+.author-byline {
+    background-color: var(--almostblack);
+    color: var(--background);
+    width: 100%;
+    border: 1px solid black;
+}
+
+.author-byline * {
+    display: inline;
+    font-style: italic;
+    margin: 5px;
+    padding-bottom: 5px;
+}
+
+.author-byline img {
+    max-width: 40px;
+    max-height: 40px;
+}
+
+#getAuthor:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    
+}
+
+#new-announcement textarea {
+    margin: 20px 0;
+    display: list-item;
+    min-width: 300px;
+    min-height: 50px;
+}
+
+.add-to-course-box {
+    border: 1px solid black;
+    padding: 5px;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    max-width: 200px;
+    text-align: center;
+}
+
+.add-to-course-box * {
+    display: block;
+}
+
 .pointer-hover:hover {
     cursor: pointer;
+    text-decoration: underline;
 }
 
  .invisible {
@@ -488,4 +614,8 @@ td {
 
 .inline-block {
     display: inline-block;
+}
+
+.block {
+    display: block;
 }

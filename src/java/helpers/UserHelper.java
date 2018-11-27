@@ -11,11 +11,86 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import javax.servlet.http.HttpServletRequest;
 /**
  *
  * @author Staven
  */
 public class UserHelper {
+    
+    
+    
+    public static String getUserName(HttpServletRequest request) {
+        AccessTokenHelper a = new AccessTokenHelper(request);
+        String username = a.getUsername();
+        return username;
+    }
+    
+    public static String getUserRole(HttpServletRequest request) {
+        AccessTokenHelper a = new AccessTokenHelper(request);
+        String role = a.getUserRole();
+        return role;
+    }
+    
+    public static String getUserId (Connection conn, String username) {
+        String user_id = "";
+        try {
+            String sqlString = "SELECT user_id FROM users WHERE user_username = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, username);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                user_id = rset.getString("user_id");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return user_id;
+    }
+    
+    public static String getUserId (Connection conn, HttpServletRequest request) {
+        String user_id =  getUserId(conn, getUserName(request));
+        return user_id;
+    }
+    
+    public static String getUserNameById (Connection conn, String user_id) {
+        String username = "";
+        try {
+            String sqlString = "SELECT user_username FROM users WHERE user_id = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, user_id);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                username = rset.getString("user_username");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return username;
+    }
+    
+    public static String getFullNameById (Connection conn, String user_id) {
+        String fullname = "";
+        try {
+            String sqlString = "SELECT user_fname, user_lname FROM users WHERE user_id = ?";
+            PreparedStatement getId = conn.prepareStatement(sqlString);
+            getId.setString(1, user_id);
+            
+            ResultSet rset = getId.executeQuery();
+            
+            while (rset.next()) {
+                fullname = rset.getString("user_fname") + " " + rset.getString("user_lname");
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return fullname;
+    }
+    
     
         /**
      * Inserts a student into the student table.
@@ -55,7 +130,7 @@ public class UserHelper {
 "               </form>");
         }
         catch (SQLIntegrityConstraintViolationException ex) {
-            String error = "";
+            String error;
             if (ex.getMessage().contains("Duplicate entry")) {
                 error = "Username already taken, try another";
             } else {
@@ -67,6 +142,64 @@ public class UserHelper {
         catch (SQLException ex) {
             out.println("SQL error: " + ex);
         }
+    }
+    
+    /**
+     * deletes the user from all tables related to the course
+     * @param conn connection to mysql db
+     * @param user_id primary key of user to delete
+     * @return string containing info if deletion was successful
+     */
+    public static String deleteFromCourse (Connection conn, String user_id) {
+        String results = "";
+        
+            try {
+                PreparedStatement feedback = conn.prepareStatement("DELETE FROM module_feedback WHERE user_id = ?;");
+                PreparedStatement comments = conn.prepareStatement("DELETE FROM module_comment WHERE user_id = ?;");
+                PreparedStatement moduleDetails = conn.prepareStatement("DELETE FROM module_details WHERE student_id = ?;");
+                PreparedStatement courseDetails = conn.prepareStatement("DELETE FROM course_details WHERE user_id = ?;");
+                
+                PreparedStatement[] stmts = {feedback, comments, moduleDetails, courseDetails};
+                String[] tableNames = {"feedback", "comments", "moduleDetails", "courseDetails"};
+                
+                for (int i = 0; i < stmts.length; i++) {
+                    stmts[i].setString(1, user_id);
+                    int amount = stmts[i].executeUpdate();
+                    results += String.format("| %s %s deleted. ", amount, tableNames[i]);
+                }
+                
+            } catch (SQLException ex) {
+                results += "SQL error: " + ex;
+                return results;
+            }
+        
+        return results;
+    }
+    
+    /**
+     * Deletes the user from the system
+     * @param conn connection to mysql db
+     * @param user_id primary key of user to delete
+     * @return string containing info if deletion was successful
+     */
+    public static String deleteUser(Connection conn, String user_id) {
+        String results = "";
+            try {
+                results += deleteFromCourse(conn, user_id);
+                PreparedStatement deleteUser = conn.prepareStatement("DELETE FROM users WHERE user_id = ?;");
+                deleteUser.setString(1, user_id);
+                int amount = deleteUser.executeUpdate();
+                
+                results += "\n " + amount + " user deleted";
+                
+                results += "<form action=\"getUser\" method=\"get\"><button class=\"button\">Back to user list</button></form>";
+
+            } catch (SQLException ex) {
+                results += "SQL error: " + ex;
+                return results;
+            }
+        
+        return results;
     }
     
     
@@ -87,8 +220,25 @@ public class UserHelper {
             return rset;
     }
     
-    public static void printAllUsers(PrintWriter out, Connection conn) {
-        printUsers(out, conn, "%");
+    //course_id = "%" to get users not in any course
+    public static ResultSet getUsersNotInCourse(Connection conn, String course_id) throws SQLException {
+            String sqlString = "SELECT *\n" +
+                                "FROM users\n" +
+                                "WHERE users.user_id NOT IN\n" +
+                                "(SELECT user_id FROM course_details\n" +
+                                "WHERE course_details.course_id LIKE ?);";
+            PreparedStatement getUsers = conn.prepareStatement(sqlString);
+            getUsers.setString(1, course_id);
+            ResultSet rset = getUsers.executeQuery();
+            return rset;        
+    }
+    
+    public static void printAllUsers(PrintWriter out, Connection conn){
+        try {
+            printUsers(out, conn, getUsers(conn, "%"));
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
     }
     
     /**
@@ -97,35 +247,30 @@ public class UserHelper {
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
-     * @param course_id
+     * @param rset users to be printed
      */
-    public static void printUsers(PrintWriter out, Connection conn, String course_id) {
+    public static void printUsers(PrintWriter out, Connection conn, ResultSet rset) {
 
         HtmlHelper site = new HtmlHelper(out);
-        PreparedStatement getModules; 
         
         try {
-            ResultSet rset = getUsers(conn, course_id);
-            
-            out.println("the records selected are:" + "<br>");
-            int rowCount = 0; 
             
             // While there exists more entries (rows?)
             while (rset.next()) {               
                 // The different columns
                 
-                String user_id = rset.getString("user_id");
+                String user_id = rset.getString("users.user_id");
                 String user_username = rset.getString("user_username");
                 String user_fname = rset.getString("user_fname");
                 String user_lname = rset.getString("user_lname");
                 
-                out.println("<div class=\"student-container\">");
+                out.println("<div class=\"user-container\">");
                 
                 //form containing student information
-                out.println("<div class=\"student-container-item\">");
+                out.println("<div class=\"user-box-item\">");
+                out.println("<input form=\"test\" type=\"checkbox\" name=\"marked\" value=\"" + user_id + "\">");
                 out.println("<form action=\"oneUser\">");
                 out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">");
-                out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div>User Id:" + user_id + "</div>");
                 out.println("<div>Username:" + user_username + "</div>");
                 out.println("<div>First name:" + user_fname + "</div>");
@@ -133,20 +278,18 @@ public class UserHelper {
                 out.println("</div>");
                 
                 //"more info"-button
-                out.println("<div class=\"student-container-item\">");
-                out.println("<input class=\"button more-info-button\" type=\"submit\" value=\"Details\">");
+                out.println("<div class=\"user-box-item\">");
+                site.printDetailsButton();
                 out.println("</div>");
                 out.println("</form>");
                 
                 //delete-buttons
-                out.println("<div class=\"student-container-item\">");
+                out.println("<div class=\"user-box-item\">");
                 out.println("<form name=\"delete-form-" + user_id + "\" action=\"deleteUser\" method=\"get\">");
                 site.printDeleteButton("deleteUser", "user_id", user_id);
                 out.println("</div>");
                 out.println("</div>");
-                rowCount++;
             }
-            out.println("Total number of records: " + rowCount);
             
             //prints javascript
             site.useJS("buttons-for-delete.js");
@@ -199,7 +342,7 @@ public class UserHelper {
         }
     }
     
-    public static void addUserToModule(String module_id, String student_id, Connection conn, PrintWriter out) {
+    public static int addUserToModule(String module_id, String student_id, Connection conn, PrintWriter out) {
         
             String sqlString = "INSERT INTO module_details (student_id, module_id) VALUES (?, ?);";
             
@@ -210,11 +353,12 @@ public class UserHelper {
                 ps.setString(2, module_id);
                 
                 int amount = ps.executeUpdate();
-                out.println(amount + " inserted");
+                return amount;
             }
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
             }
+        return 0;
     }
     
     /**
@@ -224,30 +368,90 @@ public class UserHelper {
      * @param conn the connection to the db
      * @param out the web page writer
      */
-    public static void addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
+    public static String addUserToCourse(String course_id, String user_id, Connection conn, PrintWriter out) {
         
         String sqlString = "INSERT INTO course_details (course_id, user_id) VALUES (?, ?);";
             try {
                 PreparedStatement ps = conn.prepareStatement(sqlString);
                 ps.setString(1, course_id);
                 ps.setString(2, user_id);
-                int amount = ps.executeUpdate();
+                int addedToCourse = ps.executeUpdate();
 
                 //gets all modules in the course the user is to be added to
                 //sorted by module_id
-                ResultSet rset = ModuleHelper.getModules(out, conn, "id", course_id);
+                ResultSet rset = ModuleHelper.getModules(out, conn, "id", "v", course_id);
                 
+                int addedToModules = 0;
                 //for each module add the user to the module too
                 while (rset.next()) {
                         String module_id = rset.getString("module_id");
-                        addUserToModule(module_id, user_id, conn, out);
+                        addedToModules += addUserToModule(module_id, user_id, conn, out);
                 }
                 
                 //executes 
-                out.println(amount + " inserted");
+                String results = String.format("Added to %d course - %d modules.", addedToCourse, addedToModules);
+                return results;
             }
             catch (SQLException ex) {
                 out.println("SQL ERROR: " + ex);
             }
+        return null;
+    }
+    
+    public static ResultSet getUserDetails (PrintWriter out, Connection conn, String user_id) {
+        String sqlString = "SELECT * FROM users WHERE user_id = ?";
+        try {
+            PreparedStatement getUser = conn.prepareStatement(sqlString);
+            getUser.setString(1, user_id);
+            ResultSet rset = getUser.executeQuery();
+            return rset;
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+        return null;
+    }
+    
+    public static void printUserPage (PrintWriter out, Connection conn, String user_id) {
+            try {
+                ResultSet rset = getUserDetails(out, conn, user_id);
+                
+                while (rset.next()) {
+                    String username = rset.getString("user_username");
+                    String fname = rset.getString("user_fname");
+                    String lname = rset.getString("user_lname");
+                    String pic_url = "images/profiles/" + rset.getString("user_pic_url");
+                    
+                    out.println("<p> Name: " + fname + " " + lname + "</p>");
+                    out.println("<img class=\"profile-pic-medium\" src=\"" + pic_url + "\" alt=\"Profile picture for " + fname + "\">");
+                }
+                
+            } catch (SQLException ex) {
+                out.println(ex);
+            }
+    }
+    
+    public static String getClickableUser (Connection conn, String user_id, String divId) {
+        String author = getFullNameById(conn, user_id);
+        String str =  "<form id=\"" + divId + "\" action=\"oneUser\" method=\"get\" onclick=\"submit(\'" + divId + "\')\">\n" +
+        "                <input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">\n" +
+        "                <p class=\"announcement-author\">" + author + ":</p>\n" +
+        "                </form>";
+        return str;
+    }
+    
+    public static void printAuthorByline (PrintWriter out, Connection conn, String author_id, String divId) {
+        try {
+            ResultSet userInfo = UserHelper.getUserDetails(out, conn, author_id);
+            String profilePic = "";
+            while (userInfo.next()) {
+                profilePic = userInfo.getString("user_pic_url");
+            }
+            out.println("<div class=\"author-byline\">");
+            out.println("<img src=\"images/profiles/" + profilePic + "\">");
+            out.println(UserHelper.getClickableUser(conn, author_id, "getAuthor"));
+            out.println("</div>");
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
     }
 }

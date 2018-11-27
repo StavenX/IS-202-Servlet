@@ -44,30 +44,6 @@ public class serv_GetModule extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            
-            HtmlHelper site = new HtmlHelper(out, request);
-
-            site.printHead("Modules", "bodyy");
-            
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
-            
-                Connection conn;
-                conn = login.loginToDB(out);
-                
-                //is null if first time entering the page, which is handled by a
-                //'default' in a switch in printModules()
-                String orderBy = request.getParameter("orderBy");
-                if (orderBy == null) {
-                    orderBy = "";
-                }
-                
-            AccessTokenHelper a = new AccessTokenHelper(request);
-            String role = a.getUserRole();
-                
-                ModuleHelper.printModules(out, conn, orderBy, role, "%", "getModule");
-                
-            site.closeAndPrintEnd(login);
         }
     }
 
@@ -101,11 +77,13 @@ public class serv_GetModule extends HttpServlet {
                 if (orderBy == null) {
                     orderBy = "";
                 }
+                String direction = request.getParameter("orderDirection");
+                direction = (direction == null) ? "" : direction;
                 
             AccessTokenHelper a = new AccessTokenHelper(request);
             String role = a.getUserRole();
                 
-                ModuleHelper.printModules(out, conn, orderBy, role, "%", "getModule");
+                ModuleHelper.printModules(out, conn, orderBy, direction, role, "%", "getModule");
                 
             site.closeAndPrintEnd(login);
         }
