@@ -48,18 +48,24 @@ public class serv_Messages extends HttpServlet {
             out.println("<h1> Create a new message </h1>");
             
             String sender_id = request.getParameter("sender_id");
+            sender_id = (sender_id == null) ? "" : sender_id;
             String recipient_id = request.getParameter("recipient_id");
+            recipient_id = (recipient_id == null) ? "" : recipient_id;
+            
             out.println(sender_id);
             out.println(recipient_id);
             
             out.println("<div class =\"form1\">");
             out.println("<form id=\"messageForm\" action=\"Message\" method=\"post\"> ");
-            
+            out.println("<p class=\"message-input\">Sender</p>");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_senderId\" placeholder=\"Insert who is sending\" value=\"" + sender_id + "\">");
+            out.println("<p class=\"message-input\">Recipient</p>");            
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_recipient\" placeholder=\"Insert message recipient\" value=\"" + recipient_id + "\">");
+            out.println("<p class=\"message-input\">Message title</p>");
             out.println("<input class=\"message-input\" type=\"text\" name=\"mess_title\" placeholder=\"Insert title\">");           
             out.println("</form>");
           
+            out.println("<p class=\"message-input\">Message content</p>");
             out.println("<textarea class=\"message-input\" name=\"mess_content\" rows=\"4\" cols=\"50\" form=\"messageForm\" placeholder=\"Insert content\"></textarea>");           
             out.println("<input class=\"button\" type=\"button\" name=\"get\" value=\"Send message\" onclick=\"submit(\'messageForm\')\">");
             

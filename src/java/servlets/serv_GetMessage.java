@@ -43,7 +43,7 @@ public class serv_GetMessage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message", "bodyy");
             
             out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");

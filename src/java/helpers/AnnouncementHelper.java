@@ -46,22 +46,9 @@ public class AnnouncementHelper {
                 String title = rset.getString("announcement_title");
                 String content = rset.getString("announcement_content");
                 String author_id = rset.getString("announcement_author_id");
-                String author = UserHelper.getFullNameById(conn, author_id);
-                
-                ResultSet userInfo = UserHelper.getUserDetails(out, conn, author_id);
-                String profilePic = "";
-                while (userInfo.next()) {
-                    profilePic = userInfo.getString("user_pic_url");
-                }
                 
                 out.println("<div class=\"one-announcement\">");
-                out.println("<div class=\"author-byline\">");
-                out.println("<img src=\"images/profiles/" + profilePic + "\">");
-                out.println("<form id=\"getAuthor\" action=\"oneUser\" method=\"get\" onclick=\"submit(\'getAuthor\')\">");
-                out.println("<input type=\"hidden\" name=\"user_id\" value=\"" + author_id + "\">");
-                out.println("<p class=\"announcement-author\">" + author + ":</p>");
-                out.println("</form>");
-                out.println("</div>");
+                UserHelper.printAuthorByline(out, conn, author_id, "getAuthor");
                 out.println("<h3 class=\"announcement-title\">" + title + "</h3>");
                 out.println("<p class=\"announcement-content\">" + content + "</p>");
                 

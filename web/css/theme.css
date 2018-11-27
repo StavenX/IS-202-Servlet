@@ -118,6 +118,10 @@ textarea {
     margin: 20px 0;
 }
 
+.nav-item:hover {
+    background: #1F2121;
+}
+
 .nav-item a{
     text-decoration: none;
     color: var(--background);
@@ -282,14 +286,6 @@ td {
 /* Everything to do with sorting / ordering end */
 /* ~~ ~~ ~~ */
 
-/* what is this? */
- .form1 {
-    text-align: center;
-}
- .form1 input {
-    display: list-item;
-}
-
 
 /* ~~ ~~ ~~ */
 /* Users start */
@@ -402,6 +398,10 @@ td {
     margin: 20px 10px;
     padding: 5px;
     border: 1px solid black;
+}
+
+#comment-author {
+    font-size: 2em;
 }
 
 /* Module comments end */
