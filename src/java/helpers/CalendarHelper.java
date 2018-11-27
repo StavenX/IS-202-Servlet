@@ -9,9 +9,11 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -19,7 +21,7 @@ import java.util.Calendar;
  */
 
 public class CalendarHelper {
-      public static void getEvent (PrintWriter out, Connection conn, String reqDate, String reqDegree) {
+    public static void getEvent (PrintWriter out, Connection conn, String reqDate, String reqDegree) {
         
         Statement stmt;
         Calendar cal = Calendar.getInstance();
@@ -37,7 +39,6 @@ public class CalendarHelper {
             int i = 0;
             while (rset.next()) {
                 JSONObject jsonResponse = new JSONObject(); 
-                jsonResponse.put("description", rset.getString("ce_description")); 
                 jsonResponse.put("startDate", rset.getString("ce_sDate")); 
                 jsonResponse.put("lecturers", rset.getString("ce_lecturers")); 
                 jsonResponse.put("courseID", rset.getString("ce_CourseID")); 
@@ -52,5 +53,19 @@ public class CalendarHelper {
         catch (Exception e) {
             out.println(e);
         }
+    }
+    public static void createEvent (String courseCode, String classroom, String lecturer, String date, String startTime, String endTime, 
+                                      String mon, String tue, String wed, String thu, String fri, String sat, String sun) {
+        try {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedDate = dateFormat.parse(date);
+            
+            
+        
+        }
+        catch (Exception e) {
+            System.out.println(e);
+        }
+          
     }
 }

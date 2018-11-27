@@ -177,6 +177,10 @@ textarea {
     background-color: yellow;
 }
 
+.calendarDay:hover {
+    background-color: lightgoldenrodyellow;
+}
+
 /* Timetable styling */
 #timetable {
     border-collapse: collapse;
@@ -212,9 +216,8 @@ textarea {
     width: 14.2857143%;
 }
 
-.timetableCell {
-    font-size: 8px;
-    height:80px;
+.filledEvent {
+    font-size: 1.5vh;
     width: 14.2857143%;
 }
 
@@ -245,15 +248,19 @@ textarea {
   position: absolute;
   top: 0;
   left: 0;
+  background-color: white;
+  border-bottom: groove black;
+  border-right: groove black;
 }
 
 .endTimeSpan {
   position: absolute;
   bottom: 0;
   left: 0;
+  background-color: white;
+  border-top: groove black;
+  border-right: groove black;
 }
-
-/* Calendar styling ends here */
 /* ~~ ~~ ~~ */
 
 

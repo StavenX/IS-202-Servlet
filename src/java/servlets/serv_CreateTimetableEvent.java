@@ -58,19 +58,23 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             dbLogin.close();
             
             out.println("</select><br><br>");
-            out.println("Classroom<br><input type=\"text\" name=\"classroom\"><br><br>");
-            out.println("Lecturer(s)<br><input type=\"text\" name=\"lecturer\"><br><br>");
-            out.println("Start time<br><input type=\"time\" name=\"st\"><br><br>");
-            out.println("End time<br><input type=\"time\" name=\"et\"><br><br>");
-            out.println("Repeat every: <br><input type=\"checkbox\" name=\"Monday\" value=0> Monday<br>");
-            out.println("<input type=\"checkbox\" name=\"Tuesday\" value=1> Tuesday<br>");
-            out.println("<input type=\"checkbox\" name=\"Wednesday\" value=2> Wednesday<br>");
-            out.println("<input type=\"checkbox\" name=\"Thursday\" value=3> Thursday<br>");
-            out.println("<input type=\"checkbox\" name=\"Friday\" value=4> Friday<br>");
-            out.println("<input type=\"checkbox\" name=\"Saturday\" value=5> Saturday<br>");
-            out.println("<input type=\"checkbox\" name=\"Sunday\" value=6> Sunday<br><br>");
-            out.println("Note<br><input type=\"text\" name=\"note\"><br><br>");
-            out.println("<input type=\"submit\" value=\"Submit\">");
+            out.println("Classroom<br><input type=text name=classroom><br><br>");
+            out.println("Lecturer(s)<br><input type=text name=lecturer><br><br>");
+            out.println("Date<br><input type=date name=date><br><br>");
+            out.println("<div style=float:left;>");
+            out.println("Start time<br><input type=time name=st>");
+            out.println("</div>");
+            out.println("<div style=margin-left:115px;>");
+            out.println("End time<br><input type=time name=et>");
+            out.println("</div><br>");
+            out.println("Repeat every: <br><input type=checkbox name=Monday value=0> Monday<br>");
+            out.println("<input type=checkbox name=\"Tuesday\" value=1> Tuesday<br>");
+            out.println("<input type=checkbox name=\"Wednesday\" value=2> Wednesday<br>");
+            out.println("<input type=checkbox name=\"Thursday\" value=3> Thursday<br>");
+            out.println("<input type=checkbox name=\"Friday\" value=4> Friday<br>");
+            out.println("<input type=checkbox name=\"Saturday\" value=5> Saturday<br>");
+            out.println("<input type=checkbox name=\"Sunday\" value=6> Sunday<br><br>");
+            out.println("<input type=submit value=\"Submit\">");
             out.println("</form>");
             
             /*<div id="addEventForm">
@@ -105,20 +109,25 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New event", "body");
             
-            out.println(request.getParameter("courseCode"));
-            out.println(request.getParameter("classroom"));
-            out.println(request.getParameter("lecturer"));
-            out.println(request.getParameter("st"));
-            out.println(request.getParameter("et"));
-            out.println(request.getParameter("Monday"));
-            out.println(request.getParameter("Tuesday"));
-            out.println(request.getParameter("Wednesday"));
-            out.println(request.getParameter("Thursday"));
-            out.println(request.getParameter("Friday"));
-            out.println(request.getParameter("Saturday"));
-            out.println(request.getParameter("Sunday"));
-            out.println(request.getParameter("note"));
-
+            String courseCode = request.getParameter("courseCode");
+            String classroom = request.getParameter("classroom");
+            String lecturer = request.getParameter("lecturer");
+            String date = request.getParameter("date");
+            String startTime = request.getParameter("st");
+            String endTime = request.getParameter("et");
+            String mon = request.getParameter("Monday");
+            String tue = request.getParameter("Tuesday");
+            String wed = request.getParameter("Wednesday");
+            String thu = request.getParameter("Thursday");
+            String fri = request.getParameter("Friday");
+            String sat = request.getParameter("Saturday");
+            String sun = request.getParameter("Sunday");
+            
+            Connection conn;
+            conn = dbLogin.loginToDB(out);
+            CalendarHelper.createEvent(courseCode, classroom, lecturer, date, startTime, endTime,
+                                       mon, tue, wed, thu, fri, sat, sun);
+            dbLogin.close();
         }
     }
 }

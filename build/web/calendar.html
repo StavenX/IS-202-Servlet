@@ -91,7 +91,7 @@
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++)
                 {
-                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
+                    HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                     d.setDate(d.getDate()+1);
                 }
                 // Prints remaining weeks
@@ -100,14 +100,14 @@
                 while (d.getDate() < monthLastDay) {
                     for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) 
                     {
-                        HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
+                        HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                         d.setDate(d.getDate()+1);
                             if(d.getDate() == monthLastDay){
                                 if (i == 7) {
-                                    HTML += ("</tr><tr><td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("</tr><tr><td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                                 else { 
-                                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                             }
                     }
@@ -164,11 +164,6 @@
                         newTD.appendChild(lect);
                         newTD.appendChild(document.createElement("br"));
                         newTD.appendChild(document.createElement("br"));
-                        
-                        var desc = document.createElement("span");
-                        desc.setAttribute("class", "descriptionSpan");
-                        desc.textContent = (obj.description);
-                        newTD.appendChild(desc);
                         
                         var et = document.createElement("span");
                         et.setAttribute("class", "endTimeSpan");
