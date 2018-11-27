@@ -3,8 +3,8 @@
 
 /* Color variables */
 :root {
-    --background: #F8F1E5;
-    --almostblack: #2F3131;
+    background: #F8F1E5;
+    almostblack: #2F3131;
 }
 
  * {box-sizing: border-box}
@@ -120,7 +120,7 @@ textarea {
 
 .nav-item a{
     text-decoration: none;
-    color: var(--background);
+
 }
 
  .nav-img {
@@ -139,13 +139,13 @@ textarea {
     min-width: 1300px;
 }
 
-#boi {
+#calendarsDiv { 
     float: left;
     width: 20%;
     display: table;
 }
  
-#boi2 {
+#timetableDiv {
     float: left;
     width: 75%;
     margin-left: 30px;
@@ -175,11 +175,43 @@ textarea {
 
 /* Timetable styling */
 #timetable {
-  border-collapse: collapse;
+    border-collapse: collapse;
+}
+
+.filledEvent {
+    position: relative;
+    border: blue;
 }
 
 #timetable td {
-      border: solid black;
+    border: solid black;
+    height: 5px;
+}
+
+.showTimeStamp {
+    vertical-align: top;
+    border: none !important;
+}
+
+.hideTimetableCell {
+    border-bottom: none !important;
+    border-top: none !important;
+    width: 14.2857143%;
+}
+
+.showTimetableCell {
+    border-bottom: none !important;
+    width: 14.2857143%;
+}
+
+.filledTimetableCell {
+    width: 14.2857143%;
+}
+
+.timetableCell {
+    font-size: 8px;
+    height:80px;
+    width: 14.2857143%;
 }
 
 #timetable th {
@@ -188,29 +220,35 @@ textarea {
 }
 
 #timetable th:first-child {
-  border: none;
+    border: none;
 }
 
-.timeStamp {
-    vertical-align: top;
-    border: none !important;
+#timetable tr:last-child td {
+    border: none;
+    border-top: solid black;
+    font-size: 0px;
 }
 
-.test-events {
-  background-color: yellow;
+#timetable td:first-child {
+    border: none;
 }
 
-.clockStart {
+.hideTimeStamp {
+    font-size: 0px;
+}
+
+.startTimeSpan {
   position: absolute;
   top: 0;
   left: 0;
 }
 
-.clockEnd {
+.endTimeSpan {
   position: absolute;
   bottom: 0;
   left: 0;
 }
+
 /* Calendar styling ends here */
 /* ~~ ~~ ~~ */
 

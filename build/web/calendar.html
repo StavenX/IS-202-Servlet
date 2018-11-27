@@ -10,41 +10,58 @@
     </div>
     <div id="buttons2">
     </div>
+    <div id="showAndHideForm">
+        <button onclick="showAndHideForm()">Show/Hide</button>
+    </div>
     <div id="calendarWrapper">
-    <div id="boi">
+    <div id="calendarsDiv">
     </div>
-    <div id="boi2">
+    <div id="timetableDiv">
     </div>
-        <div id="test">
+        <div id="selectDegree">
+            
+                <select id="degForm" onchange="changeSelectedDegree()">
+                    <option value="IT og IS semester 1">IT og IS</option>
+                    <option value="IT OG IS semester 2">IT og IS s2</option>
+                </select>
+            
         </div>
-        <div>
-            <form>
-                <select name="study">
-                    <option value="ITandIS1">IT and information systems (1. semester)</option>
-                    <option value="ITandIS2">IT and information systems (2. semester)</option>
-                </select><br>
-                <select name="course">
-                    <option value="IS-200">IS-200</option>
-                    <option value="IS-201">IS-201</option>
-                    <option value="IS-202">IS-202</option>
-                </select><br>
-                <input type="text" name="Lecturers">
+        <div id="newEvent">
+            <form action="CreateTimetableEvent" method ="get">
+                <input type="submit" value="New event">
             </form>
         </div>
     </div>
         <script>
-        
-        </script>
-    <script>
-        var monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November","December"];
+            function showAndHideForm() {
+                var x = document.getElementById("addEventForm");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+
+        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
         today.setMilliseconds(0);
+        today.setSeconds(0);
+        today.setMinutes(0);
+        var selectedDegree = ("IT og IS semester 1");
+        
+        function changeSelectedDegree() {
+            var val = document.getElementById("degForm").value;
+            selectedDegree = (val);
+            console.log(selectedDegree, "ds");
+        }
         
         // Fills three calendars
         function fillCalendar(d)
         {
             d.setMilliseconds(0);
+            d.setSeconds(0);
+            d.setMinutes(0);
             var HTML = ("");
             for(var q = 0; q < 3; q++)
             {
@@ -60,7 +77,7 @@
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) 
                 {
-                        HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
+                        HTML += ("<td id=" + p + ">" + weekdayNames[p].substr(0, 3) + "</td>");
                 }
                 
                 // Prints empty days in calendar
@@ -74,7 +91,7 @@
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++)
                 {
-                    HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + d.getDate() + "</td>");
+                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                     d.setDate(d.getDate()+1);
                 }
                 // Prints remaining weeks
@@ -83,14 +100,14 @@
                 while (d.getDate() < monthLastDay) {
                     for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) 
                     {
-                        HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + d.getDate() + "</td>");
+                        HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                         d.setDate(d.getDate()+1);
                             if(d.getDate() == monthLastDay){
                                 if (i == 7) {
-                                    HTML += ("</tr><tr><td id=" + d.getTime() + " onclick= newTT(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("</tr><tr><td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                                 else { 
-                                    HTML += ("<td id=" + d.getTime() + " onclick= newTT(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                             }
                     }
@@ -100,28 +117,69 @@
                 d.setDate(d.getDate()+1);
             }
             HTML += ("</tbody></table><br>");
-            document.getElementById("boi").innerHTML = HTML;
+            document.getElementById("calendarsDiv").innerHTML = HTML;
+            displayCurrentDay();
         }
-    </script>
-    
-    <script>
-        document.getElementById("test").innerHTML = ("<button onclick=\"loadEvents()\">test</button>");
-        function loadEvents(currDate) {
+
+        function loadEvents(r) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (xhttp.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(xhttp.responseText);
+                    console.log(response, "this is so lit guys");
                     for (var r = 0; r < response.length; r++) {
                         var obj = response[r];
-                        console.log(obj.startDate);
-                        document.getElementById(obj.startDate).innerHTML = ("<td>" + "<span> description: " + obj.description + 
-                                                                    "</span><br><span> lecturers: " + obj.lecturers +
-                                                                    "</span><br><span> Course: " + obj.courseID + 
-                                                                    "</span></td>");
+                        var startTimeRowIndex = (document.getElementById(obj.startTime).parentNode);
+                        var endTimeRowIndex = (document.getElementById(obj.endTime).parentNode);
+                        var rowspan = endTimeRowIndex.rowIndex - startTimeRowIndex.rowIndex;
+                        var oldTD = document.getElementById(obj.startDate);
+                        
+                        var newTD = document.createElement("td");
+                        newTD.setAttribute("class", "filledEvent");
+                        newTD.setAttribute("style", "background-color: " + obj.color);
+                        newTD.setAttribute("rowspan", rowspan);
+                        
+                        var st = document.createElement("span");
+                        st.setAttribute("class", "startTimeSpan");
+                        st.textContent = (startTimeRowIndex.children[0].innerText);
+                        newTD.appendChild(st);
+                        
+                        var coID = document.createElement("span");
+                        coID.setAttribute("class", "courseIDSpan");
+                        coID.textContent = (obj.courseID);
+                        newTD.appendChild(coID);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var room = document.createElement("span");
+                        room.setAttribute("class", "courseIDSpan");
+                        room.textContent = (obj.room);
+                        newTD.appendChild(room);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var lect = document.createElement("span");
+                        lect.setAttribute("class", "lecturersSpan");
+                        lect.textContent = (obj.lecturers);
+                        newTD.appendChild(lect);
+                        newTD.appendChild(document.createElement("br"));
+                        newTD.appendChild(document.createElement("br"));
+                        
+                        var desc = document.createElement("span");
+                        desc.setAttribute("class", "descriptionSpan");
+                        desc.textContent = (obj.description);
+                        newTD.appendChild(desc);
+                        
+                        var et = document.createElement("span");
+                        et.setAttribute("class", "endTimeSpan");
+                        et.textContent = (endTimeRowIndex.children[0].innerText);
+                        
+                        newTD.appendChild(et);
+                        oldTD.parentNode.replaceChild(newTD, oldTD);
                     }
                 }
             };
-            xhttp.open("GET", "Calendar?"+currDate, true);
+            xhttp.open("GET", "Calendar?currDay=" + r + "&currDegree=" + selectedDegree, true);
             xhttp.send();
         }
         
@@ -147,28 +205,43 @@
             }
             HTML2 += ("</tr></thead><tbody><tr>");
             
-            for (var o = 0; o < 21; o++) 
+            for (var o = 0; o < 121; o++) 
             {
                 var minutes = n.getMinutes();
-                HTML2 += ("<tr><td class=\"timeStamp\">" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                
+                if(n.getMinutes() == 0) {
+                    if(n.getHours() < 10) {
+                        HTML2 += ("<tr><td class=\"showTimeStamp\">0" + n.getHours() + ":" + n.getMinutes() + "0</td>");
+                    }
+                    else {
+                        HTML2 += ("<tr><td class=\"showTimeStamp\">" + n.getHours() + ":" + n.getMinutes() + "0</td>");
+                    }
+                }
+                else {
+                    HTML2 += ("<tr><td class= hideTimeStamp>" + n.getHours() + ":" + n.getMinutes() + "</td>");
+                }
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    HTML2 += ("<td id=" + n.getTime() + "></td>");
-                    
+                    if (n.getMinutes() == 0) {
+                    HTML2 += ("<td class=\"showTimetableCell\" id=" + n.getTime() + "></td>");
                     n.setDate(n.getDate()+1);
+                    }
+                    
+                    else {
+                        HTML2 += ("<td class=\"hideTimetableCell\" id=" + n.getTime() + "></td>");
+                        n.setDate(n.getDate()+1);
+                    }
                 }
                 n.setDate(n.getDate()-7);
-                n.setMinutes(minutes+30);
+                n.setMinutes(minutes+5);
                 HTML2 += ("</tr>");
             }
             HTML2 += ("</tr></tbody></table>");
-            document.getElementById("boi2").innerHTML = HTML2;
-            var dfdf = n.getTime();
-            loadEvents(dfdf);
+            document.getElementById("timetableDiv").innerHTML = HTML2;
+            loadEvents(n.getTime(), selectedDegree);
         }
-    </script>
-    <script>
+
         // Buttons for access next and previous months
         document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months</button>");
         document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months</button>");
@@ -182,21 +255,31 @@
             currentDate.setMonth(currentDate.getMonth()-6);
             fillCalendar(currentDate);
         }
-    </script>
-    <script>
+
         // Prints current calendar on page load
         var currentDate = new Date();
         var currentDate2 = new Date();
         fillTimetable(currentDate2);
         fillCalendar(currentDate);
-    </script>
-    <script>
+
         function displayCurrentDay () {
-            document.getElementById(today).innerHTML = "<td class= \"currentWD\" id=" + today + ">" + today.getDate() + "</td>";
+            var oldTD = document.getElementById(today.getTime());
+            var newTD = document.createElement("td");
+            newTD.textContent = (today.getDate());
+            newTD.setAttribute("class", "currentWD");
+            newTD.setAttribute("id", today.getTime());
+            newTD.setAttribute("onclick", "parseDate(this.id)");
+            oldTD.parentNode.replaceChild(newTD, oldTD);
+            
+            var oldTH = document.getElementById(today.getDay()-1);
+            var newTH = document.createElement("td");
+            newTH.textContent = (weekdayNames[today.getDay()-1].substr(0, 3));
+            newTH.setAttribute("class", "currentWD");
+            newTH.setAttribute("id", today.getDay()-1);
+            oldTH.parentNode.replaceChild(newTH, oldTH);
         }
-    </script>
-    <script>
-        function newTT (k) {
+
+        function parseDate (k) {
             var s = new Date(parseInt(k));
             fillTimetable(s);
         }
