@@ -16,6 +16,7 @@
 </Context>
 -->
 
+
 <!--Datasource for remote Digitalocean server-->
 <Context path="/WEB">
 	<Resource name="jdbc/localhostDS" type="javax.sql.DataSource" auth="Container" 
