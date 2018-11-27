@@ -41,8 +41,7 @@
                     x.style.display = "none";
                 }
             }
-        </script>
-    <script>
+
         var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
@@ -78,7 +77,7 @@
                 // Prints weekdays
                 for (var p = 0; p <= 6; p++) 
                 {
-                        HTML += ("<td>" + weekdayNames[p].substr(0, 3) + "</td>");
+                        HTML += ("<td id=" + p + ">" + weekdayNames[p].substr(0, 3) + "</td>");
                 }
                 
                 // Prints empty days in calendar
@@ -119,10 +118,9 @@
             }
             HTML += ("</tbody></table><br>");
             document.getElementById("calendarsDiv").innerHTML = HTML;
+            displayCurrentDay();
         }
-    </script>
-    
-    <script>
+
         function loadEvents(r) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
@@ -243,8 +241,7 @@
             document.getElementById("timetableDiv").innerHTML = HTML2;
             loadEvents(n.getTime(), selectedDegree);
         }
-    </script>
-    <script>
+
         // Buttons for access next and previous months
         document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months</button>");
         document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months</button>");
@@ -258,20 +255,30 @@
             currentDate.setMonth(currentDate.getMonth()-6);
             fillCalendar(currentDate);
         }
-    </script>
-    <script>
+
         // Prints current calendar on page load
         var currentDate = new Date();
         var currentDate2 = new Date();
         fillTimetable(currentDate2);
         fillCalendar(currentDate);
-    </script>
-    <script>
+
         function displayCurrentDay () {
-            document.getElementById(today.getTime()).innerHTML = "<td class= \"currentWD\" id=" + today.getTime() + ">" + today.getDate() + "</td>";
+            var oldTD = document.getElementById(today.getTime());
+            var newTD = document.createElement("td");
+            newTD.textContent = (today.getDate());
+            newTD.setAttribute("class", "currentWD");
+            newTD.setAttribute("id", today.getTime());
+            newTD.setAttribute("onclick", "parseDate(this.id)");
+            oldTD.parentNode.replaceChild(newTD, oldTD);
+            
+            var oldTH = document.getElementById(today.getDay()-1);
+            var newTH = document.createElement("td");
+            newTH.textContent = (weekdayNames[today.getDay()-1].substr(0, 3));
+            newTH.setAttribute("class", "currentWD");
+            newTH.setAttribute("id", today.getDay()-1);
+            oldTH.parentNode.replaceChild(newTH, oldTH);
         }
-    </script>
-    <script>
+
         function parseDate (k) {
             var s = new Date(parseInt(k));
             fillTimetable(s);
