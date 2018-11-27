@@ -18,7 +18,7 @@
     <!-- A security constraint is a limit on what the users can do. 
           The constraint is enforced by tomcat, no programming is needed
           All necessary info is in this file -->
-    
+    <security-constraint>
         <!--  to access these pages  -->
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
@@ -104,9 +104,8 @@
     </login-config>
 
     <welcome-file-list>
-        <welcome-file>calendar.html</welcome-file>
+        <welcome-file>Index</welcome-file>
     </welcome-file-list>
-    
     
     
     <!-- error pages -->
