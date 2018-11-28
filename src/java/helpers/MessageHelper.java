@@ -86,7 +86,6 @@ public class MessageHelper {
                        
             ResultSet rset = getMessage.executeQuery();
             
-            out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
             // While there exists more entries (rows?)
