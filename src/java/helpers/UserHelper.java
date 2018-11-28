@@ -429,4 +429,29 @@ public class UserHelper {
                 out.println(ex);
             }
     }
+    
+    public static String getClickableUser (Connection conn, String user_id, String divId) {
+        String author = getFullNameById(conn, user_id);
+        String str =  "<form id=\"" + divId + "\" action=\"oneUser\" method=\"get\" onclick=\"submit(\'" + divId + "\')\">\n" +
+        "                <input type=\"hidden\" name=\"user_id\" value=\"" + user_id + "\">\n" +
+        "                <p class=\"announcement-author\">" + author + ":</p>\n" +
+        "                </form>";
+        return str;
+    }
+    
+    public static void printAuthorByline (PrintWriter out, Connection conn, String author_id, String divId) {
+        try {
+            ResultSet userInfo = UserHelper.getUserDetails(out, conn, author_id);
+            String profilePic = "";
+            while (userInfo.next()) {
+                profilePic = userInfo.getString("user_pic_url");
+            }
+            out.println("<div class=\"author-byline\">");
+            out.println("<img src=\"images/profiles/" + profilePic + "\">");
+            out.println(UserHelper.getClickableUser(conn, author_id, "getAuthor"));
+            out.println("</div>");
+        } catch (SQLException ex) {
+            out.println(ex);
+        }
+    }
 }

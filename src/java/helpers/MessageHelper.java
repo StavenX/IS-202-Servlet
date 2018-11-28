@@ -72,6 +72,7 @@ public class MessageHelper {
      * 
      * @param out The printwriter to write with
      * @param conn The connection to use
+     * @param userId
      */
     public static void printMessages(PrintWriter out, Connection conn, String userId) {
 
@@ -98,6 +99,9 @@ public class MessageHelper {
                 String mess_content = rset.getString("mess_content");
                 String mess_recipient = rset.getString("mess_recipient");
                 
+                String mess_to = UserHelper.getFullNameById(conn, mess_recipient);
+                String mess_from = UserHelper.getFullNameById(conn, mess_senderId);
+                
                 out.println("<div class=\"message-container\">");
                 //out.println("<div class=\"message-bold-container\">");
 
@@ -107,8 +111,8 @@ public class MessageHelper {
                 out.println("<input class=\"invisible\" name=\"mess_id\" value=\"" + mess_id + "\">");
                 out.println("<div>Row " + rowCount + "</div>");
                 out.println("<div name=\"mess_id\"><b>mess_id:  " + "</b>" + mess_id + "</div>");
-                out.println("<div><b>To:  " + "</b>" + mess_recipient + "</div>");
-                out.println("<div><b>Name:  " + "</b>" + mess_senderId + "</div>");
+                out.println("<div><b>To:  " + "</b>" + mess_to + "</div>");
+                out.println("<div><b>From:  " + "</b>" + mess_from + "</div>");
                 out.println("<div><b>Title:  " +  "</b>" + mess_title + "</div>");
                 out.println("<div><b>Content:  " + "</b>"+ mess_content + "</div>");
 
@@ -119,6 +123,8 @@ public class MessageHelper {
                 
                 //delete buttons
                 out.println("<form method='Get' action='Message'>" + "<input class=\"button\" type=\"Submit\" name=\"get\" value=\"Respond\">\n");
+                out.println("<input type=\"hidden\" name=\"sender_id\" value=\"" + mess_recipient + "\">");
+                out.println("<input type=\"hidden\" name=\"recipient_id\" value=\"" + mess_senderId  + "\">");
                 out.println("<div class=\"message-container-item\">");   
 
                 out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteMessage\">");

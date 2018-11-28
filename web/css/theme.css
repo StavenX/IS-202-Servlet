@@ -118,6 +118,10 @@ textarea {
     margin: 20px 0;
 }
 
+.nav-item:hover {
+    background: #1F2121;
+}
+
 .nav-item a{
     text-decoration: none;
 
@@ -173,6 +177,10 @@ textarea {
     background-color: yellow;
 }
 
+.calendarDay:hover {
+    background-color: lightgoldenrodyellow;
+}
+
 /* Timetable styling */
 #timetable {
     border-collapse: collapse;
@@ -208,9 +216,8 @@ textarea {
     width: 14.2857143%;
 }
 
-.timetableCell {
-    font-size: 8px;
-    height:80px;
+.filledEvent {
+    font-size: 1.5vh;
     width: 14.2857143%;
 }
 
@@ -241,15 +248,19 @@ textarea {
   position: absolute;
   top: 0;
   left: 0;
+  background-color: white;
+  border-bottom: groove black;
+  border-right: groove black;
 }
 
 .endTimeSpan {
   position: absolute;
   bottom: 0;
   left: 0;
+  background-color: white;
+  border-top: groove black;
+  border-right: groove black;
 }
-
-/* Calendar styling ends here */
 /* ~~ ~~ ~~ */
 
 
@@ -281,14 +292,6 @@ textarea {
 }
 /* Everything to do with sorting / ordering end */
 /* ~~ ~~ ~~ */
-
-/* what is this? */
- .form1 {
-    text-align: center;
-}
- .form1 input {
-    display: list-item;
-}
 
 
 /* ~~ ~~ ~~ */
@@ -397,6 +400,10 @@ textarea {
     margin: 20px 10px;
     padding: 5px;
     border: 1px solid black;
+}
+
+#comment-author {
+    font-size: 2em;
 }
 
 /* Module comments end */

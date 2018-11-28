@@ -91,7 +91,7 @@
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++)
                 {
-                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
+                    HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                     d.setDate(d.getDate()+1);
                 }
                 // Prints remaining weeks
@@ -100,14 +100,14 @@
                 while (d.getDate() < monthLastDay) {
                     for (var i = 1; i <= 7 && d.getDate() < monthLastDay; i++) 
                     {
-                        HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
+                        HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + d.getDate() + "</td>");
                         d.setDate(d.getDate()+1);
-                            if(d.getDate() === monthLastDay){
-                                if (i === 7) {
-                                    HTML += ("</tr><tr><td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
+                            if(d.getDate() == monthLastDay){
+                                if (i == 7) {
+                                    HTML += ("</tr><tr><td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                                 else { 
-                                    HTML += ("<td id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                             }
                     }
@@ -124,13 +124,9 @@
         function loadEvents(r) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                if (xhttp.readyState === 4 && this.status === 200) {
-                    try {
+                if (xhttp.readyState == 4 && this.status == 200) {
                     var response = JSON.parse(xhttp.responseText);
-                    }
-                    catch (e) {
-                        console.log(e);
-                    }
+                    console.log(response, "this is so lit guys");
                     for (var r = 0; r < response.length; r++) {
                         var obj = response[r];
                         var startTimeRowIndex = (document.getElementById(obj.startTime).parentNode);
@@ -169,11 +165,6 @@
                         newTD.appendChild(document.createElement("br"));
                         newTD.appendChild(document.createElement("br"));
                         
-                        var desc = document.createElement("span");
-                        desc.setAttribute("class", "descriptionSpan");
-                        desc.textContent = (obj.description);
-                        newTD.appendChild(desc);
-                        
                         var et = document.createElement("span");
                         et.setAttribute("class", "endTimeSpan");
                         et.textContent = (endTimeRowIndex.children[0].innerText);
@@ -189,7 +180,7 @@
         
         function fillTimetable(n)
         {
-            if (n.getDay() % 7 === 0) {
+            if (n.getDay() % 7 == 0) {
                 n.setDate(n.getDate() - n.getDay()-6);
             }
             else {
@@ -198,7 +189,7 @@
             n.setHours(8, 0, 0, 0);
 
             HTML2 = ("");
-            HTML2 += ("<table id=\"timetable\"><thead><tr>");
+            HTML2 += ("<table id =\"timetable\"><thead><tr>");
             HTML2 += ("<th>&nbsp;</th>");
             
             for (var p = 0; p <= 6; p++) 
@@ -213,7 +204,7 @@
             {
                 var minutes = n.getMinutes();
                 
-                if(n.getMinutes() === 0) {
+                if(n.getMinutes() == 0) {
                     if(n.getHours() < 10) {
                         HTML2 += ("<tr><td class=\"showTimeStamp\">0" + n.getHours() + ":" + n.getMinutes() + "0</td>");
                     }
@@ -227,7 +218,7 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    if (n.getMinutes() === 0) {
+                    if (n.getMinutes() == 0) {
                     HTML2 += ("<td class=\"showTimetableCell\" id=" + n.getTime() + "></td>");
                     n.setDate(n.getDate()+1);
                     }
