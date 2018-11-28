@@ -46,7 +46,7 @@ public class serv_GetMessage extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Message", "bodyy");
             
-            out.println("<h1>Servlet getMessage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>My messages</h1>");
 
                 Connection conn;
                 conn = login.loginToDB(out);

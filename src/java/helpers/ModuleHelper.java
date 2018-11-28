@@ -239,7 +239,7 @@ public class ModuleHelper {
             
             out.println("<form action=\"myProfile\" method=\"post\">");
             out.println("<div class=\"sort-by-container\">");
-            out.println("<h2>Sort modules by </h2>");
+            out.println("<h3>Sort modules by </h3>");
             printOrderBy(out, orderBy, sortingTypes);
             out.println("</div>");
             out.println("</form>");
@@ -338,7 +338,7 @@ public class ModuleHelper {
             //"sort by"-buttons and necessary parameters
             out.println("<div class=\"sort-by-container\">");
             
-            out.println("<h2>Sort modules by: </h2>");
+            out.println("<h3>Sort modules by: </h3>");
             out.println("<form action=\"" + currentServlet + "\" method=\"post\">");
             
             out.println("<input type=\"hidden\" name=\"course_id\" value=\"" + course_id + "\">");
@@ -598,7 +598,7 @@ public class ModuleHelper {
                         String module_status = rset.getString("module_status");
                         
                         
-                        out.println("<table>");
+                        out.println("<table class=\"simple-student-module\">");
                         
                         out.println("<tr>");
                         out.println("<td>Name of student</td>");
@@ -689,7 +689,7 @@ public class ModuleHelper {
                 
                 out.println("<div class=\"module-comment-container\">");
                 UserHelper.printAuthorByline(out, conn, user_id, "commentAuthor");
-                out.println("<form action=\"deleteComment\" class=\"module-comment-container\">");
+                out.println("<form action=\"deleteComment\">");
                 out.println("<input type=\"hidden\" name=\"module_id\" value=\"" + module_id + "\">");
                 out.println("<p>" + content + "</p>");
                 HtmlHelper site = new HtmlHelper(out);

@@ -86,7 +86,6 @@ public class MessageHelper {
                        
             ResultSet rset = getMessage.executeQuery();
             
-            out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
             // While there exists more entries (rows?)
@@ -126,7 +125,8 @@ public class MessageHelper {
                 out.println("<input type=\"hidden\" name=\"sender_id\" value=\"" + mess_recipient + "\">");
                 out.println("<input type=\"hidden\" name=\"recipient_id\" value=\"" + mess_senderId  + "\">");
                 out.println("<div class=\"message-container-item\">");   
-
+                out.println("</form>");
+                
                 out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteMessage\">");
                 site.printDeleteButton("deleteMessage", "mess_id", mess_id);
                 out.println("</div>");
@@ -135,7 +135,6 @@ public class MessageHelper {
                 rowCount++;
             }
             out.println("</div>");
-            out.println("Total number of records: " + rowCount);
             
             site.useJS("buttons-for-delete.js");
             

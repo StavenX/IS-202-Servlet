@@ -32,7 +32,7 @@ public class serv_FileUploadOLD extends HttpServlet {
                 
                 try (PrintWriter out = response.getWriter()) {
                     
-                    HtmlHelper site = new HtmlHelper(out);
+                    HtmlHelper site = new HtmlHelper(out, request);
                     site.printHead("File Upload", "");
                     
                     out.println("Upload a file");

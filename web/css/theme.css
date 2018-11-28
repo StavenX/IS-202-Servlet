@@ -3,8 +3,8 @@
 
 /* Color variables */
 :root {
-    background: #F8F1E5;
-    almostblack: #2F3131;
+    --background: #F8F1E5;
+    --almostblack: #2F3131;
 }
 
  * {box-sizing: border-box}
@@ -124,7 +124,7 @@ textarea {
 
 .nav-item a{
     text-decoration: none;
-
+    color: white;
 }
 
  .nav-img {
@@ -450,7 +450,7 @@ textarea {
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    border: 1px solid black;
+    border: 0px solid black;
 }
 .message-bold-container {
     font-weight: bold;
@@ -557,9 +557,12 @@ textarea {
 .module-students-table th {
     background: lightblue;
     border: 0px solid black;
+    padding: 21px 0;
 }
 
+
 .module-students-table td {
+    padding: 21px 0;
     background: white;
     border: 0;
 }
@@ -572,6 +575,16 @@ textarea {
     display: inline;
     margin: 0 10px;
 }
+
+/* table view end */
+
+/* another table view */
+
+.simple-student-module td{
+    border: 1px solid var(--almostblack);
+    padding: 21px 10px;
+}
+
 
 /* table view end */
 

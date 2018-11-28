@@ -38,6 +38,7 @@ public class serv_MyProfile extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("My Profile", "my-profile");
@@ -61,6 +62,8 @@ public class serv_MyProfile extends HttpServlet {
             site.useJS("somebackgrounds.js");
             site.useJS("submitform.js");
             site.closeAndPrintEnd(login);
+        } catch (Exception ex) {
+            login.close();
         }
     }
 

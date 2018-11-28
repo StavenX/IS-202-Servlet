@@ -43,7 +43,7 @@ public class serv_DeleteAnnouncement extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Deleted announcement", "deleted-announcement");
             
-            out.println("<h1>Servlet deleteAnnouncement at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Announcement deleted</h1>");
             
             Connection conn = login.loginToDB(out);
             

@@ -43,9 +43,9 @@ public class serv_UpdateModule extends HttpServlet {
             
             //body id 'invisible' makes no content on the page visible, and it should auto load
             //due to javascript 
-            site.printHead("Updating module...", "");
+            site.printHead("Updating module...", "invisible");
             
-            out.println("<h1>Servlet updateModule at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Module updated</h1>");
             
             String id = request.getParameter("module_id");
             String name = request.getParameter("module_name");
