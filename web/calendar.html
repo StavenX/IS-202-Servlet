@@ -10,9 +10,6 @@
     </div>
     <div id="buttons2">
     </div>
-    <div id="showAndHideForm">
-        <button onclick="showAndHideForm()">Show/Hide</button>
-    </div>
     <div id="calendarWrapper">
     <div id="calendarsDiv">
     </div>
@@ -33,15 +30,6 @@
         </div>
     </div>
         <script>
-            function showAndHideForm() {
-                var x = document.getElementById("addEventForm");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
         var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
@@ -79,14 +67,14 @@
                 {
                         HTML += ("<td id=" + p + ">" + weekdayNames[p].substr(0, 3) + "</td>");
                 }
-                
+                d.setDate(1);
                 // Prints empty days in calendar
                 HTML += ("</tr><tr>");
                 for (var i = 1; i < firstDay; i++) 
                 {
                     HTML += ("<td>");
                 }
-                d.setDate(1);
+                
 
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++)

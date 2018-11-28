@@ -7,13 +7,14 @@ package helpers;
 
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -21,6 +22,9 @@ import java.util.Date;
  */
 
 public class CalendarHelper {
+    
+
+    
     public static void getEvent (PrintWriter out, Connection conn, String reqDate, String reqDegree) {
         
         Statement stmt;
@@ -54,26 +58,35 @@ public class CalendarHelper {
             out.println(e);
         }
     }
-    public static void createEvent (String courseCode, String classroom, String lecturer, String date, String startTime, String endTime, 
-                                      String mon, String tue, String wed, String thu, String fri, String sat, String sun) {
+    public static Calendar newCalendar (Date date, Date time) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(time);
+        int hour = cal.get(Calendar.HOUR_OF_DAY);
+        int minute = cal.get(Calendar.MINUTE);
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, hour);
+        cal.set(Calendar.MINUTE, minute);
+        return cal;
+    }
+    public static void insertEvents (PrintWriter out, Connection conn, String classroom, String lecturer,
+                                    String courseCode, String degree, String sc, String ec, String cw) {
         try {
-            SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat hourMinutes = new SimpleDateFormat("HH:mm");
-            
-            Date parsedEndTime = hourMinutes.parse(endTime);
-            Date parsedStartTime = hourMinutes.parse(startTime);
-            Date parsedDate = yearMonthDay.parse(date);
-            
-            parsedDate.setHours(parsedStartTime.getHours());
-            parsedDate.setMinutes(parsedStartTime.getMinutes());
-            
-            System.out.println(parsedDate);
-
-        
+            System.out.println(ec);
+        PreparedStatement prepStmt = conn.prepareStatement ("INSERT INTO calendar_event (ce_room, ce_lecturers, ce_courseID,"
+                                                                       + "ce_degreeNandS, ce_sDate, ce_eDate, ce_weekOfYear)"
+                                                                       + "VALUES (?, ?, ?, ?, ?, ?, ?);");
+                    prepStmt.setString(1, classroom);
+                    prepStmt.setString(2, lecturer);
+                    prepStmt.setString(3, courseCode);
+                    prepStmt.setString(4, degree);
+                    prepStmt.setString(5, sc);
+                    prepStmt.setString(6, ec);
+                    prepStmt.setString(7, cw);
+                    
+                    prepStmt.executeUpdate();
         }
         catch (Exception e) {
             System.out.println(e);
         }
-          
     }
 }
