@@ -43,7 +43,7 @@ public class serv_DeleteModule extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Delete module", "delete-module");
             
-            out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Module deleted</h1>");
             
             Connection conn = login.loginToDB(out);
             
@@ -69,7 +69,6 @@ public class serv_DeleteModule extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.getWriter().println("hei");
         doGet(request, response);
     }
 

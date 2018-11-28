@@ -17,9 +17,6 @@ import helpers.HtmlHelper;
 import helpers.ModuleHelper;
 import helpers.UserHelper;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 /**
  *

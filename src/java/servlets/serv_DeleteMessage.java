@@ -44,7 +44,7 @@ public class serv_DeleteMessage extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Delete message", "delete-message");
             
-            out.println("<h1>Servlet deleteMessage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Message deleted</h1>");
             
             Connection conn = login.loginToDB(out);
             

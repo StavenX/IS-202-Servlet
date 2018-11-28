@@ -86,7 +86,6 @@ public class MessageHelper {
                        
             ResultSet rset = getMessage.executeQuery();
             
-            out.println("the records selected are:" + "<br>");
             int rowCount = 0; 
             
             // While there exists more entries (rows?)
@@ -136,7 +135,6 @@ public class MessageHelper {
                 rowCount++;
             }
             out.println("</div>");
-            out.println("Total number of records: " + rowCount);
             
             site.useJS("buttons-for-delete.js");
             

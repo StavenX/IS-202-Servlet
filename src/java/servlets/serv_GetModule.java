@@ -66,7 +66,7 @@ public class serv_GetModule extends HttpServlet {
 
             site.printHead("Modules", "bodyy");
             
-            out.println("<h1>Servlet getModule at " + request.getContextPath() + "</h1>");
+            out.println("<h1>All modules</h1>");
             
                 Connection conn;
                 conn = login.loginToDB(out);
