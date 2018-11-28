@@ -23,6 +23,7 @@
         <web-resource-collection>
             <web-resource-name>UserResources</web-resource-name>
             <url-pattern>/About</url-pattern>
+            <url-pattern>/Calendar</url-pattern>
             <url-pattern>/createComment</url-pattern>
             <url-pattern>/createFeedback</url-pattern>
             <url-pattern>/deleteMessage</url-pattern>
@@ -130,4 +131,5 @@
         <error-code>405</error-code>
         <location>/ERROR401</location>
     </error-page>
+    
 </web-app>

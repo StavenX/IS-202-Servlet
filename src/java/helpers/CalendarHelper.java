@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
 import java.util.Calendar;
@@ -58,35 +59,60 @@ public class CalendarHelper {
             out.println(e);
         }
     }
-    public static Calendar newCalendar (Date date, Date time) {
+    public static Calendar newCalendar (String date, String time) {
+        SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat hourMinutes = new SimpleDateFormat("HH:mm");
+        
+        try {
+        
+        Date parsedTime = hourMinutes.parse(time);
+        Date parsedDate = yearMonthDay.parse(date);
+        
         Calendar cal = GregorianCalendar.getInstance();
-        cal.setTime(time);
+        cal.setTime(parsedTime);
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
-        cal.setTime(date);
+        cal.setTime(parsedDate);
         cal.set(Calendar.HOUR_OF_DAY, hour);
         cal.set(Calendar.MINUTE, minute);
         return cal;
+        }
+        catch (Exception ex) {
+            System.out.println(ex);
+            return null;
+        }
+        
     }
     public static void insertEvents (PrintWriter out, Connection conn, String classroom, String lecturer,
                                     String courseCode, String degree, String sc, String ec, String cw) {
         try {
-            System.out.println(ec);
-        PreparedStatement prepStmt = conn.prepareStatement ("INSERT INTO calendar_event (ce_room, ce_lecturers, ce_courseID,"
-                                                                       + "ce_degreeNandS, ce_sDate, ce_eDate, ce_weekOfYear)"
-                                                                       + "VALUES (?, ?, ?, ?, ?, ?, ?);");
-                    prepStmt.setString(1, classroom);
-                    prepStmt.setString(2, lecturer);
-                    prepStmt.setString(3, courseCode);
-                    prepStmt.setString(4, degree);
-                    prepStmt.setString(5, sc);
-                    prepStmt.setString(6, ec);
-                    prepStmt.setString(7, cw);
-                    
-                    prepStmt.executeUpdate();
+            PreparedStatement prepStmt = conn.prepareStatement ("INSERT INTO calendar_event (ce_room, ce_lecturers, ce_courseID,"
+                                                                + "ce_degreeNandS, ce_sDate, ce_eDate, ce_weekOfYear)"
+                                                                + "VALUES (?, ?, ?, ?, ?, ?, ?);");
+            prepStmt.setString(1, classroom);
+            prepStmt.setString(2, lecturer);
+            prepStmt.setString(3, courseCode);
+            prepStmt.setString(4, degree);
+            prepStmt.setString(5, sc);
+            prepStmt.setString(6, ec);
+            prepStmt.setString(7, cw);
+                   
+            prepStmt.executeUpdate();
         }
         catch (Exception e) {
-            System.out.println(e);
+            out.println(e);
+        }
+    }
+    public static void deleteEvent (PrintWriter out, Connection conn, String date) {
+        try {
+            PreparedStatement prepStmt = conn.prepareStatement ("DELETE FROM calender_event WHERE ce_sDate = ?");
+            
+            prepStmt.setString(1, date);
+            
+            prepStmt.executeUpdate();
+        }
+        catch (Exception p) {
+            out.println(p);
         }
     }
 }

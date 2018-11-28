@@ -10,38 +10,25 @@
     </div>
     <div id="buttons2">
     </div>
-    <div id="showAndHideForm">
-        <button onclick="showAndHideForm()">Show/Hide</button>
+    <div id="selectDegreeDiv">
+        <select class="button small-button" id="degForm" onchange="changeSelectedDegree()">
+            <option value="IT og IS semester 1">IT og IS</option>
+            <option value="IT OG IS semester 2">IT og IS s2</option>
+        </select>
+    </div>
+    <div id="newEventDiv">
+        <form action="CreateTimetableEvent" method ="get">
+            <input class="button small-button" id="newEvent" type="submit" value="New event">
+        </form>
     </div>
     <div id="calendarWrapper">
     <div id="calendarsDiv">
     </div>
     <div id="timetableDiv">
     </div>
-        <div id="selectDegree">
-            
-                <select id="degForm" onchange="changeSelectedDegree()">
-                    <option value="IT og IS semester 1">IT og IS</option>
-                    <option value="IT OG IS semester 2">IT og IS s2</option>
-                </select>
-            
-        </div>
-        <div id="newEvent">
-            <form action="CreateTimetableEvent" method ="get">
-                <input type="submit" value="New event">
-            </form>
-        </div>
     </div>
+        
         <script>
-            function showAndHideForm() {
-                var x = document.getElementById("addEventForm");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
-                }
-            }
-
         var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November","December"];
         var weekdayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
         var today = new Date();
@@ -79,14 +66,14 @@
                 {
                         HTML += ("<td id=" + p + ">" + weekdayNames[p].substr(0, 3) + "</td>");
                 }
-                
+                d.setDate(1);
                 // Prints empty days in calendar
                 HTML += ("</tr><tr>");
                 for (var i = 1; i < firstDay; i++) 
                 {
                     HTML += ("<td>");
                 }
-                d.setDate(1);
+                
 
                 // Prints first week of month
                 for (var i = firstDay; i < 8; i++)
@@ -104,7 +91,7 @@
                         d.setDate(d.getDate()+1);
                             if(d.getDate() == monthLastDay){
                                 if (i == 7) {
-                                    HTML += ("</tr><tr><td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
+                                    HTML += ("</tr><tr><td class =calendarDay id=" + d.getTime() +  " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
                                 }
                                 else { 
                                     HTML += ("<td class =calendarDay id=" + d.getTime() + " onclick= parseDate(this.id)>" + monthLastDay + "</td>");
@@ -124,9 +111,13 @@
         function loadEvents(r) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
-                if (xhttp.readyState == 4 && this.status == 200) {
-                    var response = JSON.parse(xhttp.responseText);
-                    console.log(response, "this is so lit guys");
+                if (xhttp.readyState === 4 && this.status === 200) {
+                    try {
+                        var response = JSON.parse(xhttp.responseText);
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
                     for (var r = 0; r < response.length; r++) {
                         var obj = response[r];
                         var startTimeRowIndex = (document.getElementById(obj.startTime).parentNode);
@@ -180,7 +171,7 @@
         
         function fillTimetable(n)
         {
-            if (n.getDay() % 7 == 0) {
+            if (n.getDay() % 7 === 0) {
                 n.setDate(n.getDate() - n.getDay()-6);
             }
             else {
@@ -189,7 +180,7 @@
             n.setHours(8, 0, 0, 0);
 
             HTML2 = ("");
-            HTML2 += ("<table id =\"timetable\"><thead><tr>");
+            HTML2 += ("<table id=\"timetable\"><thead><tr>");
             HTML2 += ("<th>&nbsp;</th>");
             
             for (var p = 0; p <= 6; p++) 
@@ -204,7 +195,7 @@
             {
                 var minutes = n.getMinutes();
                 
-                if(n.getMinutes() == 0) {
+                if(n.getMinutes() === 0) {
                     if(n.getHours() < 10) {
                         HTML2 += ("<tr><td class=\"showTimeStamp\">0" + n.getHours() + ":" + n.getMinutes() + "0</td>");
                     }
@@ -218,9 +209,9 @@
                 
                 for (var w = 0; w <= 6; w++) 
                 {
-                    if (n.getMinutes() == 0) {
-                    HTML2 += ("<td class=\"showTimetableCell\" id=" + n.getTime() + "></td>");
-                    n.setDate(n.getDate()+1);
+                    if (n.getMinutes() === 0) {
+                        HTML2 += ("<td class=\"showTimetableCell\" id=" + n.getTime() + "></td>");
+                        n.setDate(n.getDate()+1);
                     }
                     
                     else {
@@ -238,8 +229,8 @@
         }
 
         // Buttons for access next and previous months
-        document.getElementById("buttons").innerHTML =("<button onclick=\"prevMonths()\">last months</button>");
-        document.getElementById("buttons2").innerHTML =("<button onclick=\"nextMonths()\">next months</button>");
+        document.getElementById("buttons").innerHTML =("<button class=button small-button onclick=\"prevMonths()\">Last months</button>");
+        document.getElementById("buttons2").innerHTML =("<button class=button small-button onclick=\"nextMonths()\">Next months</button>");
         
         function nextMonths() {
             currentDate.setMonth(currentDate.getMonth());
@@ -270,12 +261,14 @@
             var newTH = document.createElement("td");
             newTH.textContent = (weekdayNames[today.getDay()-1].substr(0, 3));
             newTH.setAttribute("class", "currentWD");
-            newTH.setAttribute("id", today.getDay()-1);
+            newTH.setAttribute("id", today.getDay()+1);
             oldTH.parentNode.replaceChild(newTH, oldTH);
         }
 
         function parseDate (k) {
-            var s = new Date(parseInt(k));
+            var e = Math.floor(k / 1e0);
+            var s = new Date(parseInt(e));
+            console.log(s.getTime(), "boi");
             fillTimetable(s);
         }
     </script>

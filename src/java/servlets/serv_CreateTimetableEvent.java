@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import network.Login;
 import helpers.CourseHelper;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+
 
 /**
  *
@@ -44,8 +43,8 @@ public class serv_CreateTimetableEvent extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            
             site.printHead("New event", "body");
+            
             out.println("<form method=\"post\">");
             out.println("Course code<br><select name=courseCode><br><br>");
             Connection conn;
@@ -85,10 +84,7 @@ public class serv_CreateTimetableEvent extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        SimpleDateFormat yearMonthDay = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat hourMinutes = new SimpleDateFormat("HH:mm");
         try (PrintWriter out = response.getWriter()) {
-            
             
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New event", "body");
@@ -105,19 +101,12 @@ public class serv_CreateTimetableEvent extends HttpServlet {
                 repeat = "off";
                 lastRepeat = "";
             }
-            
-            System.out.println(repeat);
-            Date parsedStartTime = hourMinutes.parse(startTime);
-            Date parsedEndTime = hourMinutes.parse(endTime);
-            Date eventDate = yearMonthDay.parse(date);
 
-            Calendar startCal = CalendarHelper.newCalendar(eventDate, parsedStartTime);
-            Calendar endCal = CalendarHelper.newCalendar(eventDate, parsedEndTime);
+            Calendar startCal = CalendarHelper.newCalendar(date, startTime);
+            Calendar endCal = CalendarHelper.newCalendar(date, endTime);
             
             if (repeat.equals("on")) {
-                System.out.println("dsadsadsad");
-                Date lastRepeatDate = yearMonthDay.parse(lastRepeat);
-                Calendar lastRepeatCal = CalendarHelper.newCalendar(lastRepeatDate, parsedStartTime);
+                Calendar lastRepeatCal = CalendarHelper.newCalendar(lastRepeat, startTime);
                 
                 while (startCal.before(lastRepeatCal)) {
                     String sc = String.valueOf(startCal.getTimeInMillis());

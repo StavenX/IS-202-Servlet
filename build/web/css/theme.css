@@ -141,6 +141,8 @@ textarea {
 /* Calendar styling starts here*/
 #calendarWrapper {
     min-width: 1300px;
+        height: 80%;
+        float: left;
 }
 
 #calendarsDiv { 
@@ -171,6 +173,30 @@ textarea {
 .calendarTable th {
     border: solid black;
     padding: 10px;
+    height: 10%;
+}
+
+#buttons2 {
+    float: left;
+    margin-left: 15px;
+    float: top;
+}
+
+#buttons {
+    float: left;
+    float: top;
+}
+
+#newEventDiv {
+    float: left;
+    float: top;
+}
+
+#selectDegreeDiv {
+    float: left;
+    float: top;
+    margin-left: 70px;
+    margin-top: 15px;
 }
 
 .currentWD {
