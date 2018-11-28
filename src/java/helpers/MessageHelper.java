@@ -126,7 +126,8 @@ public class MessageHelper {
                 out.println("<input type=\"hidden\" name=\"sender_id\" value=\"" + mess_recipient + "\">");
                 out.println("<input type=\"hidden\" name=\"recipient_id\" value=\"" + mess_senderId  + "\">");
                 out.println("<div class=\"message-container-item\">");   
-
+                out.println("</form>");
+                
                 out.println("<form name=\"delete-form-" + mess_id + "\" action=\"deleteMessage\">");
                 site.printDeleteButton("deleteMessage", "mess_id", mess_id);
                 out.println("</div>");

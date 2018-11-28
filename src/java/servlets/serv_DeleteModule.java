@@ -40,7 +40,7 @@ public class serv_DeleteModule extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
-            HtmlHelper site = new HtmlHelper(out);
+            HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Delete module", "delete-module");
             
             out.println("<h1>Servlet deleteModule at " + request.getContextPath() + "</h1>");
