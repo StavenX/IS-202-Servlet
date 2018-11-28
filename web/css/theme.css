@@ -124,7 +124,7 @@ textarea {
 
 .nav-item a{
     text-decoration: none;
-    color: var(--background);
+    color: white;
 }
 
  .nav-img {
@@ -524,9 +524,12 @@ textarea {
 .module-students-table th {
     background: lightblue;
     border: 0px solid black;
+    padding: 21px 0;
 }
 
+
 .module-students-table td {
+    padding: 21px 0;
     background: white;
     border: 0;
 }
@@ -539,6 +542,16 @@ textarea {
     display: inline;
     margin: 0 10px;
 }
+
+/* table view end */
+
+/* another table view */
+
+.simple-student-module td{
+    border: 1px solid var(--almostblack);
+    padding: 21px 10px;
+}
+
 
 /* table view end */
 
