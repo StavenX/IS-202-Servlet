@@ -3,59 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/nav.html</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/js/navhide.js</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_FileUploadOLD.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/classes/PasswordStorage.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_AddToCourse.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Messages.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/errors/serv_ERROR404.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_AddToModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneStudentModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_MyProfile.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateComment.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/network/Login.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteAnnouncement.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneCourseDetails.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/AccessTokenHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneMessage.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_FileUpload.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/MessageHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/UserHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetMessage.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Student.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateFeedback.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteComment.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GradeModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_About.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/index.html</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/errors/serv_ERROR401.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteFeedback.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/CourseHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Module.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetCourse.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/js/editmodule.js</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/js/buttons-for-delete.js</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Home.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_DeleteMessage.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/errors/serv_ERROR403.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_OneCourse.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/web/css/theme.css</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_GetUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateUser.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/HtmlHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_Index.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/helpers/ModuleHelper.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_UpdateModule.java</file>
-            <file>file:/C:/Users/Tobias/Documents/IS-202-Servlet/src/java/servlets/serv_CreateAnnouncement.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/calendar.html</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/index.html</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/network/Login.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/css/theme.css</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_CreateTimetableEvent.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/web/WEB-INF/web.xml</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/servlets/serv_Calendar.java</file>
+            <file>file:/Users/adriannesvik/Desktop/Git%20repos/IS-202-Servlet/src/java/helpers/CalendarHelper.java</file>
         </group>
     </open-files>
 </project-private>

@@ -39,6 +39,8 @@ public class serv_Module extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Module", "module-frontpage");
             
+            out.println("<div style=\"text-align: center;\">");
+            
             out.println("<h1> Module operations </h1>");
             
             out.println("<form action=\"createModule\">");
@@ -47,6 +49,7 @@ public class serv_Module extends HttpServlet {
             out.println("<form action=\"getModule\" method=\"post\">");
             out.println("<button class=\"button\">Get all modules from database</button>");
             out.println("</form>");
+            out.println("</div>");
             
             site.printEnd();
         }

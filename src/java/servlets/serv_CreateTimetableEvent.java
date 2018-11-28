@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import network.Login;
 import helpers.CourseHelper;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 
 /**
  *
@@ -34,14 +38,14 @@ public class serv_CreateTimetableEvent extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+        throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             
             HtmlHelper site = new HtmlHelper(out);
-            
             site.printHead("New event", "body");
+            
             out.println("<form method=\"post\">");
             out.println("Course code<br><select name=courseCode><br><br>");
             Connection conn;
@@ -50,50 +54,30 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             try {
                 ResultSet rset = CourseHelper.getAllCourses(out, conn);
                 while (rset.next()) {
-                    out.println("<option value=" + (rset.getString("course_id")) + ">" + (rset.getString("course_name")) + "</option>");
+                    out.println("<option value=" + (rset.getString("course_name")) + ">" + (rset.getString("course_name")) + "</option>");
                 }
             }
             catch (Exception e) {
                 out.println(e);
+                dbLogin.close();
             }
             dbLogin.close();
             
             out.println("</select><br><br>");
-            out.println("Classroom<br><input type=\"text\" name=\"classroom\"><br><br>");
-            out.println("Lecturer(s)<br><input type=\"text\" name=\"lecturer\"><br><br>");
-            out.println("Start time<br><input type=\"time\" name=\"st\"><br><br>");
-            out.println("End time<br><input type=\"time\" name=\"et\"><br><br>");
-            out.println("Repeat every: <br><input type=\"checkbox\" name=\"Monday\" value=0> Monday<br>");
-            out.println("<input type=\"checkbox\" name=\"Tuesday\" value=1> Tuesday<br>");
-            out.println("<input type=\"checkbox\" name=\"Wednesday\" value=2> Wednesday<br>");
-            out.println("<input type=\"checkbox\" name=\"Thursday\" value=3> Thursday<br>");
-            out.println("<input type=\"checkbox\" name=\"Friday\" value=4> Friday<br>");
-            out.println("<input type=\"checkbox\" name=\"Saturday\" value=5> Saturday<br>");
-            out.println("<input type=\"checkbox\" name=\"Sunday\" value=6> Sunday<br><br>");
-            out.println("Note<br><input type=\"text\" name=\"note\"><br><br>");
-            out.println("<input type=\"submit\" value=\"Submit\">");
+            out.println("Classroom<br><input type=text name=classroom><br><br>");
+            out.println("Lecturer(s)<br><input type=text name=lecturer><br><br>");
+            out.println("Date<br><input type=date name=date required><br><br>");
+            out.println("<div style=float:left;>");
+            out.println("Start time<br><input type=time name=st required>");
+            out.println("</div>");
+            out.println("<div style=margin-left:115px;>");
+            out.println("End time<br><input type=time name=et required>");
+            out.println("</div><br>");
+            out.println("Repeat every week ");
+            out.println("<input type=checkbox name=repeat>");
+            out.println("Until:<br><input type=date name=lastRepeat><br><br><br>");
+            out.println("<input type=submit value=\"Submit\">");
             out.println("</form>");
-            
-            /*<div id="addEventForm">
-            <form>
-                <br>
-                Course ID <input type="text" name="Course ID"><br>
-                Lecturers <input type="text" name="Lecturers"><br>
-                Room      <input type="text" name="Room"><br>
-                Start time <input type="time" name="Start time" min="08:00:00" max="18:00:00">
-                End time <input type="time" name="End time" min="08:00:00" max="18:00:00"><br><br>
-                Event date <input type="date" name="Date"><br><br>
-                <span> Repeat event every: </span><br>
-                <input type="checkbox" name="Monday">Monday<br>
-                <input type="checkbox" name="Tuesday">Tuesday<br>
-                <input type="checkbox" name="Wednesday">Wednesday<br>
-                <input type="checkbox" name="Thursday">Thursday<br>
-                <input type="checkbox" name="Friday">Friday<br>
-                <input type="checkbox" name="Saturday">Saturday<br>
-                <input type="checkbox" name="Sunday">Sunday<br><br>
-                <input type="submit" value="Submit">
-            </form>
-        </div>*/
         }
     }
             
@@ -107,20 +91,53 @@ public class serv_CreateTimetableEvent extends HttpServlet {
             HtmlHelper site = new HtmlHelper(out);
             site.printHead("New event", "body");
             
-            out.println(request.getParameter("courseCode"));
-            out.println(request.getParameter("classroom"));
-            out.println(request.getParameter("lecturer"));
-            out.println(request.getParameter("st"));
-            out.println(request.getParameter("et"));
-            out.println(request.getParameter("Monday"));
-            out.println(request.getParameter("Tuesday"));
-            out.println(request.getParameter("Wednesday"));
-            out.println(request.getParameter("Thursday"));
-            out.println(request.getParameter("Friday"));
-            out.println(request.getParameter("Saturday"));
-            out.println(request.getParameter("Sunday"));
-            out.println(request.getParameter("note"));
+            String courseCode = request.getParameter("courseCode");
+            String classroom = request.getParameter("classroom");
+            String lecturer = request.getParameter("lecturer");
+            String date = request.getParameter("date");
+            String startTime = request.getParameter("st");
+            String endTime = request.getParameter("et");
+            String repeat = request.getParameter("repeat");
+            String lastRepeat = request.getParameter("lastRepeat");
+            if (repeat == null) {
+                repeat = "off";
+                lastRepeat = "";
+            }
 
+            Calendar startCal = CalendarHelper.newCalendar(date, startTime);
+            Calendar endCal = CalendarHelper.newCalendar(date, endTime);
+            
+            if (repeat.equals("on")) {
+                Calendar lastRepeatCal = CalendarHelper.newCalendar(lastRepeat, startTime);
+                
+                while (startCal.before(lastRepeatCal)) {
+                    String sc = String.valueOf(startCal.getTimeInMillis());
+                    String ec = String.valueOf(endCal.getTimeInMillis());
+                    String cw = String.valueOf(startCal.get(Calendar.WEEK_OF_YEAR));
+                    
+                    Connection conn;
+                    conn = dbLogin.loginToDB(out);
+                    CalendarHelper.insertEvents(out, conn, classroom, lecturer, courseCode, "IT og IS semester 1", sc, ec, cw);
+                    dbLogin.close();
+                    
+                    startCal.add(Calendar.DATE, 7);
+                    endCal.add(Calendar.DATE, 7);
+                }
+            }
+            else if (repeat.equals("off")) {
+                System.out.println("FDdfddf");
+                String sc = String.valueOf(startCal.getTimeInMillis());
+                String ec = String.valueOf(endCal.getTimeInMillis());
+                String cw = String.valueOf(startCal.get(Calendar.WEEK_OF_YEAR));
+                Connection conn;
+                conn = dbLogin.loginToDB(out);
+                CalendarHelper.insertEvents(out, conn, classroom, lecturer, courseCode, "IT og IS semester 1", sc, ec, cw);
+                dbLogin.close();
+            }
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            dbLogin.close();
         }
     }
 }
