@@ -21,6 +21,11 @@
             <input class="button small-button" id="newEvent" type="submit" value="New event">
         </form>
     </div>
+    <div id="deleteEventDiv">
+        <form action="DeleteCalendarEvent" method="get">
+            <input class="button small-button" id="deleteEvenet" type="submit" value="Delete event">
+        </form>
+    </div>
     <div id="calendarWrapper">
     <div id="calendarsDiv">
     </div>
@@ -127,7 +132,7 @@
                         
                         var newTD = document.createElement("td");
                         newTD.setAttribute("class", "filledEvent");
-                        newTD.setAttribute("style", "background-color: " + obj.color);
+                        newTD.setAttribute("style", "background-color: yellow");
                         newTD.setAttribute("rowspan", rowspan);
                         
                         var st = document.createElement("span");

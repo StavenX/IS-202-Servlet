@@ -178,7 +178,7 @@ textarea {
 
 #buttons2 {
     float: left;
-    margin-left: 15px;
+    margin-left: 13px;
     float: top;
 }
 
@@ -190,6 +190,13 @@ textarea {
 #newEventDiv {
     float: left;
     float: top;
+    margin-left: 10px;
+}
+
+#deleteEventDiv {
+    float: left;
+    float: top;
+    margin-left: 10px;
 }
 
 #selectDegreeDiv {
