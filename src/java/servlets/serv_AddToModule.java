@@ -38,7 +38,7 @@ public class serv_AddToModule extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try (PrintWriter out = response.getWriter() ) {
             
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Added to module", "");
