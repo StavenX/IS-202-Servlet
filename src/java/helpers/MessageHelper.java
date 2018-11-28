@@ -135,7 +135,6 @@ public class MessageHelper {
                 rowCount++;
             }
             out.println("</div>");
-            out.println("Total number of records: " + rowCount);
             
             site.useJS("buttons-for-delete.js");
             

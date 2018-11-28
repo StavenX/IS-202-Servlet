@@ -40,6 +40,7 @@ public class serv_Home extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             HtmlHelper site = new HtmlHelper(out, request);
             site.printHead("Home", "home");
